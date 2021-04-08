@@ -1,0 +1,29 @@
+/////////////////////////////////////////////
+//         __
+//   |\/| |
+//   |  | |__
+//
+// Please use this file for MC PIC32 specific settings
+//
+// Add / remove the flags you need but read the Compiler documentation and PCLINT doc first
+//
+// + = Added setting
+// - = removed setting
+// Please add text to describe the setting.
+
+/////////////////////////////////////////////
+
+-i"C:\Microchip\xc32\v1.31\pic32-libs\include"
+-i"C:\Microchip\xc32\v1.31\pic32mx\include"
+-d__32MX220F032B__
+-dMICROCHIP_PIC_32
++fce // Continue on error
++fba // Bit Addressability
++fbc // Boolean Constants 0b...
+-e46
+-e830 // Suppress this due to added "noise"
+-e831 // Suppress this due to added "noise"
+
+// -e788 - enum constant 'Symbol' not used within defaulted switch
+// Because 787 is enough to cover this
+-e788

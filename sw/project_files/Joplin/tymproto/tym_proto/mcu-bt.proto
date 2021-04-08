@@ -1,0 +1,69 @@
+syntax = "proto2";
+import "bt-mcu-ReqResp.proto";
+import "mcu-bt-ReqResp.proto";
+import "ble_eq_tuning.proto";
+import "ble_light.proto";
+
+package Proto.McuBt;
+
+/// Event report from MCU to BT module (Local UI).
+message Event {
+	enum Type {
+		LINE_IN_SENSE_ACTIVE = 0;
+
+		LINE_IN_SENSE_INACTIVE = 1;
+
+		BOOTLOADER_READY = 2;
+
+		FIRMWARE_UPDATE_FINISHED = 3;
+
+		SYSTEM_BOOTED = 4;
+
+		VOLUME_CHANGED = 5;
+
+		SYSTEM_OFF = 6;
+
+		SYSTEM_STANDBY = 7;
+
+		SOURCE_CHANGED = 8;
+
+		EQ_CHANGED = 9;
+
+		LIGHT_CHANGED = 10;
+	}
+	optional Type type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+	oneof OneOf {
+		uint32 data = 10;
+		uint32 absoluteVolume = 11;
+		uint32 volumeStep = 12;
+		uint32 source = 13;
+		BleEqTuning.Data eq = 14;
+		BleLight.Data light = 15;
+	}
+}
+
+message Req {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional ReqResp type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+	oneof OneOf {
+		uint32 data = 10;
+	}
+}
+
+message Resp {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional BtMcu.ReqResp type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+	oneof OneOf {
+		uint32 data = 10;
+		bool audioCuePlayReady = 11;
+	}
+}

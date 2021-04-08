@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Script to stage the OEM customization file for the SAM bundle.
+#
+
+BASE_DIR=$(dirname $0)
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+showUsage() {
+	echo "Usage: $0 <oem settings file>"
+}
+
+[ $# -eq 1 ] || { showUsage; exit 1; }
+[ "$1" != '--help' ] || { showUsage; exit 1; }
+
+oemSettingsFile="$1"
+[ -f "$oemSettingsFile" ] || { echo "File not found: $oemSettingsFile"; exit 1; }
+
+# Stage for AllPlay orbplayer package
+QSDK_INSTALL_DIR=${STAGING_DIR}/openwrt/qsdk/qce/feeds/allplay/multimedia/orbplayer/files
+mkdir -p ${QSDK_INSTALL_DIR}
+cp "$oemSettingsFile" ${QSDK_INSTALL_DIR}/oem.config
+
+# Stage for SAM board revision
+SAM_INSTALL_DIR=${STAGING_DIR}/sam/etc/config
+mkdir -p ${SAM_INSTALL_DIR}
+cp "$oemSettingsFile" ${SAM_INSTALL_DIR}/oem
+

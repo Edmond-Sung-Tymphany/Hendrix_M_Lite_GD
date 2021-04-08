@@ -1,0 +1,424 @@
+/dts-v1/;
+
+/ {
+	/* Model property
+		This is used internally to identify the module.
+		Customers MUST NOT change.  It is limited to 32 bytes.
+	*/
+	model = "Qualcomm Atheros CUS227";
+
+	/* compatible property
+		This is used internally to identify compatible sub-sets of modules.
+		Customers MUST NOT change
+	*/
+	compatible = "ath79,cus227";
+
+	/* ssid-prefix property
+		This is as the prefix for the out of box SSID.  The SSID will
+		be set as "ssid-prefix XXYYZZ_AJ" where XX YY ZZ are the
+		last 3 octets of the WiFi Mac Address.
+		It is recommended that the customer OVERRIDE this value.
+		
+		Valid values:
+			22 bytes worth of string data.
+	*/
+	ssid-prefix = "Polk ";
+	/* serial property
+		This property will be set at the factory to a unique serial number for the module.
+		Mechanism TBD.
+		https://qti-jira.qualcomm.com/jira/browse/SKIFTAAM-862
+		Customers should NOT override this value.
+	*/
+	serial = "XXXXXXXX";
+
+	/* manufacturer-info property
+		This property should be set to the customers name.  This is used in DLNA reporting.
+		Customers SHOULD override this value.
+	*/
+	manufacturer-info = "Qualcomm AllPlay";
+
+	/* product-id-sku property
+		This property should be set to a human readable string
+		with the customers name for this particular SKU.
+		Customers SHOULD override this value.
+	*/
+	product-id-sku = "product id XXX - Vanilla";
+
+	/* device-tree-data-version
+		This property is set by Qualcomm to identify the version of
+		the data structures in this file.
+		Customers SHOULD NOT override this value.
+		https://qti-jira.qualcomm.com/jira/browse/SKIFTAAM-864
+	*/
+	device-tree-data-version = "1.0a11";
+
+
+	/* hardware-version property
+		This property is set by Qualcomm to identify the version of
+		the hardware used on the module.
+		Customers SHOULD NOT override this value.
+	*/
+	hardware-version = "CUS227 1.0";
+
+	/* manufacturer property
+		This property should be set to the customer's name.  This is used in DLNA reporting.
+		Customers MUST override this value.  It is limited to 64 bytes.
+	*/
+	manufacturer = "Qualcomm";
+
+	/* device property
+		This property should be set to the customers name for the product.
+		Customers MUST override this value.
+	*/
+	device = "SamAudio";
+
+	/* update-url property
+		This is the URL used for firmware updates.  The customer should
+		set this field to the URL hosting their firmware updates.
+		Customers SHOULD override this value.
+	*/
+	update-url = "http://10.13.3.199/allplay/eng/gavin/fw/tym_repeated.xml";
+
+	/* support-url property
+		This property should be set to the customers URL for online support for
+		the product.
+		Customers SHOULD override this value.
+	*/
+	support-url = "http://www.qualcomm.com/allplay";
+
+	/* automatic-update property
+		This property indicates whether the product will automatically apply
+		firmware updates.
+		Values:
+			0 - automatic update disabled
+			1 - automatic update enabled
+		Customers SHOULD override this value.
+	*/
+	automatic-update = "1";
+
+	/* telnet-enable property
+		This property indicates whether the telnet service will be enabled on the product.
+		Values:
+			0 - telnet service disabled
+			1 - telnet service enabled
+		This property SHOULD be set to disabled in production, but may be enabled
+		during development for debug purposes.
+	*/
+	telnet-enable = "1";
+
+	/* ssh-enable property
+		This property indicates whether the ssh service will be enabled on the product.
+		Values:
+			0 - ssh service disabled
+			1 - ssh service enabled
+		This property SHOULD be set to disabled in production, but may be enabled
+		during development for debug purposes.
+	*/
+	ssh-enable = "1";
+
+	/* runscript-enable property
+		This property indicates whether the execution of arbitrary scripts will be allowed
+                via the AllJoyn MCU interface
+		Values:
+			0 - runscript method disabled
+			1 - runscript method enabled
+		This property SHOULD be set to disabled in production, but may be enabled
+		during development for debug purposes.
+	*/
+	runscript-enable = "1";
+
+	/* friendly-name property
+		This property defines the Out-of-box value of the device's friendly name.
+		Customers SHOULD override this value.  Is is limited to 32 bytes.
+	*/
+	friendly-name = "Polk Speaker";
+
+	/* model-description property
+		This property defines the description of the ODM end product.  This is used in DLNA reporting.
+		Customers SHOULD override this value.
+	*/
+
+	model-description = "AllPlay capable network audio module.";
+
+	/* model-number property
+		This property should be set to the model revision of hte customer's end product.  This is used in DLNA reporting.
+		Customers SHOULD override this value.  It is limited to 32 bytes.
+	*/
+	model-number = "1.0";
+
+	/* manufacturer-url property
+		This property should be set to the customers main URL.  This is used in DLNA reporting.
+		Customers SHOULD override this value.
+	*/
+	manufacturer-url = "http://www.qualcomm.com";
+
+	/* model-url property
+		This property identifies the URL to be used for the particular end product.
+		Customers should set this to a URL for their product.  This is used in DLNA reporting.
+		Customers SHOULD override this value.
+	*/
+	model-url = "REPLACE WITH URL for this model";
+
+	/* ui-lang property
+		This property should be set to the default language/region.
+		For example, "en" (English), "fr" (French), "de" (German), "es" (Spanish),
+		"it" (Italian), "pt" (Portuguese), "ja" (Japanese), "zh-hk" (Chinese, Hong Kong),
+		"zh-tw" (Chinese, Taiwan), ..., etc.
+		Customers MAY override values in this section.
+	*/
+	ui-lang = "en";
+
+	/* crash-reporter-url property
+		This property identifies the URL to be used for sending core dumps
+		to the crash reporter.
+		Customers MUST override this value.
+	*/
+	crash-reporter-url = "";
+
+
+	/* AllJoyn section
+		This section defines proerties which control AllJoyn
+		Customers SHOULD override values in this section.
+	*/
+	alljoyn	{
+		/* serial-baud property
+			This property defines the baud rate used for SLAP serial communications.
+			Customers should set this to their desired SLAP baud-rate if they use SLAP.
+			Customers SHOULD override this value.
+		*/
+		serial-baud = "115200";
+	};
+
+
+
+	/* GPIOs section
+		This section defines the GPIO controller for the platform.
+		Customers MUST NOT override this section.
+	*/
+	gpios: ath79-gpio {
+		#gpio-cells = <2>;
+		gpio-controller;
+	};
+
+	/* keys section
+		This property defines which GPIOs should be used as inputs.
+		Customers SHOULD override items in this section.
+	*/
+	keys {
+		compatible = "gpio-keys";
+		/* s1 section
+			This section defines how S1 behaves as an input.
+			Customers SHOULD override items in this section to change behavior, or
+			remove the section if S1 is not used as an input.
+		*/
+		s2 {
+			label = "s2";
+			gpios = <&gpios 13 1>;
+			linux,code = <258>; /* BTN_2 */
+			apam,uci-data {
+				/* reset behavior
+					This section defines a reset behavior for S1
+					Customers SHOULD override items in this section to change behavior, or
+					remove the section if S1 is not used as an input source.
+				*/
+				reset {
+					/* button property - must match linux,code value above */
+					button = "BTN_2";
+					/* action property -
+						One of:
+							pressed - (execute action on button press)
+							released - (execute action on button released when button
+							was pressed for duration > min time and duration < max time)
+						In this example: Take action on button released and 10 < duration < 60
+					*/
+					action = "released";
+					/* handler property - defines the Linux command to run when action occurs */
+					handler = "EVENT=event_factory_reset /etc/statemgr";
+					/* min property - defines the minimum time for button press */
+					min = "10";
+					/* max property - defines the maximum time for button press */
+					max = "60";
+				};
+				directmode {
+					/* button property - must match linux,code value above */
+					button = "BTN_2";
+					/* action property - Take action on button released */
+					action = "released";
+					/* handler property - defines the Linux command to run when action occurs */
+					handler = "EVENT=event_directmode /etc/statemgr";
+					/* min property - defines the minimum time for button press */
+					min = "2";
+					/* max property - defines the maximum time for button press */
+					max = "10";
+				};
+				wps {
+					/* button property - must match linux,code value above */
+					button = "BTN_2";
+					/* action property - Take action on button released */
+					action = "released";
+					/* handler property - defines the Linux command to run when action occurs */
+					handler = "EVENT=event_start_wps_pbc /etc/statemgr";
+					/* min property - defines the minimum time for button press */
+					min = "10";
+					/* max property - defines the maximum time for button press */
+					max = "60";
+				};
+			};
+		};
+		/* Unconfigured GPIOs should default to inputs with no UCI params */
+		s1 {
+			label = "s1";
+			gpios = <&gpios 12 1>;
+			linux,code = <257>; /* BTN_1 */
+		};
+		s3 {
+			label = "s3";
+			gpios = <&gpios 14 1>;
+			linux,code = <259>; /* BTN_3 */
+		};
+	};
+
+
+
+	/* leds section
+		This section defines which GPIOs are used as LEDs.
+		Customer should delete s3 and/or s4 section is s3 and/or s4
+		are not used as LED outputs.
+		Customers SHOULD override this value.
+	*/
+	leds {
+		compatible = "gpio-leds";
+		s4 {
+			label = "cus227:green:s4";
+			gpios = <&gpios 15 1>;
+			linux,default-trigger = "timer";
+		};
+	};
+
+
+
+	/* sound section
+		This section controls the behavior of the sound sub-system
+		Customers MAY override values in this section.
+	*/
+	sound {
+		/* apam,supported-rates property -
+			This property defines a list of what the supported audio output rates
+			for the product are.
+			Customers SHOULD override this.
+			Valid values are: 8000 11025 16000 22050 32000 44100 48000 88200 96000
+		*/
+		apam,supported-rates = <44100>;
+
+		/* apam,supported-rates-1 property -
+			This property defines a secondary set of output rates to use after
+			reconfiguration through a external physical switch.
+			The audio driver will either choose "apam,supported-rates" or
+			"apam,supported-rates-1" as the rates to use depending on the state of
+			an external physical switch.
+			The customer SHOULD override this.
+		*/
+// 		apam,supported-rates-1 = <8000 11025 16000 22050 32000 44100 48000 88200 96000>;
+
+		/* apam,supported-formats property -
+			This property defines a list of the supported output formats for the product.
+			The customer SHOULD override this.
+			Valid Values are:  "S8", "S16_LE", "S16_BE", "S32_BE", "S32_BE";
+		*/
+		apam,supported-formats = "S8", "S16_LE", "S16_BE";
+		/* apam,volume-control property -
+			This property defines the supported types of volume control for the product.
+			Valid vaues are:
+				hardware - DAC controls volume
+				software - Volume control is done in software
+				mcu - A host MCU will change the volume.
+			The customer SHOULD override this.
+		*/
+		apam,volume-control = "mcu"; /* [hardware|software|mcu] */
+
+		/* apam,carrier-detect-time-msecs property -
+			This property does TBD.
+		*/
+// 		apam,carrier-detect-time-msecs = "100";
+		/* apam,mclk-output property -
+			This property defines whether the MCLK is output from the module.  If MCLK
+			from the module is required to operate the DAC this should be set to 1.  If
+			the MCLK is not required to operate an external DAC this can be set to 0 to
+			eliminate a source of EMI.
+		*/
+		apam,mclk-output = <0>;
+
+		/* apam.sync-rate-offset-table property -
+			This property is a table of sample rates and their corresponding offset
+			times in microseconds used in audio syncronization to add a hardware
+			specific (and rate specific) offset.
+		*/
+		/*apam,sync-rate-offset-table = <44100 1111>,
+		                                <48000 2222>,
+		                                <96000 3333>;
+		*/
+
+		/* apam,sync-default-offset -
+			This is the default sync offset (microseconds) for sample rates not
+			in the above table.
+		*/
+		//apam,sync-default-offset = "1000";
+	};
+	/* WiFi section
+		This section controls the behavior of the WiFi sub-system
+		Customers MAY override values in this section.
+	*/
+	wifi {
+		wps	{
+			pin	{
+//				label = "true";
+//				physical-display = "true";
+				virtual-display = "true";
+			};
+			push-button	{
+				physical = "true";
+				virtual = "true";
+			};
+			device-type	{
+				category = "11";
+				oui = "0050F204";
+				subcategory = "2";
+			};
+		};
+	};
+
+	/* mcuUpdate section.
+		This section controls the settings for the mcuUpdate application.
+		It is optional and can be ommitted if there is no MCU or if
+		the defaults are adequate.
+	 */
+	mcuUpdate {
+		/* resetTimeout property
+			Delay in milliseconds between RESET packets when trying to establish
+			a connection with the MCU.
+			The customer MAY override this value.
+		*/
+		resetTimeout = "1000";
+
+		/* ackTimeout property
+			Delay in milliseconds to wait for an acknowledgement of reception
+			from the MCU. A smaller value will allow to recover more quickly from a
+			data loss. But a value too small may not leave enough time for the
+			MCU to receive the packet and send the acknowledgement, this will cause
+			the SAM to uselessly retransmit packets, slowing down the connection.
+			The customer MAY override this value.
+		*/
+		ackTimeout = "1000";
+
+		/* dataDelay property
+			Delay in milliseconds the SAM will wait before sending the next DATA packet
+			after the previous one has been acknowledged.
+			This is useful if the MCU cannot receive data over the UART while processing
+			the packet. In this case, the MCU may receive incomplete data or
+			no data at all and will have to wait for the retransmission (see ackTimeout).
+			Increasing the value of dataDelay will limit the amount of retransmissions.
+			The customer MAY override this value.
+		*/
+		dataDelay = "0";
+	};
+};

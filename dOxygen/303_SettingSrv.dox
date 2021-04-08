@@ -1,0 +1,62 @@
+/**
+\anchor page
+\page SettingSrv SettingSrv - How-to add a new entry
+
+\image html logo.png
+
+SettingSrv - How-to add a new entry
+
+<HR>
+\section RAM For RAM only
+For those contents do not required to be preserved after power-cycle.
+Modules could read/write the content frequently and immediately take effect if another module get the content.
+Example: battery level, current volume, AC charger plug-in status, etc.
+
+<ol>
+<li> In \ref SettingSrv.h, give the ID to the newly added entry in \ref eSettingId. </li>
+<li> In \ref SettingSrv.h, give the place-holder in \ref tSettingEntry. </li>
+<li> In \ref SettingSrv.config, give the address, size and attribute information of the new entry in \ref <b>settingDB[]</b> according to tSettingDatabase.
+
+       Caution: This should be located at the index of the ID set in <b>step 1</b>. </li>
+<li> Set the value with \ref Setting_Set. </li>
+<li> Get the pointer of value with \ref Setting_Get. </li>
+</ol>
+
+<HR>
+\section ROM For ROM only
+For those contents that user or system does not change but the PC tools could change.
+The benefit is the firmware do not need to upgrade, just upgrading part of the ROM data.
+The data is usually large in size.
+Example: DSP Data
+
+<ol>
+<li> define \ref SETTING_HAS_ROM_DATA in \ref product.config. </li>
+<li> In \ref SettingSrv.h, give the ID to the newly added entry in \ref eSettingId. </li>
+<li> In \ref SettingSrv.config, give the size and attribute information of the new entry in \ref <b>settingDB[]</b> according to tSettingDatabase, address should be NULL.
+       This should be located at the index of the ID set in <b>step 2</b>. </li>
+<li> In \ref SettingSrv.config, add the ID and ROM address in <b>settingRomMap[]. </b></li>
+<li> (BSP dependent) modify the <b>linker file</b> for the ROM address, which must be matched with the one in <b>step 4</b>. </li>
+<li> (BSP dependent) reserve the space for <b>variable</b> with the size defined in <b>step 3</b> and provide the label defined in <b>step 5</b>. </li>
+<li> Get the value directly from the variable defined or \ref Setting_Get. </li>
+</ol>
+
+<HR>
+\section Hybrid In both RAM and ROM
+For those contents that user or system could change, and need to be preserved after power-cycle.
+Example: Menu Data
+
+<ol>
+<li> define \ref SETTING_HAS_ROM_DATA in \ref product.config. </li>
+<li> In \ref SettingSrv.h, give the ID to the newly added entry in \ref eSettingId. </li>
+<li> In \ref SettingSrv.h, give the place-holder in \ref tSettingEntry. </li>
+<li> In \ref SettingSrv.config, give the address, size and attribute information of the new entry in \ref <b>settingDB[]</b> according to tSettingDatabase.
+       This should be located at the index of the ID set in <b>step 2</b>. </li>
+<li> In \ref SettingSrv.config, add the ID and ROM address in <b>settingRomMap[]</b>. </li>
+<li> (BSP dependent) modify the <b>linker file</b> for the ROM address, which must be matched with the one in <b>step 4</b>. </li>
+<li> Set the value with \ref Setting_Set. </li>
+<li> Get the pointer of value with \ref Setting_Get. </li>
+</ol>
+
+<HR>
+*/
+

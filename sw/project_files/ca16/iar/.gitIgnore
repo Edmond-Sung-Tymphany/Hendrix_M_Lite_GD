@@ -1,0 +1,5 @@
+_auto_build*
+Debug/*
+Release/*
+*.dep
+*.ewt

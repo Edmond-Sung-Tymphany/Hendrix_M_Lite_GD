@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<properties>
+	<header>PCM1865</header>
+	<component name="DigitalMixer4">
+		<property name="CH1L" value="0.0"/>
+		<property name="CH1R" value="0.0"/>
+		<property name="CH2L" value="0.0"/>
+		<property name="CH2R" value="1.0"/>
+		<property name="I2SL" value="0.0"/>
+		<property name="I2SR" value="0.0"/>
+	</component>
+	<component name="DigitalPGACh1Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="10"/>
+	</component>
+	<component name="DigitalMixer1">
+		<property name="CH1L" value="0.0"/>
+		<property name="CH1R" value="0.0"/>
+		<property name="CH2L" value="0.0"/>
+		<property name="CH2R" value="0.0"/>
+		<property name="I2SL" value="0.0"/>
+		<property name="I2SR" value="0.0"/>
+	</component>
+	<component name="DigitalMixer2">
+		<property name="CH1L" value="0.0"/>
+		<property name="CH1R" value="0.0"/>
+		<property name="CH2L" value="0.0"/>
+		<property name="CH2R" value="0.0"/>
+		<property name="I2SL" value="0.0"/>
+		<property name="I2SR" value="0.0"/>
+	</component>
+	<component name="DigitalMixer3">
+		<property name="CH1L" value="0.0"/>
+		<property name="CH1R" value="0.0"/>
+		<property name="CH2L" value="1.0"/>
+		<property name="CH2R" value="0.0"/>
+		<property name="I2SL" value="0.0"/>
+		<property name="I2SR" value="0.0"/>
+	</component>
+	<component name="GainCh1Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="12"/>
+	</component>
+	<component name="Mux4">
+		<property name="MuxSelect" value="1"/>
+	</component>
+	<component name="EVMIO">
+		<property name="CurrentTarget" value="PCM1865_0"/>
+		<property name="Mode" value="mode2"/>
+	</component>
+	<component name="Mux2">
+		<property name="MuxSelect" value="1"/>
+	</component>
+	<component name="Mux3">
+		<property name="MuxSelect" value="1"/>
+	</component>
+	<component name="Mux1">
+		<property name="MuxSelect" value="1"/>
+	</component>
+	<component name="DigitalPGACh2Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="2"/>
+	</component>
+	<component name="AnalogPGACh1Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="2"/>
+	</component>
+	<component name="Framework">
+		<property name="ADCAdaptive" value="True"/>
+		<property name="AutoWriteState" value="True"/>
+		<property name="AutoWriteStateDelay" value="100"/>
+		<property name="CoefDefaultQ" value="23"/>
+		<property name="CoefWidth" value="24"/>
+		<property name="DACAdaptive" value="False"/>
+		<property name="DACAdaptive1" value="False"/>
+		<property name="DACAdaptive2" value="False"/>
+		<property name="DefaultI2C" value="148"/>
+		<property name="DeviceName" value="PCM186x"/>
+		<property name="DeviceType" value="PCM51XX"/>
+		<property name="SampleRate" value="48kHz"/>
+		<property name="TargetType" value="AIC3xxx"/>
+		<property name="USBType" value="AIC_TUSB1020B"/>
+	</component>
+	<component name="DigitalPGACh2Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="2"/>
+	</component>
+	<component name="PFWControl">
+		<property name="Autogain" value="True"/>
+		<property name="Controls" value="True"/>
+		<property name="DecimationFilter" value="0"/>
+		<property name="HighPassFilter" value="1"/>
+		<property name="MuteCh1Left" value="False"/>
+		<property name="MuteCh1Right" value="False"/>
+		<property name="MuteCh2Left" value="False"/>
+		<property name="MuteCh2Right" value="False"/>
+		<property name="PGA_Attenuation" value="3"/>
+		<property name="PGA_Clipping" value="True"/>
+		<property name="PGA_PgaSmoothChange" value="True"/>
+		<property name="PGA_Startafter" value="3"/>
+		<property name="ProcessingMode" value="0"/>
+		<property name="Suppression" value="True"/>
+	</component>
+	<component name="GainCh1Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="12"/>
+	</component>
+	<component name="GainCh2Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="12"/>
+	</component>
+	<component name="AnalogPGACh1Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="2"/>
+	</component>
+	<component name="BlockDiagram">
+		<property name="ADC1LeftPolarity" value="False"/>
+		<property name="ADC1LeftSource" value="0"/>
+		<property name="ADC1RightPolarity" value="False"/>
+		<property name="ADC1RightSource" value="0"/>
+		<property name="ADC2LeftPolarity" value="False"/>
+		<property name="ADC2LeftSource" value="2"/>
+		<property name="ADC2RightPolarity" value="False"/>
+		<property name="ADC2RightSource" value="2"/>
+		<property name="AI_Format" value="0"/>
+		<property name="AI_I2SRxLength" value="3"/>
+		<property name="AI_I2STxLength" value="3"/>
+		<property name="AI_TDMDutyCycle" value="0"/>
+		<property name="AI_TDMOutputSelect" value="0"/>
+		<property name="AI_TDMRxOffset" value="0"/>
+		<property name="AI_TDMTxOffset" value="0"/>
+		<property name="Ctl_ClippingErrorEnable" value="True"/>
+		<property name="Ctl_ClippingErrorTrigger" value="False"/>
+		<property name="Ctl_ClockErrorEnable" value="False"/>
+		<property name="Ctl_ClockErrorTrigger" value="False"/>
+		<property name="Ctl_DCLevelEnable" value="False"/>
+		<property name="Ctl_DCLevelTrigger" value="False"/>
+		<property name="Ctl_DINToggleEnable" value="False"/>
+		<property name="Ctl_DINToggleTrigger" value="False"/>
+		<property name="Ctl_EnergySenseEnable" value="True"/>
+		<property name="Ctl_EnergySenseTrigger" value="False"/>
+		<property name="Ctl_PulsePolarity" value="0"/>
+		<property name="Ctl_PulseWidth" value="1"/>
+		<property name="GPIODirection0" value="0"/>
+		<property name="GPIODirection1" value="0"/>
+		<property name="GPIODirection2" value="0"/>
+		<property name="GPIODirection3" value="0"/>
+		<property name="GPIOFunction0" value="1"/>
+		<property name="GPIOFunction1" value="0"/>
+		<property name="GPIOFunction2" value="0"/>
+		<property name="GPIOFunction3" value="2"/>
+		<property name="GPIOPolarity0" value="0"/>
+		<property name="GPIOPolarity1" value="0"/>
+		<property name="GPIOPolarity2" value="0"/>
+		<property name="GPIOPolarity3" value="0"/>
+		<property name="IntEnable" value="False"/>
+		<property name="MD0Enable" value="False"/>
+		<property name="MD1Enable" value="False"/>
+		<property name="MD2Enable" value="False"/>
+		<property name="MD3Enable" value="False"/>
+		<property name="MD4Enable" value="False"/>
+		<property name="MD5Enable" value="False"/>
+		<property name="MD6Enable" value="False"/>
+		<property name="Power_AnalogPowerDown" value="False"/>
+		<property name="Power_DeviceSleep" value="False"/>
+		<property name="Power_DigitalStandby" value="False"/>
+		<property name="Ref_MicBiasPower" value="1"/>
+		<property name="Ref_ResistorBypass" value="0"/>
+		<property name="SecADC_AuxADCData" value="0"/>
+		<property name="SecADC_DCChannel" value="0"/>
+		<property name="SecADC_ReadData" value="False"/>
+		<property name="SecADC_ReadDataButton" value="False"/>
+		<property name="SecADC_SD_Ch1_Left" value="False"/>
+		<property name="SecADC_SD_Ch1_Right" value="False"/>
+		<property name="SecADC_SD_Ch2_Left" value="False"/>
+		<property name="SecADC_SD_Ch2_Right" value="False"/>
+		<property name="SecADC_SD_Ch3_Left" value="False"/>
+		<property name="SecADC_SD_Ch3_Right" value="False"/>
+		<property name="SecADC_SD_Ch4_Left" value="False"/>
+		<property name="SecADC_SD_Ch4_Right" value="False"/>
+		<property name="SecADC_Signal_Ch1_Left_D" value="127"/>
+		<property name="SecADC_Signal_Ch1_Left_R" value="128"/>
+		<property name="SecADC_Signal_Ch1_Right_D" value="127"/>
+		<property name="SecADC_Signal_Ch1_Right_R" value="128"/>
+		<property name="SecADC_Signal_Ch2_Left_D" value="127"/>
+		<property name="SecADC_Signal_Ch2_Left_R" value="128"/>
+		<property name="SecADC_Signal_Ch2_Right_D" value="127"/>
+		<property name="SecADC_Signal_Ch2_Right_R" value="128"/>
+		<property name="SecADC_Signal_Ch3_Left_D" value="127"/>
+		<property name="SecADC_Signal_Ch3_Left_R" value="128"/>
+		<property name="SecADC_Signal_Ch3_Right_D" value="127"/>
+		<property name="SecADC_Signal_Ch3_Right_R" value="128"/>
+		<property name="SecADC_Signal_Ch4_Left_D" value="127"/>
+		<property name="SecADC_Signal_Ch4_Left_R" value="128"/>
+		<property name="SecADC_Signal_Ch4_Right_D" value="127"/>
+		<property name="SecADC_Signal_Ch4_Right_R" value="128"/>
+		<property name="SecADC_SignalDectectInterval" value="1"/>
+		<property name="SecADC_SignalLossDetect" value="0"/>
+		<property name="SecADC_TM_Ch1_Left" value="False"/>
+		<property name="SecADC_TM_Ch1_Right" value="False"/>
+		<property name="SecADC_TM_Ch2_Left" value="False"/>
+		<property name="SecADC_TM_Ch2_Right" value="False"/>
+		<property name="SecADC_TM_Ch3_Left" value="False"/>
+		<property name="SecADC_TM_Ch3_Right" value="False"/>
+		<property name="SecADC_TM_Ch4_Left" value="False"/>
+		<property name="SecADC_TM_Ch4_Right" value="False"/>
+		<property name="SecADCGlobalLoss" value="-110.0"/>
+		<property name="SecADCGlobalResume" value="-55.0"/>
+	</component>
+	<component name="AnalogPGACh2Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="6"/>
+	</component>
+	<component name="ClockControl">
+		<property name="ADCClockSource" value="0"/>
+		<property name="ADCDivider" value="2"/>
+		<property name="AutoDetect" value="True"/>
+		<property name="DSP1ClockSource" value="0"/>
+		<property name="DSP1Divider" value="1"/>
+		<property name="DSP2ClockSource" value="0"/>
+		<property name="DSP2Divider" value="1"/>
+		<property name="InitialBCK" value="49.152"/>
+		<property name="InitialLRCK" value="49.152"/>
+		<property name="InitialSCK" value="49.152"/>
+		<property name="InitialXtal" value="0.0"/>
+		<property name="MasterBCKDivider" value="64"/>
+		<property name="MasterClockSource" value="0"/>
+		<property name="MasterSCKDivider" value="4"/>
+		<property name="Mode" value="0"/>
+		<property name="PLLDivider" value="8"/>
+		<property name="PLLDValue" value="0"/>
+		<property name="PLLEnable" value="True"/>
+		<property name="PLLJValue" value="8"/>
+		<property name="PLLPValue" value="2"/>
+		<property name="PLLReference" value="0"/>
+		<property name="PLLRValue" value="2"/>
+		<property name="SCKSelection" value="1"/>
+	</component>
+	<component name="DigitalPGACh1Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="10"/>
+	</component>
+	<component name="GainCh2Left">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="12"/>
+	</component>
+	<component name="AnalogPGACh2Right">
+		<property name="HasMute" value="False"/>
+		<property name="I2CAddress1" value="8"/>
+		<property name="I2CLength1" value="2"/>
+		<property name="Mute" value="False"/>
+		<property name="Volume" value="6"/>
+	</component>
+</properties>

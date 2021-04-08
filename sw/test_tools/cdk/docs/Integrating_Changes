@@ -1,0 +1,15 @@
+Integrating Customer Changes into Firmware Build
+================================================
+- Customer should provide a bundled oem-custom-deploy.tgz to be overlayed
+into the build structure.
+- If the customer provides new certificates and keys for signing and encryption,
+delete the content of qsdk/tools/qcom-gen-firmware/files/certs
+- untar the .tgz file at the qsdk level to overlay customer changes
+
+- cd qsdk
+- make package/symlinks
+- make defconfig
+- Modify .config file to enable SAM theme changes
+	- Package called luci-theme-sam-custom
+	- In .config, disable luci-theme-sam-default package
+- make

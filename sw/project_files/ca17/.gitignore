@@ -1,0 +1,7 @@
+_auto_build*
+Debug/*
+Release/*
+*.dep
+*.ewt
+*.zip
+ca17_hw*

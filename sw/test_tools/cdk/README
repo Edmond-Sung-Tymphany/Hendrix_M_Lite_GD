@@ -1,0 +1,10 @@
+ReadMe file for the
+Smart Audio Module (SAM)
+Customization Development Kit (CDK)
+===================================
+
+Top level directory descriptions:
+
+docs	Documentation on how to use the CDK
+files	Template files and reference Makefiles
+tools	The tools necessary to test and deploy the customized files

@@ -1,0 +1,7 @@
+package Proto.FepAse;
+
+enum ReqResp {
+	/// Generic response
+	PING = 0;
+
+}

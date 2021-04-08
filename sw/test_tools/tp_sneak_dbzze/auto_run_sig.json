@@ -1,0 +1,8 @@
+{
+    "auto_run_mode"        : "signal_mode",
+    "uart_port"            : 14,
+    "sig_queue_file"       : "power_onoff.que",
+    "number_of_iterations" : 1,
+    "save_log_file"        : "save_log0.txt",
+    "window_show_mode"     : 0 
+}

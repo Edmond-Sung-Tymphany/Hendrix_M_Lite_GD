@@ -1,0 +1,8 @@
+//  IAR C, -si4 -sp4, 
+//  Standard lint options
+
+stm32\co-iar.lnt
+stm32\stm32.lnt
+stm32\options.lnt  -si4 -sp4
+
+

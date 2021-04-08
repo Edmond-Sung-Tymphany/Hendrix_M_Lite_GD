@@ -1,0 +1,71 @@
+/**
+\anchor page
+\page qspy QSPY - How-to
+
+\image html logo.png
+
+\section qspyIntro What is QSpy?
+
+<a href="http://www.state-machine.com/qp/qspy/"><strong>Quantum Spy (QS or QSPY)&trade is a real-time tracing instrumentation built into the QP event-driven platform.</strong></a><br>
+Since it is built into QP we can make use of it for Tymphany Platform. To learn more first check out the link above.<br>
+Currently we use it parallel to our debug server. The plan is to combine both together under our own control at a later date.
+
+Private header /sa qs.h
+
+<h2>Prerequisite</h2>
+Before you run QSPY  <a href="http://www.state-machine.com/downloads/index.php">you must download the QSPY QTools package</a>. This tool is a client side tool that listens on a COM port for debug data. 
+Since QSPY has a special communication protocol you must use this tool and not a more traditional terminal tool.
+Once downloaded you will find the folder ../qtools/qspy/win32/mingw. Run the make.bat file found here. 
+You can then find the qspy.exe. Run this on in a command line tool. The tool from there will tell you how to run it.
+The product you wish to run qspy on must also have qspy enabled. Speak to the product SW lead.
+
+\image html qspy.png
+
+\section qspyHowToRun Running QSPY in Tymphany Platform
+
+Now you have the client tool we can run a QSPY build. As mentioned before we currently have a separate build for QSPY. 
+You must make sure you run/flash this build into the device.  Choose the qspy build:
+
+\image html qspy_build.png
+
+Run the qspy tool selecting the correct port and you should start seeing output. This is qspy running. Congrats!
+
+\image html qspy_run.png
+
+You can see you get a lot of messages (well you can filter <a href="#qspyHowToUse"> see here.</a>). In fact in this run i can see LED_SRV is "spamming" a lot of timeout messages to itself (dispatcher and receiver is same).
+So is this correct behaviour? In this case we actually discovered a bug!
+
+<HR>
+\section qspyHowToUse How to use qspy
+
+<h2>Adding to the QSPY dictionary</h2>
+QSpy uses an internal "dictionary" and can track messages between objects. This is very useful when you cannot figure out where messages are going.
+You may add functions, objects & signals to the QSPY dictionary to give these items human readable names. 
+QSPY only stores memory locations so when sending out the signals you will only get such info as \c Source=9D010FC9 unless you add the object/signal/function to the QSPY internal dictionary.
+Use \c QS_OBJ_DICTIONARY to add objects \c QS_SIG_DICTIONARY to add signals and \c QS_FUN_DICTIONARY for functions.
+\code
+QS_OBJ_DICTIONARY(AllPlaySrv_DeActive);
+
+QS_SIG_DICTIONARY(ALLPLAY_RESET_SIG,AllPlaySrv);
+
+QS_FUN_DICTIONARY(AllPlaySrv_netReset);
+\endcode
+
+<h2>Filtering QSPY message for your project </h2>
+QSpy is very flexible in what types of messages can be turned "on" or "off". We can configure these at build time.
+In the products bsp.c file you will find  something like:
+
+\code
+    QS_FILTER_ON(QS_ALL_RECORDS);
+	...
+    QS_FILTER_OFF(QS_QEP_STATE_EMPTY);
+	...
+    QS_FILTER_OFF(QS_QEP_STATE_ENTRY);
+\endcode
+
+You may use these macros to customize the filtering check qs.h for all supported filters.
+
+<HR>
+\image html logo.png
+*/
+

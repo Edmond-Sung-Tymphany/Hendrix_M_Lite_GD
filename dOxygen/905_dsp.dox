@@ -1,0 +1,84 @@
+/**
+\anchor page
+\page DSP Universal DSP loading
+
+\image html logo.png
+
+\section introDSP Intro
+<p>
+In order to make the platform as scalable and portable as possible it is essential we try to generalize as much of product creation as possible.
+In our products we use different DSP's and with each DSP we may use different configuration data. This data often resides on some non-volatile memory that the MCU has access to.
+On power up this data is transferred (typically via an I2C channel) to the DSP as arrays of bytes.
+During the initialization of DSP, MCU sends the data to the DSP external registers and internal registers according to the generated DSP file.
+However different DSP files always introduce different register writing sequence, and some registers need to be written in burst, so finally we have different sequence table – in both size and layout.
+</p>
+
+<h2>Solution</h2>
+<p>
+In the past each product EQ header file generated would differ in registers/sequences so we would have to write handler code each time.
+Our solution is to take these header files and do a post-process step using the Tymphany DSP teams scripts. This generates a compressed universal dsp file. 
+This file uses our own standard format and protocol to allow us to use one DSP driver.
+It takes the data and converts it into a common data table. Each line of this table is length-limited, with its length in this line’s head. 
+Each line should be in this format: 1 byte line length + start address + data for start address + data for the following address, comfortable for burst-loading.
+Using this means the DSP driver can read the whole table and determine, using the standard protocol laid down, how the data is written.
+<br>
+For the DSP driver, the initialization of DSP chip can be in the following steps: <br>
+1) Get Volume Control and input source register address (these are separate but also standard blocks) <br>
+2) Go through each line of the EQ table, reads each block length and send out bytes accordingly via transport layer (I2C most likely) <br>
+3) After all the lines have been scanned through, the initialization sequence finished successfully! <br>
+
+\section protocolDSP The protocol
+
+The DSP initialization data is compressed the following format:
+
+\image html placeholderforprotocol.png
+
+******************** THIS DATA NEEDS VERIFYING WITH DANIEL *************************************
+Magic Number	Info Field	Vol Ctrl Add	Src Sw Add	Array Number
+Length of Array0(1 byte)	Contents of Array0
+	Length of Array1(1 byte)	Contents of Array1	Length of Array2(1 byte)
+Contents of Array2	Length of Array3(1 byte)	Contents of Array3
+	.............................................................
+	Length of Arrayn(1 byte)	Contents of Arrayn
+ 
+Descriptions:
+1/Magic Number: several bytes of specific number, 8 bytes, 4 times of 0x5A 0xA5, to indicate that there is a usable DSP file table here.
+2/Info Field: 4 bytes, 1st byte indicates the vendor ID, 2nd byte indicates DSP chip model number, 2 other bytes are reserved for future use, now both should be 0x00.
+Format: 
+1st byte value	2nd byte value
+0x01 – TI Audio DSP	0x01 – TLV320AIC3204
+	0x02 – TLV320AIC3254
+0x02 – ADI Audio DSP	0x01 – ADAU1701
+	0x02 – ADAU1761
+
+Other values maybe used for other DSPs in the future.
+3/Vol Ctrl Add: 9 bytes, the address of the main volume controller inside DSP, and other message.
+The address format is dependent upon the DSP vendor and model ID.
+For TI DSP TLV320AIC3204/3254, each volume controller address == 1 byte page address + 1 byte register address.
+B0	B1	B2	B3	B4	B5	B6	B7	B8
+Volume controller address number	First page address	First register address	Second page address	Second register address	Third page address	Third register address	Fourth page address	Fourth register address
+
+For ADI DSP ADAU1701/1761, each volume controller address = = 1byte for MSB + 1 byte of LSB.
+B0	B1	B2	B3	B4	B5	B6	B7	B8
+Volume controller address number	First MSB	First LSB	Second MSB	Second LSB	Third MSB	Third  LSB	Fourth MSB	Fourth LSB
+
+*Notice: there will be 1 or 2 address in real application, the rest bytes should be set as 0x00.
+4/Src Sw Add: 9 bytes, the address of source switch inside DSP.
+For TI DSP, each switch address == 1 byte page address + 1 byte register address.
+B0	B1	B2	B3	B4	B5	B6	B7	B8
+Source switch address number	First page address	First register address	Second page address	Second register address	Third page address	Third register address	Fourth page address	Fourth register address
+
+For ADI DSP, each source switch address = = 1byte for MSB + 1 byte of LSB.
+B0	B1	B2	B3	B4	B5	B6	B7	B8
+Source switch address number	First MSB	First LSB	Second MSB	Second LSB	Third MSB	Third  LSB	Fourth MSB	Fourth LSB
+
+*Notice: there will be 1 or 2 address in real application, the rest bytes should be set as 0x00.
+5/Array Number: 2 bytes, number of arrays following it in this table.
+*All the above occupies 32 bytes, it is very convenient to get the first slot by just adding 0x20 to the address of the table head.
+6/Arrays: the real data arrays in the DSP file, always is like: 1 byte line length + start address + data for this register + data for the following registers possibly.
+**For the time delay in DSP initialization, we’ll use 8 bytes: 0xFF 0xFF 0xFF 0x0X 0xFF 0xFF 0xFF 0x00 to indicate it as a delay, the 4th byte indicate the length of the delay, X10ms, so 0xFF 0xFF 0xFF 0x01 0xFF 0xFF 0xFF 0x00 indicates a delay of 10ms.
+
+<HR>
+\image html logo.png
+*/
+

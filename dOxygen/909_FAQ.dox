@@ -1,0 +1,64 @@
+/**
+\anchor page
+\page FAQ Frequently Asked Questions
+
+\image html logo.png
+
+Got a question? Please ask and make sure we put it in here!
+
+<h2>Q: The project is running, but there is no response. Why?</h2>
+
+<p><strong>A:</strong> This may fall in the assertion trap. Trace the cause with the steps:<br />
+1. Set a break-point in Q_onAssert() located in bsp.c.<br />
+2. Let the program run into the assertion, and trace the root-cause from the call-stack.</p>
+
+<h2>Q: Why does my compile fail in QSPY configuration?</h2>
+
+<p><strong>A:</strong> Make sure you use macros of QP lib functions instead of the functions themselves. Examples are: QActive_postFIFO() & QACTIVE_POST() <br/>
+Also make sure that if you are using QSPY be sure that your macros are used correctly. Some macros take extra parameters (such as sender).<br/>
+These are not used with QSPY off but must make sense with QSPY on.</p>
+
+<h2>Q: How to use QS_OBJ_DICTIONARY()?</h2>
+
+<p><strong>A:</strong> This macro allows QP to do a look up and then print a human readable name for the item you insert as the parameter.<br />
+So you if I do this:</p>
+
+\code
+void LedSrv_StartUp(cPersistantObj *me)
+{
+    cLedSrv *ledsrv = (cLedSrv*) me;
+    /* I add the server object. This will then allow QSPY to print "ledsrv" for this object */
+    QS_OBJ_DICTIONARY(ledsrv); 
+    /* I add the state function here. So on entry it can print the actual name of this function not just the memory location. */
+    QS_OBJ_DICTIONARY(LedSrv_Initial); 
+.....
+}
+\endcode
+
+<p>So make sure the object reference you pass in is unique and readable. 
+You see me is cast to and we pass in "ledsrv"; so it can be read as &quot;ledsrv&quot; and not "me" or a hex value</p>
+
+<h2>Q: Why the timer has very big deviation?</h2>
+
+<p><strong>A:</strong> Currently, QP takes around 10 ms to do a "big loop" since AllPlay driver doesn't support non-blocking. If you have very large time deviation, you may have set an inappropriate time out period, our testing result shows that the time out period should match this equation, T = 10*n, while n is the integer which is larger than 0, try with 10 ms or 20 ms.</p>
+
+<h2>Q: If I've created an event with Q_NEW() and do not send it with QActive_postFIFO()\SendToServer() will it be free'd automatically?</h2>
+
+<p><strong>A:</strong> No, it will not :(</p>
+
+<h2>Q: On PIC32 why isn't project the compiling with -mips16 option?</h2>
+
+<p><strong>A:</strong> Probably you've got error msg - "Error: unknown opcode `mfc0 $3,$13&#39;" or something like this. The unrecognized instructions suggest it's complaining about an ISR. To fix this,- you have to "override build options" for complained file(particularly for tymphany_platform there are two files: bsp.c and attachedDevices.c) and leave "Generate MIPS16 16-bit code" option unchecked.</p>
+
+<h2>Q: How to enhance the portability?</h2>
+
+<h2>Q: How to use key server to detect a long hold (1s) event? what's the hold time for "MainApp_KeyHoldEvtAction"? Is the time the same as "MainApp_KeyLPressEvtAction"?</h2>
+
+<h2>Why is Edmond so troublesome?</h2>
+
+<p><strong>A:</strong> Because he is troublesome.</p>
+
+<HR>
+\image html logo.png
+*/
+

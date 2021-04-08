@@ -1,0 +1,13 @@
+<product value="starter_kit">
+	<variable name="TP_VARIANT">
+		<option>default</option>
+	</variable>
+	<variable name="TP_DEBUG">
+		<option>on</option>
+		<option>off</option>
+	</variable>
+	<variable name="TP_TARGET">
+		<option>native</option>
+		<option>windows</option>
+	</variable>	
+</product>

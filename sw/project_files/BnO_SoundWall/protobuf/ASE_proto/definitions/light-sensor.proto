@@ -1,0 +1,30 @@
+syntax = "proto2";
+package Proto.LightSensor;
+
+/// Input parameter for to AseFep.Req (LIGHT_SENSOR_TELEGRAM)
+message Command {
+	enum Type {
+		INITIALIZE = 0;
+		READ_RAW = 1;
+		CALIBRATE = 2;
+		READ_CALIBRATION = 3;
+		READ_LIGHT_LEVEL = 4;
+	}
+  
+	required Type type = 1;
+	optional uint32 calibrationLightLevel = 2;
+}
+
+/// Response from AseFep.Resp (LIGHT_SENSOR_TELEGRAM)
+message ReplyData {
+	required bool successful = 1;
+	optional uint32 rawCombinedValue = 2;
+	optional uint32 rawIrValue = 3;
+	optional uint32 calibrationConst = 4;
+	optional uint32 lux = 5;
+}
+
+/// Event from Fep (LIGHT_SENSOR_LIGHT_LEVEL)
+message LightLevel {
+	required uint32 lux = 1;
+}

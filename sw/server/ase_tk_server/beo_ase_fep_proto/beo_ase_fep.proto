@@ -1,0 +1,888 @@
+// @file beo_ase_fep.proto
+
+// @mainpage Introduction
+// This is the Protocol Buffers message definitions for the FEP interface on the ASE platform. All messages are prefixed
+// with either "FepAse" or "AseFep" which indicates the direction. A message prefixed with "FepAse" will be sent from
+// the FEP to the ASE and vice versa. Messages are always encapsulated in either FepAseMessage or AseFepMessage which
+// contains the message ID of the embodied message.
+//
+// Messages must be sent over the UART using the Yet Another HDLC (yahdlc) implementation located here:
+// https://github.com/bang-olufsen/yahdlc
+//
+// The acknowledgement of DATA frames must be done as soon as the integrity of the message has been checked to have the
+// highest possible throughput. New requests, events and commands may be sent after the message acknowledgement. The
+// sequence number must be used to handle retransmission and duplicated messages.
+
+// @brief Command request from FEP to ASE (Local UI).
+message FepAseCommand {
+    enum Command {
+        JOIN = 0; // One way join. Join/next joinable playback session.
+        PLAY = 1;
+        PAUSE = 2;
+        STOP = 3;
+        NEXT = 4;
+        PREV = 5;
+        BT_PAIRING_ON = 6;
+        BT_PAIRING_OFF = 7;
+        BTLE_PAIRING_ON = 8;
+        BTLE_PAIRING_OFF = 9;
+        // Standby command, FEP will receive SYSTEM_STATUS_STANDBY when ASE have entered standby.
+        STANDBY = 10;
+        // Off command, FEP will receive SYSTEM_STATUS_OFF when ASE have entered >>OFF<< mode.
+        OFF = 11;
+        // Factory reset command, FEP will receive FACTORY_RESET_DONE when ASE have finished factory reset.
+        FACTORY_RESET = 12;
+        MUTE = 13;
+        // The sound command has the functionality defined by ASE1.x. In short that is start playback from the top of
+        // the prioritized source list or skip to next source if already playing.
+        SOUND = 14;
+        // The silence command takes the necessary means to make the product silence i.e. pause if possible otherwise
+        // mute.
+        SILENCE = 15;
+        NETWORK_SETUP = 16;
+        SOUND_SILENCE_TOGGLE = 17;
+        BT_PAIRING_TOGGLE = 18;
+        PLAY_PAUSE_TOGGLE = 19;
+        UNMUTE = 20;
+        NEXT_SOURCE = 21;
+        // Prepare for storage i.e. gracefully shut down and send AseFepEvent(SYSTEM_STATUS_STORAGE) when ready.
+        STORAGE = 22;
+        // The IoT button; reserved for future use.
+        IOT = 23;
+        // ALL STANDBY command
+        ALL_STANDBY = 24;
+    }
+    optional Command command = 1;
+}
+
+// @brief Event from FEP to ASE.
+message FepAseEvent {
+    enum Event {
+        LINE_SENSE_ACTIVE = 0;
+        LINE_SENSE_INACTIVE = 1;
+        TOSLINK_SENSE_ACTIVE = 2;
+        TOSLINK_SENSE_INACTIVE = 3;
+        HDMI_SENSE_ACTIVE = 4;
+        HDMI_SENSE_INACTIVE = 5;
+    }
+    optional Event event = 1;
+}
+
+// @brief Request from FEP to ASE.
+message FepAseReq {
+    enum Request {
+        // Get internal speaker compensation values, ASE replies with AseFepSetInternalSpeakerCompensationCommand.
+        GET_INTERNAL_SPEAKER_COMPENSATION = 0;
+    }
+    required Request request = 1;
+}
+
+// @brief Event from ASE to FEP.
+message AseFepEvent {
+    enum Event {
+        // Software update of the ASE has started, local UI must show software update in progress. ASE reboot is part
+        // of the update process, if new firmware is available for the FEP, firmware update starts after ASE reboot.
+        SW_UPDATE_STARTED = 0;
+        SW_UPDATE_FINISHED = 1;
+        SW_UPDATE_FAILED = 2;
+        BT_PAIRING_ENABLED = 3;
+        BT_PAIRING_DISABLED = 4;
+        BT_PAIRING_FAILED = 5;
+        BT_PAIRING_SUCCEEDED = 6;
+        BTLE_PAIRING_ENABLED = 7;
+        BTLE_PAIRING_DISABLED = 8;
+        BTLE_PAIRING_FAILED = 9;
+        BTLE_PAIRING_SUCCEEDED = 10;
+        PLAYER_PLAYING = 11;
+        PLAYER_PAUSED = 12;
+        PLAYER_STOPPED = 13;
+        PLAYER_MUTED = 14;
+        PLAYER_UNMUTED = 15;
+        SOFTAP_STARTED = 16;
+        SOFTAP_STOPPED = 17;
+        APPLE_WAC_STARTED = 20;
+        APPLE_WAC_STOPPED = 21;
+        APPLE_WAC_TIMEOUT = 22;
+        // ASE has completed the boot sequence and is ready to receive messages from FEP
+        ASE_BOOTED = 23;
+        // ASE is overheated shut down ASE to prevent permanent damage
+        ASE_OVERHEAT_ALERT = 24;
+        // FEP must prepare for FEP bootloader update
+        SW_UPDATE_FEP_BOOTLOADER = 25;
+        // FEP must prepare for FEP application update
+        SW_UPDATE_FEP_APPLICATION = 26;
+        // ASE is ready for storage mode (to be put on storage shelves)
+        SYSTEM_STATUS_STORAGE = 27;
+        // Event send when ASE enter source standby
+        SYSTEM_STATUS_STANDBY = 28;
+        // Event send when exiting standby (a source has started from standby)
+        SYSTEM_STATUS_ON = 29;
+        // Event send when ASE is ready to be powered off
+        SYSTEM_STATUS_OFF = 30;
+        // Event send when >>reset to factory<< have been initiated
+        FACTORY_RESET_START = 31;
+        // Event send when >>reset to factory<< is done
+        FACTORY_RESET_DONE = 32;
+        // ASE is going to restart, FEP will gracefully shut down DSP and amplifier and signal reboot on the local UI.
+        SYSTEM_STATUS_ASE_RESTART = 33;
+        // Request to restart the entire product. FEP will gracefully shut down DSP and amplifier, signal reboot on the
+        // local UI and reboot the product.
+        SYSTEM_STATUS_RESTART = 34;
+        // Event send when the product is ON, but no user interaction is registered for a given time period, default is
+        // 5 minutes. How the FEP will react to the event is product specific, dimming the LEDs is one option.
+        SYSTEM_STATUS_ON_NO_OPERATION = 35;
+        // ASE indicates to FEP when the comfort sound playback starts. FEP has to turn on the DSP in case the DSP is off.
+        COMFORT_TONE_START = 36;
+        // ASE indicates to FEP when the comfort sound playback is finished. FEP can turn off the DSP in case it was off 
+        // before the comfort sound playback.
+        COMFORT_TONE_DONE = 37;
+    }
+    optional Event event = 1;
+}
+
+// \defgroup Volume Volume
+// @{
+// The speakers volume level is control by ASE, if volume is changed a message with the new volume level is sent to FEP.
+// The ASE can receive requests to change volume from many different sources such as Bluetooth remote controller,
+// Airplay, NetworkLink, local user interface (FEP) etc. When a request to change volume is received, various optional
+// volume level limitations are enforced and the resulting volume level is forwarded to the DSP via FEP.
+
+// @brief Event from ASE to FEP with new volume value, the speakers output volume is set to this value.
+message AseFepVolumeChangedEvent {
+    // FEP must adjust the speaker volume to this value
+    optional uint32 volume = 1;
+}
+
+// @brief Command from FEP to ASE to change volume to a specific level, the requested volume change does not take effect
+// until AseFepVolumeChangedEvent is received by FEP
+message FepAseAbsoluteVolumeCommand {
+    optional uint32 volume = 1;
+}
+
+// @brief Command from FEP to ASE to change the volume relative to the current volume level, the requested volume change
+// does not take effect until AseFepVolumeChangedEvent is received by FEP
+message FepAseRelativeVolumeCommand {
+    optional int32 volume = 1;
+}
+
+// @brief Perform a continuous volume change from one volume level to another volume level in a defined time frame.
+// During the fading, ASE discards any other volume change originated by any means (touch, remote, BNR, etc), therefore
+// FEP must send FepAseVolumeFadeComplete to ASE when fading is complete.
+message AseFepVolumeFadeEvent {
+  // Fade volume starting from start_volume. If omitted the fade operation starts from current volume level.
+  optional uint32 start_volume = 1;
+  // Fade volume to target_volume.
+  required uint32 target_volume = 2;
+  // In milliseconds the duration of the fade operation
+  required uint32 fade_duration = 3;
+}
+
+// @brief Continuous volume change operation has completed.
+message FepAseVolumeFadeComplete {
+  // Current volume level after the fade operation
+  required uint32 volume = 1;
+}
+// @} Volume
+
+// @brief Set the line-in sensitivity level.
+message AseFepSetLineInSensitivity {
+    enum LineInSensitivity {
+        // Line-in is triggered by a weak input signal. Suitable for most MP3 players.
+        HIGH = 0;
+        // Line-in is triggered by a medium input signal. Use with standard audio equipment and computers.
+        MEDIUM = 1;
+        // Line-in is triggered by a strong input signal. Suitable for DVD/BD players.
+        LOW = 2;
+        // Line-in sense is disabled
+        DISABLED = 3;
+    }
+    optional LineInSensitivity sensitivity = 1;
+}
+
+// \defgroup AudioPcmFormat Audio PCM formats
+//@{
+// @brief Command from ASE to FEP to change the bit clock frequency of the I2S bus when the audio format
+// changes, e.g. if the sample rate changes from 44.1 kHz to 48 kHz.
+message AseFepSetAudioPcmFormatCommand
+{
+    // @brief The format of each sample
+    enum Format {
+        // 32-bit floating-point big-endian
+        F32BE = 0;
+        // 32-bit floating-point little-endian
+        F32LE = 1;
+        // 64-bit floating-point big-endian
+        F64BE = 2;
+        // 64-bit floating-point little-endian
+        F64LE = 3;
+        // signed 16-bit big-endian
+        S16BE = 4;
+        // signed 16-bit little-endian
+        S16LE = 5;
+        // signed 24-bit big-endian
+        S24BE = 6;
+        // signed 24-bit little-endian
+        S24LE = 7;
+        // signed 32-bit big-endian
+        S32BE = 8;
+        // signed 32-bit little-endian
+        S32LE = 9;
+        // signed 8-bit
+        S8 = 10;
+        // unsigned 16-bit big-endian
+        U16BE = 11;
+        // unsigned 16-bit little-endian
+        U16LE = 12;
+        // unsigned 24-bit big-endian
+        U24BE = 13;
+        // unsigned 24-bit little-endian
+        U24LE = 14;
+        // unsigned 32-bit big-endian
+        U32BE = 15;
+        // unsigned 32-bit little-endian
+        U32LE = 16;
+        // unsigned 8-bit
+        U8 = 17;
+    }
+    // @brief The sampling rate
+    enum Rate {
+        // 8 kHz
+        RATE_8_KHZ = 0;
+        // 12 kHz
+        RATE_12_KHZ = 1;
+        // 16 kHz
+        RATE_16_KHZ = 2;
+        // 24 kHz
+        RATE_24_KHZ = 3;
+        // 32 kHz
+        RATE_32_KHZ = 4;
+        // 48 kHz
+        RATE_48_KHZ = 5;
+        // 64 kHz
+        RATE_64_KHZ = 6;
+        // 96 kHz
+        RATE_96_KHZ = 7;
+        // 11.025 kHz
+        RATE_11025_HZ = 10;
+        // 22.05 kHz
+        RATE_22050_HZ = 11;
+        // 44.1 kHz
+        RATE_44100_HZ = 12;
+        // 88.2 kHz
+        RATE_88200_HZ = 13;
+    }
+    // @brief The channels in the audio
+    enum Channels {
+        MONO = 0;
+        STEREO = 1;
+    }
+    required Format format = 1;
+    required Rate sampling = 2;
+    required Channels channels = 3;
+}
+
+// @brief Response from FEP when setting PCM format
+message FepAseSetAudioPcmFormatCommandResp {
+    enum Error {
+        NO_ERROR = 1;
+        // Signal that DSP does not support the format in the command.
+        NOT_SUPORTED_FORMAT = 2;
+        // Signal that DSP does not support the rate in the command.
+        NOT_SUPPORTED_RATE = 3;
+        // Signal that DSP does not suport the specified channels in the command.
+        NOT_SUPPORTED_CHANNELS = 4;
+        //
+        UNKNOWN_ERROR = 5;
+    }
+    // A list of possible error reasons
+    repeated Error error = 1;
+}
+// @}
+
+// @brief Event from FEP to ASE when a plug, e.g. mini-jack, have been inserted or removed from a (audio) socket.
+message FepAseAudioSocketChangeEvent
+{
+    // The type of audio socket
+    enum AudioSocket {
+        MINI_JACK = 0;
+    }
+    enum SocketState {
+        // A plug has been inserted into the socket
+        INSERTED = 0;
+        // A plug has been removed from the socket
+        REMOVED = 1;
+    }
+    optional AudioSocket socket = 1;
+    optional SocketState state = 2;
+}
+
+// @brief Message intended for debugging and production test.
+//
+// The data included in the message can have any arbitrary format agreed between production test FEP software
+// development to support hardware verification on the production line.
+//
+// Typically the message is used to request information or exercise a specific hardware component.
+message AseFepTunnel {
+    optional bytes data = 1;
+}
+
+// @brief Message intended for debugging and production test.
+//
+// The data included in the message can have any arbitrary format agreed between production test FEP software
+// development to support hardware verification on the production line.
+//
+// Typically the message is used to return requested information or signal an event due to UI interaction
+message FepAseTunnel {
+    optional bytes data = 1;
+}
+
+// @brief Request to set audio input.
+message AseFepSetAudioInputReq {
+    enum AudioInput {
+        ASE = 0;
+        LINE = 1;
+        TOS_LINK = 2;
+        POWER_LINK = 3;
+        HDMI = 4;
+        WIRELESS_MULTICHANNEL = 5;
+    }
+    // Configure the audio input path.
+    optional AudioInput input = 1;
+
+    // Configure whether to use local playback or not when ever the input/output path allows it.
+    optional bool local = 2;
+}
+
+// @brief Response to a set audio input request.
+message FepAseSetAudioInputResp {
+    optional bool success = 1;
+}
+
+// @brief Request to set audio output.
+message AseFepSetAudioOutputReq {
+    enum AudioOutput {
+        AMPLIFIER = 0;
+        LINE = 1;
+        TOS_LINK = 2;
+        POWER_LINK = 3;
+        HDMI = 4;
+        WIRELESS_MULTICHANNEL = 5;
+    }
+    // Select one or more audio output paths.
+    repeated AudioOutput output = 1 [packed=true];
+}
+
+// @brief Response to a set audio output request.
+message FepAseSetAudioOutputResp {
+    optional bool success = 1;
+}
+
+// \defgroup CommunicationWatchdog Communication Watchdog
+// @{
+// To detect and recover from malfunction, the interface between ASE and FEP is monitored for communication activity
+// and errors.
+//
+// # ASE reset supervision
+// When the ASE is reset a timer is started in FEP to supervise that ASE comes back online. If ASE does not start to
+// communicate with FEP within a given timeout, FEP must reset ASE to give it another try.
+//
+// In the normal startup situation the timeout is 2 minutes but in software update state the timeout is 15 minutes,
+// because ASE is unresponsive during parts of the software update process and should not be interrupted.
+//
+// In ASE a restart counter is maintained to track the number of restarts without reaching the operational state. If the
+// restart counter exceeds 3, ASE will revert all settings to factory default and attempt to restart again.
+//
+// @startuml {ResetSupervision1.png} Normal startup width=11cm
+// hide footbox
+// box "ASE" #LightGreen
+// participant ASE
+// end box
+// box "FEP" #LightBlue
+// participant FEP
+// participant AseBootedTimer
+// participant AliveTimer
+// end box
+// ASE <- FEP: Reset
+// create AseBootedTimer
+// FEP -> AseBootedTimer : Start (2 minutes)
+// ... Less than 2 minutes ...
+// ASE -> FEP : AseFepEvent(ASE_BOOTED)
+// FEP -> AseBootedTimer : Stop
+// destroy AseBootedTimer
+// create AliveTimer
+// FEP -> AliveTimer : start (10 seconds)
+// @enduml
+//
+// @startuml {ResetSupervision2.png} Software update width=15cm
+// hide footbox
+// box "ASE" #LightGreen
+// participant ASE
+// end box
+// box "FEP" #LightBlue
+// participant FEP
+// participant AseBootedTimer
+// participant AliveTimer
+// end box
+// ASE <- FEP: Reset
+// create AseBootedTimer
+// FEP -> AseBootedTimer : Start (2 minutes)
+// ASE -> FEP : Hardware GPIO signal software update in progress
+// FEP -> AseBootedTimer : Stop
+// FEP -> AseBootedTimer : Start (15 minutes)
+// note over ASE
+// Optional download software from USB or TFTP
+// Verify software image and do update
+// end note
+// ... Less than 15 minutes ...
+// ASE -> FEP : Hardware GPIO signal software update finished
+// ASE -> FEP : AseFepEvent(ASE_BOOTED)
+// FEP -> AseBootedTimer : Stop
+// destroy AseBootedTimer
+// create AliveTimer
+// FEP -> AliveTimer : start (10 seconds)
+// @enduml
+//
+// @startuml {ResetSupervision3.png} ASE failed to boot width=7cm
+// hide footbox
+// box "ASE" #LightGreen
+// participant ASE
+// end box
+// box "FEP" #LightBlue
+// participant FEP
+// participant AseBootedTimer
+// end box
+// ASE <- FEP: Reset
+// create AseBootedTimer
+// FEP -> AseBootedTimer : Start (2/15 minutes)
+// ... 2/15 minutes ...
+// FEP <- AseBootedTimer : Expired
+// ASE <- FEP : Reset
+// FEP -> FEP : Reboot
+// @enduml
+//
+// # Alive supervision
+// During normal operation the communication between ASE and FEP is monitored, and if communication stops the system is
+// restarted in the attempt to restore communication. The survailance relys on both \"normal\" communication and the
+// special FepAseAliveReq and AseFepAliveResp messages.
+// If no normal communication has been detected for 10 seconds, FEP sends the FepAseAliveReq to verify that ASE is still
+// alive. After 3 consecutive alive requests without a response, FEP deems ASE unable to recover by itself and restarts
+// the system.
+//
+// @startuml {AliveSupervision1.png} No response to alive requests width=10cm
+// hide footbox
+// box "ASE" #LightGreen
+// participant ASE
+// end box
+// box "FEP" #LightBlue
+// participant FEP
+// participant AliveTimer
+// end box
+// ...
+// ASE -> FEP : Any message
+// note over FEP : Any message will restart AliveTimer
+// FEP -> AliveTimer : Restart timer
+// ... 10 seconds ...
+// FEP <- AliveTimer : Expired
+// note over FEP : No messages from ASE in 10 seconds, send FepAseAliveReq
+// FEP -> AliveTimer : Restart timer
+// ASE <- FEP : FepAseAliveReq
+// ASE -> FEP : AseFepAliveResp
+// FEP -> AliveTimer : Restart timer
+// ... 10 seconds ...
+// group Repeated 3 FepAseAliveReq without any response
+//   FEP <- AliveTimer : Expired
+//   FEP -> AliveTimer : Restart timer
+//   ASE <- FEP : FepAseAliveReq
+// end
+// ASE <- FEP : Reset
+// FEP -> FEP : Reboot
+// @enduml
+
+// @brief Request the ASE to give proof of life
+//
+// With an interval of one minute FEP requests ASE for proof of life to ensure that the communication channel is open
+// and ASE is fully operational.
+message FepAseAliveReq {
+}
+
+// @brief Alive message returned to FEP on request
+message AseFepAliveResp {
+}
+// @}
+
+// \defgroup LoggingAndStatistics Logging and statistics
+// @{
+// @brief Write an entry in the product log.
+message FepAseProductLog {
+    // Severity of the incident causing the log entry to be written to the product log
+    enum Severity {
+        // Log debugging statements that are not part of the release build.
+        DEBUG = 0;
+        // Log internal tracing inside components.
+        INFO = 1;
+        // Log internal tracing between components.
+        NOTICE = 2;
+        // Log additional information about warnings.
+        WARNING = 3;
+        // Log additional information about error conditions.
+        ERROR = 4;
+    }
+    // Severity of the incident causing the log entry to be written
+    optional Severity severity = 1;
+    // Human readable text describing the incident
+    optional string text = 2;
+    // File name of the source code file where the log entry is generated
+    optional string file = 3;
+    // Line number in the source code file where the log entry is generated
+    optional uint32 line = 4;
+}
+
+// @brief Write an entry in the service log.
+message FepAseServiceLog {
+    enum Severity {
+        // Log a user action or external input.
+        // The audience of this logging is the service supporter or developer.
+        NOTICE = 0;
+        // Log a warning about a temporary error.
+        // The audience of this logging is the service supporter or developer.
+        WARNING = 1;
+        // Log an error.
+        // The audience of this logging is the service technicians, so the logging message must be understandable and
+        // preferably suggest a possible solution.
+        ERROR = 2;
+        // Log a critical error that prevents the user from performing a valid activity.
+        // The audience of this logging is the service technicians, so the logging message must be understandable and
+        // preferably suggest a possible solution.
+        CRITICAL = 3;
+        // Log an error that requires immediate action.
+        // The audience of this logging is the service technicians, so the logging message must be understandable and
+        // preferably suggest a possible solution.
+        ALERT = 4;
+        // Log an error that the product has become unusable and must be replaced.
+        // The audience of this logging is the service technicians, so the logging message must be understandable and
+        // preferably suggest a possible solution.
+        EMERGENCY = 5;
+    }
+    // Severity of the incident causing the log entry to be written
+    optional Severity severity = 1;
+    // Human readable text describing the incident
+    optional string text = 2;
+    // File name of the source code file where the log entry is generated
+    optional string file = 3;
+    // Line number in the source code file where the log entry is generated
+    optional uint32 line = 4;
+    // Reserved for future use. Code identifying functional area causing the log entry.
+    optional uint32 code = 5;
+}
+
+// @}
+
+// \defgroup PositionSoundMode Position sound mode
+// @{
+//
+// @brief Position sound mode setting
+message PositionSoundMode {
+    enum Position {
+        UNDEFINED = 0;
+        FREE = 1;
+        WALL = 2;
+        CORNER = 3;
+        TABLE = 4;
+    }
+    enum Orientation {
+        NONE = 0;
+        HORIZONTAL = 1;
+        VERTICAL = 2;
+    }
+    optional Position position = 1;
+    optional Orientation orientation = 2;
+}
+
+// @brief Sets the position sound mode
+message AseFepSetPositionSoundModeReq {
+    optional PositionSoundMode mode = 1;
+}
+
+// @brief Gets the current selected position sound mode
+message AseFepGetPositionSoundModeReq {
+}
+
+// @brief Response when setting position sound mode
+message FepAsePositionSoundModeResp {
+    enum Error {
+        NO_ERROR = 1;
+        POSITION_ERROR = 2;
+        ORIENTATION_ERROR = 3;
+        COMBINATION_ERROR = 4;
+    }
+    optional Error error = 1;
+    // Current position sound mode
+    optional PositionSoundMode mode = 2;
+}
+// @}
+
+// \defgroup SpeakerCalibration Speaker Calibration
+// @{
+//
+// @brief Internal speaker
+message InternalSpeaker {
+    enum Position {
+        LEFT = 0;
+        RIGHT = 1;
+        CENTRE = 2;
+    }
+    enum Type {
+        TWEETER = 0;
+        MIDRANGE = 1;
+        WOOFER = 2;
+        FULLRANGE = 3;
+    }
+    // Valid combinations for FS1:
+    // CENTRE - WOOFER
+    // CENTRE - FULLRANGE
+    //
+    // Valid combinations for FS2:
+    // CENTRE - WOOFER
+    // LEFT - MIDRANGE
+    // RIGHT - MIDRANGE
+    // CENTRE - TWEETER
+    required Position position = 1;
+    required Type type = 2;
+    // The amount of gain compensation to apply to the speaker unit in dB
+    optional double compensation = 3;
+}
+
+// @brief Set the internal speaker compensation gain for one or more speaker units.
+// If a speaker unit's performance deviates from the specifications, a gain value can be applied to compensated for the
+// deviation. The FEP or one of its sub-components persist the compensation gain in non-volatile memory. FEP replies
+// with FepAseInternalSpeakerCompensationResp.
+message AseFepSetInternalSpeakerCompensationCommand {
+    repeated InternalSpeaker internalSpeaker = 1;
+}
+
+// @brief Response when setting or getting internal speaker compensation
+message FepAseInternalSpeakerCompensationResp {
+    enum Error {
+        NO_ERROR = 1;
+        POSITION_ERROR = 2;
+        TYPE_ERROR = 3;
+        POSITION_TYPE_COMBINATION_ERROR = 4;
+        GAIN_ERROR = 5;
+    }
+    required Error error = 1;
+    // Current internal speaker compensation
+    repeated InternalSpeaker internalSpeaker = 2;
+}
+// @}
+
+// @brief Instruct ASE to play a comfort tone
+//
+// Comfort tones are stored as wav files on ASE file system. To play a specific comfort tone, the FEP
+// includes the wav file name in the comfort tone request command.
+message FepAsePlayComfortToneCmd {
+    // Name of the wav file to play
+    optional string tone = 1;
+}
+
+// @brief Send request from ASE to FEP
+message AseFepReq {
+    enum Request {
+        // Request the product info from FEP, reply is FepAseProductInfo
+        PRODUCT_INFO = 0;
+        // Request power status, reply is FepAsePowerStatus
+        POWER_STATUS = 1;
+        // Request version info from FEP, reply is FepAseVersionInfo
+        VERSION_INFO = 2;
+        // Request counters, timers and other statistical information
+        // reply is FepAseStatistics
+        STATISTICS = 3;
+        // Request network information, reply is AseFepNetworkInfo
+        NETWORK_INFO = 4;
+        // Get the current internal speaker compensation gain for all speaker units. FEP replies with
+        // FepAseInternalSpeakerCompensationResp.
+        INTERNAL_SPEAKER_COMPENSATION = 5;
+    }
+    required Request request = 1;
+}
+
+// @brief Response from AseFepReq(PRODUCT_INFO)
+message FepAseProductInfo {
+    enum ProductId {
+        UNKNOWN = 0;
+        FS1 = 1;
+        FS2 = 2;
+        SP3 = 3;
+        CA16 = 4;
+    }
+    // Product name used as default friendly name prefix
+    required string productName = 1;
+    required ProductId productId = 2;
+}
+
+// @brief Sent upon AseFepReq(POWER_STATUS) request and when
+// power/battery status changes
+message FepAsePowerStatus {
+    enum ACLineStatus {
+        UNPLUGGED = 0;
+        PLUGGED = 1;
+    }
+    enum BatteryStatus {
+        // The product does not have a battery
+        NO_BATTERY = 0;
+        LEVEL_CRITICAL = 1;
+        LEVEL_LOW = 2;
+        LEVEL_MIDDLE = 3;
+        LEVEL_HIGH = 4;
+    }
+    enum BatteryHealthStatus {
+        UNKNOWN = 0;
+        GOOD = 1;
+        POOR = 2;
+    }
+    required ACLineStatus acLineStatus = 1;
+    required BatteryStatus batteryStatus = 2;
+    // The battery level in percent, 0-100%
+    optional uint32 batteryLevel = 3;
+    required BatteryHealthStatus healthStatus = 4;
+}
+
+// @brief Response from AseFepReq(VERSION_INFO)
+message FepAseVersionInfo {
+    message Module {
+        optional string name = 1;
+        // The hardware version is in human readable format. Can contain any relevant information about the hardware
+        // such as version, BOM, PCB, variant and MAC.
+        optional string hardware = 2;
+        // Software version format shall consist of four numbers in a format:
+        // X.Y.Z.W
+        // Although using the numbers is project dependent, a general principle is following:
+        // "X" would be increased when major changes are introduced. For example, when the software is incompatible with
+        // previous versions of hardware or software.
+        // "Y" would be changed when there are major changes in the software, adding new features for example.
+        // "Z" would be changed when there are minor changes in existing software features.
+        // "W" would be for project-specific usage (e.g. an SVN revision number).
+        optional string bootloader = 3;
+        optional string application = 4;
+        // If the module can operate in multiple configurations e.g. the DSP, information of the current information is
+        // returned.
+        optional string configuration = 5;
+    }
+    // Contains version information about the connected hardware, it may consis of multiple modules.
+    repeated Module module = 1;
+}
+
+// @brief Response from AseFepReq(STATISTICS)
+message FepAseStatistics {
+    message KeyValuePair {
+        // Unique identifier of the value
+        optional string key = 1;
+        // Counter, timer or other statistical information
+        optional string value = 2;
+    }
+    repeated KeyValuePair keyValue = 1;
+}
+
+// \defgroup Network Network status
+// @{
+// On request from FEP or when status changes on one or more network interfaces ASE will send AseFepNetworkInfo to FEP.
+
+message WiFi {
+    enum Quality {
+        EXELENT = 0;
+        GOOD = 1;
+        POOR = 2;
+    }
+    // When true, WiFi setup has been performed.
+    optional bool Configured = 1;
+    // Connection quality. Because RSSI is vendor specific it is converted to the levels specified by Quality
+    optional Quality quality = 2;
+}
+
+message NetworkInfo {
+    enum Type {
+        WIFI = 1;
+        ETHERNET = 2;
+        SOFT_AP = 3;
+    }
+
+    enum State {
+        // The device's state is unknown
+        UNKNOWN = 0;
+        // Searching for an available access point
+        SCANNING = 1;
+        // Currently setting up data connection
+        CONNECTING = 2;
+        // Network link established, performing authentication
+        AUTHENTICATING = 3;
+        // Awaiting response from DHCP server in order to assign IP address information
+        ACQUIRING = 4;
+        // IP traffic should be available
+        CONNECTED = 5;
+        // IP traffic not available
+        DISCONNECTED = 6;
+        // Attempt to connect failed
+        FAILED = 7;
+    }
+
+    optional Type type = 1;
+    optional State state = 2;
+    // WiFi member is only present when type equals WIFI
+    optional WiFi wifi = 3;
+}
+
+// @brief Current network status information. Sent when network status has changed or upon request from FEP
+message AseFepNetworkInfo {
+    repeated NetworkInfo networkInfo = 1;
+}
+// @}
+
+// \defgroup OneOfMessage Message ID
+// @{
+// To identify the message being received, a message ID is prepended to every message.
+
+message AseFepMessage {
+  oneof OneOf {
+    AseFepEvent aseFepEvent = 2;
+    AseFepVolumeChangedEvent aseFepVolumeChangedEvent = 3;
+    AseFepSetLineInSensitivity aseFepSetLineInSensitivity = 4;
+    AseFepTunnel aseFepTunnel = 6;
+    AseFepSetAudioInputReq aseFepSetAudioInputReq = 7;
+    AseFepSetAudioOutputReq aseFepSetAudioOutputReq = 8;
+    AseFepAliveResp aseFepAliveResp = 9;
+    AseFepSetPositionSoundModeReq aseFepSetPositionSoundModeReq = 11;
+    AseFepGetPositionSoundModeReq aseFepGetPositionSoundModeReq = 12;
+    AseFepNetworkInfo aseFepNetworkInfo = 13;
+    AseFepReq aseFepReq = 14;
+    AseFepSetAudioPcmFormatCommand aseFepSetAudioPcmFormatCommand = 15;
+    AseFepSetInternalSpeakerCompensationCommand aseFepSetInternalSpeakerCompensationCommand = 16;
+    AseFepVolumeFadeEvent aseFepVolumeFadeEvent = 17;
+  }
+}
+
+message FepAseMessage {
+  oneof OneOf {
+    FepAseCommand fepAseCommand = 2;
+    FepAseEvent fepAseEvent = 3;
+    FepAseAbsoluteVolumeCommand fepAseAbsoluteVolumeCommand = 4;
+    FepAseRelativeVolumeCommand fepAseRelativeVolumeCommand = 5;
+    FepAseTunnel fepAseTunnel = 7;
+    FepAseSetAudioInputResp fepAseSetAudioInputResp = 8;
+    FepAseSetAudioOutputResp fepAseSetAudioOutputResp = 9;
+    FepAseAliveReq fepAseAliveReq = 10;
+    FepAseProductLog fepAseProductLog = 11;
+    FepAseServiceLog fepAseServiceLog = 12;
+    FepAsePositionSoundModeResp fepAsePositionSoundModeResp = 14;
+    FepAsePlayComfortToneCmd fepAsePlayComfortToneCmd = 16;
+    FepAseProductInfo fepAseProductInfo = 17;
+    FepAsePowerStatus fepAsePowerStatus = 18;
+    FepAseVersionInfo fepAseVersionInfo = 19;
+    FepAseStatistics fepAseStatistics = 20;
+    FepAseAudioSocketChangeEvent fepAseAudioSocketChangeEvent = 21;
+    FepAseSetAudioPcmFormatCommandResp fepAseSetAudioPcmFormatCommandResp = 22;
+    FepAseInternalSpeakerCompensationResp fepAseInternalSpeakerCompensationResp = 23;
+    FepAseVolumeFadeComplete fepAseVolumeFadeComplete = 24;
+    FepAseReq fepAseReq = 25;
+  }
+}
+
+// @}

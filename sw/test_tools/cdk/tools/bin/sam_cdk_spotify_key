@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Script to stage Spotify application key for SAM bundle.
+#
+
+BASE_DIR=$(dirname $0)
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+showUsage() {
+	echo "Usage: $0 <Spotify key path>"
+}
+
+[ $# -eq 1 ] || { showUsage; exit 1; }
+[ "$1" != '--help' ] || { showUsage; exit 1; }
+
+keyFile="$1"
+[ -f "$keyFile" ] || { echo "File not found: $keyFile"; exit 1; }
+
+# Stage for AllPlay spotify package
+QSDK_INSTALL_DIR=${STAGING_DIR}/openwrt/qsdk/qce/feeds/allplay/multimedia/spotify/files
+mkdir -p ${QSDK_INSTALL_DIR}
+cp "$keyFile" ${QSDK_INSTALL_DIR}/spotify_key.bin
+

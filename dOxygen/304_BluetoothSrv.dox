@@ -1,0 +1,151 @@
+/**
+\anchor page
+\page BluetoothSrv BluetoothSrv - How-to configure BT
+
+\image html logo.png
+
+BluetoothSrv - How-to configure BT
+
+
+<HR>
+\section BT_section0 Introduction
+Bluetooth Server offer the below BT features:
+<ol>
+<li> Get the BT module status
+<li> Send command to control BT module
+<li> NFC pair feature
+<li> Get the BT codec status
+</ol>
+
+It needs the proper BT driver to work together to implement these features, and also it need configuration according to BT module PSR key config. 
+
+
+<HR>
+\section BT_section1 How to communicate with BT module by GPIOs
+Some BT module like BT8635, it doesn't have the UART port. So BT driver is using GPIO to communicate with it. Below use BT8635 as the example to introduce it:
+<ol>
+<li> <b>Send Command</b>: BT server send a specific width pulse to BT8635 by GPIO, then BT8635 recognize it as different key press type, and execute the specific command. Below is the picture to show this 
+\image html bt_command.png
+As the picture show, BT server send a 100ms width pulse to BT8635 on its PIO, then BT8635 will recognize it as a key short press and trigger the command that we config in its PSR key.
+
+<li> <b>Get Status</b>: BT8635 output different width pulse on LED pin for different BT status, then BT server can parse it to get the BT status.
+\image html bt_led.png
+As the picture show, BT8635 change to one BT status (like connected) and output 100ms LED pulse (this can be config in <b>PSR key</b>), then BT server get this and parse it to get the BT status.
+</ol>
+
+
+<HR>
+\section BT_section2 How BT server and BT driver work 
+<b>BT server</b>
+<ol>
+<li> Offer the public interface of BT status and BT command
+<li> Offer timer to BT driver
+<li> Turn on/off BT module
+</ol>
+
+<b>BT driver</b>
+<ol>
+<li> Offer the driver level for communication, now BT driver is using GPIO. We may have BT uart driver
+</ol>
+
+
+<HR>
+\section BT_section3 How to config BT server & driver to work with BT module by GPIO
+Take BT8635 as example. 
+
+<b>Send Command to BT8635</b>
+
+<ol>
+<li> First to set the time duration for key press in PSR key, as shown below 
+\image html bt_cmd_psr.png
+
+
+<li> Then config the time duration in BluetoothDrv.Config, 
+\code
+#define SHORT_PRESS_TIME_MS  100
+#define LONG_PRESS_TIME_MS  150
+#define VERY_LONG_PRESS_TIME_MS  210
+#define VERYVERY_LONG_PRESS_TIME_MS  270
+
+#define DOUBLE_PRESS_TIME_MS 100
+#define DOUBLE_PRESS_INTERAL_TIME_MS  100
+\endcode
+
+Please be noticed that the time config here is bigger than the time config in PSR key, to make sure there is enough margin.
+
+<li> Config the commands to use different key press type in BT8635 PSR key
+\image html bt_cmd_psr_cmdList.png
+
+
+<li> According what you config in step3, set the commands config in BluetoothDrv.Config
+\code
+const tBtCmdstruct BT_CMD_CONFIG[BT_COMMON_MAX_CMD]=
+{
+    {BT_OUTPUT1,     BT_VLONG_PRESS     },       // BT_ENTER_PAIRING_CMD,  
+    {BT_OUTPUT1,     BT_SINGLE_PRESS   },        //BT_ENTER_CONNECTABLE_CMD
+    {BT_OUTPUT1,     BT_LONG_PRESS     },        // BT_CONNECT_CMD, 
+    {BT_OUTPUT2,     BT_LONG_PRESS    },         // BT_PLAY_PAUSE_CMD
+    {BT_OUTPUT4,     BT_SINGLE_PRESS   },        // BT_RESET_PAIR_LIST_CMD
+    
+    {BT_OUTPUT2,     BT_VVLONG_PRESS   },          //BT_ANSWER_CMD,
+    {BT_OUTPUT3,     BT_LONG_PRESS   },         // BT_REJECT_CMD,
+    {BT_OUTPUT3,     BT_VLONG_PRESS   },        //BT_CANCEL_END_CMD,            
+    {BT_OUTPUT1,     BT_VVLONG_PRESS   },        //BT_TWC_ACCEPT_WAITING_HOLD_ACTIVE_CMD,
+    {BT_OUTPUT3,     BT_SINGLE_PRESS   },        //BT_TWC_RELEASE_ALL_HELD_CMD
+
+    {BT_OUTPUT1,     BT_SINGLE_PRESS   },        //BT_AVRCP_SKIP_FORWARD_CMD,
+    {BT_OUTPUT2,     BT_SINGLE_PRESS   },        //BT_AVRCP_SKIP_BACKWORD_CMD
+    
+    {BT_OUTPUT2,     BT_VLONG_PRESS   },         // BT_TONE_RESET_PDL_CMD      
+    {BT_OUTPUT2,     BT_VVLONG_PRESS     },      // BT_TONE_BAT_DOCK_CMD, //Removed
+    {BT_OUTPUT3,     BT_LONG_PRESS   },          // BT_TONE_AC_IN_CMD, //Removed
+    {BT_OUTPUT3,     BT_VLONG_PRESS   },         // BT_TONE_LIM_VOL_CMD, //Removed
+    {BT_OUTPUT3,     BT_VVLONG_PRESS   },        // BT_TONE_PAIRING_CMD
+    {BT_OUTPUT4,     BT_LONG_PRESS   },          // BT_TONE_POWER_OFF_CMD,
+    {BT_OUTPUT4,     BT_VLONG_PRESS   },         // BT_TONE_CONNECTED_CMD
+    {BT_OUTPUT4,     BT_VVLONG_PRESS   },        // BT_TONE_PAIR_FAIL_CMD,
+};
+\endcode
+This is corresponding to eBtCmd @see eBtCmd.
+</ol>
+
+<b>Get BT status</b>
+<ol>
+<li> Set the LED time duration for BT status in BT8635 PSR key 
+\image html bt_led_status.png
+
+<li> Config the step time in BluetoothDrv.Config, make sure this step time is the same as you set in PSR key. 
+\code 
+/* change the scale to 100ms for tolerance*/
+#define BT_STATE_STEP_TIME_MS  100
+\endcode
+
+<li> Make sure the order of led status in <b>eBtStatus</b> is the same as the config in BT8635, as it is calculated by the way below, 
+(eBtStatus) status= pulseTime / BT_STATE_STEP_TIME_MS;	
+\code
+/* BT status*/
+typedef enum
+{
+    BT_CONNECTABLE_STA,
+    BT_DISCOVERABLE_STA,
+    BT_CONNECTED_STA,
+    BT_OUTGOING_CALL_EST_STA,
+    BT_INCOMING_CALL_EST_STA,
+    BT_ACTIVE_CALL_STA,
+    BT_TEST_MODE_STA,
+    BT_MAX_LED0_STA,
+    BT_STREAMING_A2DP_STA,
+    BT_TWC_CALL_WAITING_STA,
+    BT_TWC_CALL_ON_HOLD_STA,
+    BT_TWC_MULTI_PARTY_CALL_STA,
+    BT_INCOMING_CALL_ON_HOLD_STA,
+    BT_ACTIVE_CALL_NO_SCO_STA,
+    BT_LOW_BAT_WARNING_STA,
+    BT_MAX_STA,
+}eBtStatus;
+\endcode
+</ol>
+
+<HR>
+*/
+

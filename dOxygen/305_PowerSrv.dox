@@ -1,0 +1,93 @@
+/**
+\anchor page
+\page PowerSrv PowerSrv - How-to configure power
+
+\image html logo.png
+
+PowerSrv - How-to configure power
+
+
+\section power_section0 Introduction
+Power Server offer the below features:
+<ol>
+<li> Offer a battery filter to make battery voltage more stable
+<li> Determine which battery level (state) by Schmitt filter (two thresholds)
+<li> Get the states of charging IC and input source
+<li> Offer battery and input source switching, and other power commands
+<li> Initial and De-Initial the power when system is on and off
+<li> Offer MCU deep sleep and wake up feature 
+</ol>
+
+
+\section power_section1 How battery filters work
+There are two battery filters available in the power server, which you can config them in PowerSrv.Config.
+<ol>
+<li> Highest Filter: Take the highest sample and ignore the sample that drop out of the range. This filter work stable even playing very heavy music. In PowerSrv.Config, you could enable this filter by define the macro 
+<b>#define BATT_HIGHEST_FILTER</b>
+ 
+<li> Average Filter: Get the average value of several samples. It is easy for testing battery voltage but not stable enough when playing music. It can be enable when you disable macro "BATT_HIGHEST_FILTER"
+</ol>
+
+For product it's suggested to use <b>Highest Filter</b>. Below is the steps how it works:
+<ol>
+<li> When start for the first time, get the battery sample quickly for battery filter result
+
+<li> Later on start the filter, if the voltage sample is within +/- SAMPLE_RANGE_mV, then consider it as a valid sample and put it in the array. Otherwise discard it
+
+<li> If "OUT_OF_RANGE_ACCEPT_NUMBER" samples are out of range continuously, then consider it as valid
+
+<li> When we get "BATT_FILTER_LEN" number valid samples, find the max value and fill in maxValue[]
+
+<li> Repeat step2~4, and when we get BATT_FILTER_LEN number max values in maxValue[], calculate its average value and consider it as a valid battery voltage, publish it out and put it in the setting server
+
+<li> For external battery, there's insert/eject action in which the battery voltage will change quickly, so if we find it's inserted/ejected for (OUT_OF_RANGE_ACCEPT_NUMBER) times, set the voltage as finial battery voltage
+</ol>
+
+
+\section power_section2 How battery state detect
+
+We use Schmitt filter to detect battery state (level), which makes the state more stable. 
+\image html schmittFilter.png
+
+Below is the steps shown in the pictures
+<ol>
+<li> When battery voltage rises and exceed the high bound (as label 1 indicate), battery level change from lower to higher one
+<li> When voltage falls and lower than the high bound (label 2), battery level will NOT change
+<li> Only when voltage falls and lower than the low bound (label 3), battery level change from higher to lower one
+</ol>
+
+
+\section power_section3 How the input source filter work
+Only when power server get the same input state for "INPUT_SROUCE_FILTER_LEN" time, it will set the state change. 
+
+
+\section power_section4 How to get all the battery info
+There's two way to get battery info
+<ol>
+<li> Get it from setting server, ID is "SETID_BATT_INFO"
+<li> Power server will publish the info when battery state change, signal is "POWER_BATT_STATE_SIG"
+</ol>
+
+
+\section power_section5 How to put MCU to sleep
+When power is off (power server is in DeActive state), send "POWER_MCU_SLEEP_SIG" to make MCU sleep. Then MCU will stop at "powerDrv_PowerSaveSleep()" function.
+
+
+\section power_section6 How power server initial the power
+In preActive state, power server will call the "powerDrv_InitialPower()" to initial the power, as shown below
+\code 
+	  case POW_SRV_TIMEOUT_SIG:
+        {
+            me->timer -= POWER_SRV_TIMEOUT_IN_MS;
+            if ( me->timer <= 0 )
+            {
+                me->timer = PowerDrv_InitialPower(&powerDrv);
+                if(me->timer == 0)
+                {
+                    return Q_TRAN(&PowerSrv_Active);
+                }
+            }
+		}
+\endcode
+
+*/

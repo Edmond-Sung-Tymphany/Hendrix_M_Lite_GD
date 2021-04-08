@@ -1,0 +1,28 @@
+syntax = "proto2";
+import public "bt-mcu.proto";
+import public "mcu-bt.proto";
+
+package Proto.Tym;
+
+message BtMcuMessage {
+	oneof OneOf {
+		BtMcu.Event btMcuEvent = 1;
+		BtMcu.Req btMcuReq = 2;
+		BtMcu.Resp btMcuResp = 3;
+	}
+}
+
+message McuBtMessage {
+	oneof OneOf {
+		McuBt.Event mcuBtEvent = 1;
+		McuBt.Req mcuBtReq = 2;
+		McuBt.Resp mcuBtResp = 3;
+	}
+}
+
+message PbMessage {
+	oneof OneOf {
+		Tym.BtMcuMessage btMcuMsg = 1;
+		Tym.McuBtMessage mcuBtMsg = 2;
+	}
+}

@@ -1,0 +1,87 @@
+For testing on Windows:
+- Clone AllJoyn Thin Client in "../ajtcl"
+- Edit "../ajtcl/SConscript" and remove the "[]" around the "Glob(...)" calls
+- Run "scons OS=win7 CPU=x86 MSVC_VERSION=9.0 WS=off BD=on TARG=win32" from "liballplaymcu"
+- NOTE: when compiling from Cygwin, use Python and scons for Windows, not the ones from
+Cygwin (tested using version 2.7.5 and 2.3.4 respectively):
+   /cygdrive/c/Python27/Scripts/scons.bat OS=win7 CPU=x86 MSVC_VERSION=9.0 WS=off BD=on TARG=win32
+
+If liballplaymcu_test has problems discovering the SAM from a PC with multiple IPs:
+- Apply the patch named "ajtcl.patch" to the ajtcl source code
+- Recompile liballplaymcu
+- Add ER_DEBUG_MDNS_RECV_ADDR environment variable with IP of the network interface
+used to connect to the SAM:
+	ER_DEBUG_MDNS_RECV_ADDR=<ip> ./build/debug/liballplaymcu_test
+
+Linux version using the serial port:
+- The above patch is not needed (doesn't hurt either)
+- To compile
+	scons TARG=linux-uart
+- To run
+	./build/debug/liballplaymcu_test /dev/ttyUSB4 115200 8N1
+
+
+You can use "VARIANT" to select the debug or release version, however, you can
+have only one active at the same time because AllJoyn Thin Client doesn't use
+different directories for each variant.
+
+In "build/<variant>", there will be a CLI application named "allplay-cli.exe".
+allplay-cli accepts the following commands:
+
+  System commands:
+    sysmode                             - Get the system mode
+    devinfo                             - Get device info
+    netinfo                             - Get network info
+    name                                - Get the friendly name
+    directmode <on/off>                 - Turn direct mode on or off
+    wifi <on/off>                       - Turn Wi-Fi on or off
+    wifi connect <ssid> [passphrase]    - Connect to Wi-Fi network
+    wifi rssi                           - Get RSSI info
+    wps [pin]                           - Start WPS
+    wps cancel                          - Cancel WPS
+    bt state                            - Get the Bluetooth power state
+    bt power <on/off>                   - Turn Bluetooth on or off
+    bt pairing <on/off>                 - Turn Bluetooth pairing on or off
+    unconfigure                         - Go to unconfigured mode (start setup)
+    freset <reboot/halt>                - Run factory reset
+    firmware version                    - Get the firmware version
+    firmware check                      - Check if firmware update is available
+    firmware update [url]               - Update firmware
+    mcu idle <yes/no>                   - Set the MCU idle state
+    mcu battery <on> <level> <te> <tf>  - Set MCU battery info
+                                            on: On battery power (yes/no)
+                                            level: Battery level in percent (0-100) or -1 (unknown)
+                                            te: Time in seconds to battery empty
+                                            tf: Time in seconds to battery full
+    resamplemode [mode]                 - Set or get the resampling mode
+                                            mode: (0 for 'sound' configuration in the DTB, x for 'soundx')
+    runcmd <command>                    - Run shell command
+    shutdown <halt/reboot>              - Halt or reboot the SAM
+
+  Media player commands:
+    play [url]                          - Play a URL (or resume if no URL)
+    stop                                - Stop playback
+    pause                               - Pause playback
+    pause toggle                        - Pause/play toggle
+    next                                - Skip to next track
+    prev                                - Skip to previous track
+    volume [vol]                        - Get or set volume in percent (0-100)
+    volume adjust <delta>               - Adjust the volume in raw volume units
+    mute <on/off>                       - Turn mute on or off
+    playerstate                         - Get the player state
+    url                                 - Get the current stream URL
+    mcu aux <source> <int> <vol>        - Set MCU aux input
+                                            source: MCU source name, 'allplay' for normal AllPlay input
+                                            or 'allplay:<source>' for sources on the SAM module
+                                            (allplay:linein, allplay:bluetooth, etc)
+                                            int: Interruptible mode (yes/no)
+                                            vol: Allow volume control (yes/no)
+    loop                                - Get the current loop mode
+    loop toggle                         - Toggle between the different loop modes
+    shuffle                             - Get the current shuffle mode
+    shuffle toggle                      - Toggle between the different shuffle modes
+
+  General commands:
+    quit                                - Quit the program
+    help                                - Display this help
+

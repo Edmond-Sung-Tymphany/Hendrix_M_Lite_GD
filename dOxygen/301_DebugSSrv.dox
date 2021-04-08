@@ -1,0 +1,58 @@
+/**
+\anchor page
+\page DebugSSrv Debug Server
+
+\image html logo.png
+
+
+<HR>
+\section DebugSrvIntroduction Introduction
+Debug server is gateway server which perform forward signals(all signals to which Debug server have been subscribed or which directly send to Debug server) from MCU side to debug tool through uart port. 
+Signal size have to be define in <b>dbg_sig_evt_size_map[]</b>.<br>
+<b>dbg_sig_evt_size_map[]</b> is array, which define size of event payload for each signal, supported by Debug server. Array index is signal and referenced value is event payload size, carried by this signal.
+<br>
+And backwards Debug server forward to MCU side any signals arrived through uart port from debug tool. 
+All received and sent signals from\\to debug tool are wrapped with special format(Please reference  <b><a href="tpsneak.html#messageformat"> Message Format at TP_SNEAK page</a> </b>).
+<ol>
+<li>If signal value belong to group [<b>Q_ENTRY_SIG...MAX_PUB_SIG</b>] signal will be publish to system as it indication signal</li>
+<li>if signal value belong to group [<b>MAX_PUB_SIG...MAX_RESP_SIG</b>] signal will be send to target server</li>
+<li>if signal value belong to group [<b>MAX_RESP_SIG...MAX_SIG</b>] before signal will be send to target server, sender field will be replaced with Debug server pointer
+(it means any possible response signal will be directed back to Debug server and forwared through uart to debug tool)</li>
+</ol>
+
+Debug server is used <b>DEBUG_SRV_ID</b> server id and use device, registered with <b>DEBUG_ID</b> in attachedDevices.c as source input\\output.
+
+
+
+\section DebugSrvPrintComment Print comment string
+Its recommended use Debug server for printing comments, instead of using printf(TP_PRINTF) directly.
+There is signal <b>DEBUG_SIG</b>, which data payload (<b>DebugPrintEvt</b>) should be filled with comment string and it will be output through uart to TP_SNEAK debug tool.
+
+<ol>
+<li> Call interface function <b>DebugSSrv_PrintStr(char* pMsg)</b> and pass as parameter pointer to comment string</li>
+<li> Comment string will be displayed in the <b>Incoming signals</b> window marked as <b>DEBUG_SIG</b>
+</ol>
+\image html debug_print.png
+
+Maximum length is limited by MAX_PRINTSTR_SIZE value (define in DebugSSrv.h)
+
+<HR>
+\section DebugSrvWakeUpByUart   Wake up by UART
+
+To enable this feature <b>ENABLE_WAKEUP_BY_UART</b> have to be define. 
+If this feature is enabled, Debug server will not shutdown uart port when switch to <b>DeActive</b> state, but config uart port and register calback function (<b>uartWakeUpCallback()</b>), 
+which will be called when uart port receive "wake up byte". Debug server will trigger start up the system by simulating <b>POWER_KEY</b> pressing event,- publishing according<b>KEY_STATE_SIG</b>.
+If this feature is not enabled Debug server shutdown uart port each time server switch to <b>DeActive</b> state and re-init uart port again when server switch to <b>Ready</b> state.
+ 
+
+<HR>
+\section DebugSrvSecondInstance Second instance(BLE Control Server)
+
+To enable second instance, which perform functions of BLE control server <b>HAS_BLE_CTRL</b> have to be define.
+BLE control have the same  functionality as Debug server, except its not subscribed for any indications signals.(but it still,will forward any signals which sends to BLE control server directly).
+BLE control server is used separate from debug server id (<b>BLECTRL_SRV_ID</b>) and use device, registered with <b>BLE_ID</b> in attachedDevices.c as source input\\output.
+
+<HR>
+
+*/
+

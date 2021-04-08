@@ -1,0 +1,9 @@
+obj/*
+dist/*
+build/*
+asetk_finder.exe
+setting_id_ca17.cs
+Developer_Guild/asetk_thrift_*/*
+Developer_Guild/*.zip
+version.txt
+.vs/*

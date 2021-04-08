@@ -1,0 +1,18 @@
+syntax = "proto2";
+package Proto.TymDsp;
+
+message AbsoluteVolume {
+	optional uint32 volume = 1;
+
+	/// In milliseconds the duration of the fade operation
+	optional uint32 fade_duration = 2;
+}
+
+message RelativeVolumeChange {
+	optional int32 volumeChange = 1;
+}
+
+message Mute {
+	optional bool mute = 1;
+}
+

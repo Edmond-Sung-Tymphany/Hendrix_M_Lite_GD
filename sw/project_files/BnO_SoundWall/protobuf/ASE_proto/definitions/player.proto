@@ -1,0 +1,11 @@
+syntax = "proto2";
+package Proto.Player;
+
+message Data {
+	enum State {
+		PLAYING = 0;
+		PAUSED = 1;
+		STOPPED = 2;
+	}
+	optional State state = 1;
+}

@@ -1,0 +1,94 @@
+#!/bin/sh
+
+showhelp() {
+	cat << EOF
+$0 [-help] [-pw] -c <country name> -st <state> -l <locality> -org <organization name> -cn <common name> <action>
+
+	Action:
+	ca	create a CA certificate
+	oem	create the OEM's private key (signer certificate)
+	sam	create the SAM's private key (encryption certificate)
+
+	Parameters:
+	-help	show usage
+	-pw	ask for password
+	-c	Country Name (2 letter code)
+	-st	State or Province (full name)
+	-l	Locality (eg, city)
+	-org	Organization name (eg, company)
+	-cn	Common name (eg, server FQDN or YOUR name)
+EOF
+}
+
+BUILD=
+PASSWORD=0
+COUNTRY=
+STATE=
+LOCALITY=
+ORG_NAME=
+COMMON_NAME=
+
+while [ -n "$1" ]; do
+	case "$1" in
+	-pw) PASSWORD=1;;
+	-c) COUNTRY="$2"; shift;;
+	-st) STATE="$2"; shift;;
+	-l) LOCALITY="$2"; shift;;
+	-org) ORG_NAME="$2"; shift;;
+	-cn) COMMON_NAME="$2"; shift;;
+	-help) showhelp; exit 1;;
+	ca|oem|sam)
+		[ -z "$BUILD" ] || { echo "Action already set to \"$BUILD\""; showhelp; exit 1; }
+		BUILD="$1"
+		;;
+	*)
+		echo "Invalid usage: unknown "\""$1"\"
+		showhelp
+		exit 1;;
+	esac
+	shift
+done
+
+#Verify all necessary parameters are inputted
+if [ $# -ne 0 ] || [ -z "$COUNTRY" ] || [ -z "$STATE" ] || [ -z "$LOCALITY" ] \
+	|| [ -z "$ORG_NAME" ] || [ -z "$COMMON_NAME" ] || [ -z "$BUILD" ]; then
+	showhelp
+	exit 1
+fi
+
+if [ "$PASSWORD" -eq "0" ]; then
+	NODES="-nodes"
+fi
+
+CA_DIR=ca
+CA_KEY="$CA_DIR/ca.key"
+CA_CSR="$CA_DIR/ca.csr"
+CA_CERT="$CA_DIR/ca.crt"
+
+CERT_DIR="$BUILD"
+CERT_KEY="$CERT_DIR/$BUILD.key"
+CERT_CSR="$CERT_DIR/$BUILD.csr"
+CERT_CRT="$CERT_DIR/$BUILD.crt"
+
+if [ "$BUILD" = "ca" ]; then
+	# create self-signed CA certificate
+	[ -d "$CA_DIR" ] && { echo "CA certificate already exists" 1>&2; exit 1; }
+	mkdir -p "$CA_DIR"
+
+	openssl req -new -newkey rsa:2048 $NODES -out "$CA_CSR" -keyout "$CA_KEY" -subj "/C=$COUNTRY/ST=$STATE/L=$LOCALITY/O=$ORG_NAME/CN=$COMMON_NAME$FW_SUFFIX"
+
+	touch "$CA_DIR/index.txt"
+	openssl ca -config ssl.cnf -startdate 700101000000Z -enddate 491231235959Z \
+		-create_serial -out "$CA_CERT" -batch -keyfile "$CA_KEY" -selfsign -extensions v3_ca -infiles "$CA_CSR"
+else
+	# create and sign certificate for FW signer
+	[ -f "$CA_CERT" ] && [ -f "$CA_KEY" ] ||  { echo "CA certificate missing" 1>&2; exit 1; }
+
+	[ -d "$CERT_DIR" ] && { echo "Signer certificate already exists" 1>&2; exit 1; }
+	mkdir -p "$CERT_DIR"
+
+	openssl req -new -newkey rsa:2048 $NODES -keyout "$CERT_KEY" -out "$CERT_CSR" -subj "/C=$COUNTRY/ST=$STATE/L=$LOCALITY/O=$ORG_NAME/CN=$COMMON_NAME"
+	openssl ca -batch -config ssl.cnf -startdate 700101000000Z -enddate 491231235959Z \
+		-cert "$CA_CERT" -keyfile "$CA_KEY" -in "$CERT_CSR" -out "$CERT_CRT"
+fi
+

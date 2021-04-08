@@ -1,0 +1,141 @@
+syntax = "proto2";
+import "ase-fep-ReqResp.proto";
+import "fep-ase-ReqResp.proto";
+import "common.proto";
+import "hdmi.proto";
+import "firmware-update.proto";
+import "production.proto";
+import "system.proto";
+import "dsp.proto";
+import "power-link.proto";
+import "eeb.proto";
+import "wpl.proto";
+import "light-sensor.proto";
+import "soundwall.proto";
+import "spdif.proto";
+
+package Proto.FepAse;
+
+/// Event report from FEP to ASE (Local UI).
+message Event {
+	enum Type {
+		LINE_IN_SENSE_ACTIVE = 0;
+		LINE_IN_SENSE_INACTIVE = 1;
+		TOSLINK_SENSE_ACTIVE = 2;
+		TOSLINK_SENSE_INACTIVE = 3;
+		HDMI_ARC_START_REQUEST = 4;
+		HDMI_ARC_STARTED = 5;
+		HDMI_ARC_END_REQUEST = 6;
+		HDMI_ARC_ENDED = 7;
+		HDMI_ARC_AUDIO_MODE_ON = 8;
+		HDMI_ARC_AUDIO_MODE_OFF = 9;
+
+		/// associated data in productionTunnel
+		TUNNEL = 10;
+
+		BOOTLOADER_READY = 11;
+		FIRMWARE_UPDATE_FINISHED = 12;
+		POWERLINK_SENSE_EVENT = 13;
+		EEB_TELEGRAM_RECEIVE = 14;
+		WPL_EVENT = 15;
+
+		DSP_NTC_DATA_EVENT = 16;
+
+		HDMI_AUDIO_FORMAT = 17;
+
+		/// associated data in field of type System.Log
+		LOG_MESSAGE = 18;
+		/// Volume UP via HDMI CEC User control message
+		HDMI_CEC_VOLUME_UP = 19;
+		/// Volume DOWN via HDMI CEC User control message
+		HDMI_CEC_VOLUME_DOWN = 20;
+		/// Volume MUTE via HDMI CEC User control message
+		HDMI_CEC_VOLUME_MUTE = 21;
+		/// HDMI Input selected (input number or ARC)
+		HDMI_INPUT_SELECTED = 22;
+
+		/// indicates power failure
+		POWERFAIL = 23;
+
+		/// One input sense change ON/OFF Hdmi.InputSense
+		HDMI_INPUT_SENSE_CHANGED = 24;
+
+		LIGHT_SENSOR_LIGHT_LEVEL = 25;
+
+		SPDIF_AUDIO_FORMAT_CHANGED = 26;
+	}
+	optional Type type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+	oneof data {
+		Production.Tunnel productionTunnel = 10;
+		PowerLink.SenseEvent powerLinkSense = 11;
+		Eeb.EebTelegram eebTelegramReceiveEvent = 12;
+		Wpl.Event wplEvent = 13;
+		Dsp.NTCDataEvent ntcData = 14;
+		Hdmi.AudioFormat audioFormat = 15;
+		System.Log logMessage = 16;
+		Hdmi.InputSelected inputSelected = 17;
+		Hdmi.InputSense inputSense = 18;
+		LightSensor.LightLevel lightSensorLightLevel = 19;
+		Spdif.AudioFormatChanged spdifAudioFormat = 20;
+	}
+}
+
+message Req {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional ReqResp type = 1;
+
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional uint32 id = 2;
+
+	/// field numbers from 3 to 9 are reserved
+	oneof data {
+		Dsp.AbsoluteVolume absoluteVolume = 10;
+		Dsp.RelativeVolumeChange relativeVolumeChange = 11;
+		System.AudioCue audioCue = 12;
+	}
+}
+
+message Resp {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional AseFep.ReqResp type = 1;
+
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional uint32 id = 2;
+
+	optional Core.GenericResponse genericResponse = 3;
+
+	/// field numbers from 4 to 9 are reserved
+
+	oneof data {
+		FirmwareUpdate.ChunkResponse firmwareUpdateChunk = 11;
+		FirmwareUpdate.VersionInfo firmwareUpdateVersionInfo = 12;
+		Hdmi.Arc hdmiArc = 13;
+		System.PowerStatus powerStatus = 14;
+		Dsp.LineInSensitivity lineInSensitivity = 15;
+		Dsp.ResponsePositionSoundMode positionSoundMode = 16;
+		Dsp.ResponseInternalSpeakerCompensation internalSpeakerCompensation = 17;
+		PowerLink.AllSensesStatus powerLinkSensesStatus = 18;
+		Production.ButtonState buttonState = 19;
+		Wpl.Response wplResponse = 20;
+		System.PowerSupplyVoltage powerSupplyVoltage = 21;
+		Hdmi.UhdDeepColour uhdDeepColour = 22;
+		Hdmi.AudioFormat audioFormat = 23;
+		Hdmi.InputSelected inputSelected = 24;
+		Hdmi.InputsSense inputsSense = 25;
+		LightSensor.ReplyData lightSensorReplyData = 26;
+		SoundWall.A2Bmode respA2Bmode = 27;
+		SoundWall.RespGetTotalNodes respTotalNodes = 28;
+		SoundWall.PowerMode respPowerMode = 29;
+		SoundWall.DriverGain respDriverGain = 30;
+		SoundWall.BassAndRoomEQ respBassAndRoomEQ = 31;
+		SoundWall.GainAndDelay respGainAndDelay = 32;
+		System.RespGetBoardVersion respGetBoardVersion = 33;
+	}
+}

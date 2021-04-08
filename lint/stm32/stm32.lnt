@@ -1,0 +1,32 @@
+/////////////////////////////////////////////
+//         __
+//   |\/| |
+//   |  | |__
+//
+// Please use this file for MC PIC32 specific settings
+//
+// Add / remove the flags you need but read the Compiler documentation and PCLINT doc first
+//
+// + = Added setting
+// - = removed setting
+// Please add text to describe the setting.
+
+/////////////////////////////////////////////
+
+-i"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\inc"
+-i"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\inc\c"
+-wlib(0)  //supress lib related info
+-elib(0)  //supress lib related info
+-elibsym(0)  //supress lib related info
++fce // Continue on error
++fba // Bit Addressability
++fbc // Boolean Constants 0b...
+-e46
+-e830 // Suppress this due to added "noise"
+-e831 // Suppress this due to added "noise"
+
+// -e788 - enum constant 'Symbol' not used within defaulted switch
+// Because 787 is enough to cover this
+-e788
+
+

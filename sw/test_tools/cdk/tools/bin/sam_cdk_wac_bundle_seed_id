@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Script to stage the config file containing an iOS app Bundle Seed ID
+#
+
+BASE_DIR=$(dirname $0)
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+showUsage() {
+	echo "Usage: $0 <Bundle Seed ID>"
+}
+
+[ $# -eq 1 ] || { showUsage; exit 1; }
+[ "$1" != '--help' ] || { showUsage; exit 1; }
+
+id="$1"
+
+[ ${#id} -eq 10 ] || { echo "Bundle Seed ID must be exactly 10 characters."; exit 1; }
+
+# Stage for AllPlay wacserver package
+QSDK_INSTALL_DIR=${STAGING_DIR}/openwrt/qsdk/qce/feeds/allplay/net/wacserver/files
+mkdir -p ${QSDK_INSTALL_DIR}
+OUTFILE=${QSDK_INSTALL_DIR}/wac.config
+
+cat <<EOF > "${OUTFILE}"
+config wac 'options'
+	option bundle_seed_id '$id'
+EOF
+

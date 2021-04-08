@@ -1,0 +1,367 @@
+/**
+\anchor page
+\page KeySrv KeySrv - How-to configure keys
+
+\image html logo.png
+
+KeySrv - How-to configure keys
+
+<HR>
+\section Archetc Architecture
+The basic key key service architecture is consist as the picture below:\n
+\image html KeyServiceArch.png
+The <b>TOP LAYER</b> is the key serve which provide the key service in the way of publishing key event, 
+any server which subscribes the KEY_STATE_SIG will receive the key event if the server detected key
+state changes. 
+
+The <b>MIDDLE LAYER</b> takes the hardware status from the lowest layer and convert it to general key state
+such as KEY_UP, KEY_DOWN.
+ 
+The <b>LOWEST LAYER</b> is the real hardware layer directly talking to the hardware and returning the hardware status.
+take GPIO for example, it tells the middle layer if the GPIO pin is high or low.
+
+To enable the key service, you have to feed each layer the right configurations. The following sections depict the
+details of how to configure and activate the key services.
+
+\section SrverConf KeySrv configuration
+
+<ol>
+<li> Define <b>HAS_KEYS</b> in \ref product.conf, this will enable the key server, if the project has combination key, you should define <b>HAS_COMB_KEY</b></li>
+
+product.config
+\code
+    #define HAS_KEYS
+	#define HAS_COMB_KEY
+\endcode
+<li> In \ref KeySrv.Conf, define the key objects and low level driver object based on the key type. For example, polkAllplay has both GPIO and ADC keys, in the keySrv.Conf file, it defined
+
+KeySrv.Conf
+\code
+    static cAdcKeyDrv adcKeySet[NUM_OF_ADC_KEY];      ----ADC keys objects.
+    static cGpioKeyDrv gpioKeySet[NUM_OF_GPIO_KEY];   ----ADC driver objects
+    static cGpioDrv gpioDrvForKey;                    ----GPIO keys object
+    static cADCDrv adcDrvForKey;                      ----GPIO driver object
+\endcode
+<b>NUM_OF_ADC_KEY</b> should be define in \ref attachedDevices.h, it basically says how many ADC keys we have in this project, so as <b>NUM_OF_GPIO_KEY</b>.</li>
+
+attachedDevices.h
+\code
+    #define NUM_OF_ADC_KEY		1
+    #define NUM_OF_GPIO_KEY     2
+\endcode
+<li> keySrv configurations: This is where you can define the features such as short press, long press key hold etc. The timer unit is ms. Below is an example.
+
+KeySrv.Conf
+\code
+    tKeySrvConfig keySrvConfig =
+    {
+        .timing.debounceTime = 60,                      60ms
+        .timing.longPressTime = 1000,                   1000ms = 1S
+        .timing.veryLongPressTime = 10000,              10S
+        .timing.repeatHoldTime[VOLUME_DOWN_KEY] = 267,  267ms  this value should be changed according to user cases in applicaiton
+        .timing.repeatHoldTime[VOLUME_UP_KEY] = 267,    267ms this value should be changed according to user cases in applicaiton
+        .keyboardNum = KEYBOARD_NUMBER,
+        .keyboardSet =
+        {
+            {(cKeyDrv*)adcKeySet,   sizeof(cAdcKeyDrv),    &adcDrvForKey},   Fill in the objects which already defined.
+            {(cKeyDrv*)gpioKeySet,  sizeof(cGpioKeyDrv),   &gpioDrvForKey}
+        }
+    };
+\endcode
+Note: If repeatHoldTime[x] > 0, then after sent <b>KEY_EVT_HOLD</b>, post <b>KEY_EVT_REPEAT</b> in every repeatHoldTime[x] for the specific key until veryLongPressTime. 
+      If repeatHoldTime[x] = 0, it means that it is not required to send <b>KEY_EVT_REPEAT</b> for the specific key.
+<pre> The timer controls the key event type, as below.\n
+ |------------------------------------------------------------------------------------->|  time line
+ |---Debounce time---|---short press---|---Long press---|---very long press---..........
+ 0                  60               1000            10000
+</pre>
+<b>Note</b>: a <b>KEY_EVT_DOWN</b>(\ref KeySrv.h) will be sent if key is not released when time is larger than long press time, in this example, it is 1000ms.</li>
+</ol>
+
+\section Driver Driver layer configuration
+<HR>
+<ol>
+<li> <b>The macros definition</b>. \n
+The macros definition rely on the keys types. Again, it is easy to illustrate with examples. We assume the case that the project has two types of keys including ADC keys and GPIO keys
+In \ref attachedDevices.h, it is a must to define the following macros in \ref attachedDevices.h to activate both ADC and GPIO related drivers\n
+<b> For ADC key PIN </b>
+\code
+    #define NUM_OF_ADC_KEY_PIN             1 
+    #define NUM_OF_ALL_ENABLED_ADC_PIN     (NUM_OF_ADC_KEY_PIN + NUM_OF_ADC_POWER_PIN)
+\endcode
+<b> For GPIO key PIN </b>
+\code
+    #define NUM_OF_GPIO_KEY_PIN            1
+\endcode
+<b> For all the keys </b>
+\code
+    #define NUM_OF_ADC_KEY                 4
+    #define NUM_OF_GPIO_KEY                0
+\endcode
+</li>
+
+<li> <b>Key object configurations</b>
+
+	<b> Configuration for GPIO key Driver and GPIO driver </b>\n
+<HR>
+
+The configuration should be defined at \ref attachedDevices.c
+	<ol>
+    <li><b>GPIO driver configuration</b>
+\code
+	const tGPIOPin gpioPinsForKey[] =  //this is the structure where you can define the gpio pin features
+	{
+      //genaric gpio id     GPIO port      GPIO bit         GPIO direction      on off feature          open drain ctr
+        {GPIO_0, 			IO_PORT_A,  	IO_BIT_2,  		GPIO_DIGITAL_INPUT,  GPIO_ACTIVE_LOW,  		ODC_DISABLE},
+        {GPIO_19, 			IO_PORT_A, 		IO_BIT_3,  		GPIO_DIGITAL_INPUT,  GPIO_ACTIVE_LOW,  		ODC_DISABLE},
+        {GPIO_31, 			IO_PORT_A, 		IO_BIT_7,  		GPIO_DIGITAL_INPUT,  GPIO_ACTIVE_HIGH,  	ODC_DISABLE},
+        };
+    const tGPIODevice GPIOConfigForKey =   //put what you have defined in this structure
+    {
+        .usedGPIOPinNum =  NUM_OF_GPIO_KEY_PIN,
+        .pGPIOPinSet = gpioPinsForKey 
+    };
+\endcode
+	</li>
+	<li><b>GPIO key driver configuration</b>
+\code
+    const tGpioKey gpioKeys[] =
+    {  // key_id        genaric gpio id   Note: key_id and gpio_id refer to deviceTypes.h
+        {POWER_KEY,         GPIO_0},
+        {EJECT_KEY,         GPIO_19},
+        {NFC_TAG_KEY,       GPIO_31},
+    };
+\endcode
+	Note: the generic gpio id of gpioKeys and gpioPinsForKey should match each other. It is the bridge which connect them together.
+\code
+    tGpioKeyboardDevice gpioKeyboardConfig =
+    {
+        .gpioKeyboard.deviceInfo.deviceID = KEYBOARD_ID,  //This should aways be <b>KEYBOARD_ID</b>, refer to  \ref deviceTypes.h
+        .gpioKeyboard.deviceInfo.deviceType = GPIO_TYPE,  //This is up to the key type refer to \ref deviceTypes.h, abviously we are talking about gpio keys
+        .gpioKeyboard.keyNum = NUM_OF_GPIO_KEY,
+        .attachedDeviceObjConfig = &GPIOConfigForKey,
+        .pGpioKeySet = gpioKeys
+    };
+\endcode
+	</li>
+	</ol>
+	<b>Configuration for ADC driver and ADC key Driver </b>
+<HR>
+	<ol>
+	<li><b>ADC driver configuration</b>\n
+	ADC driver configurations defines the ADC pins which is used for keys, as below:
+\code
+	const eADCPin ADCPinsForKey[] = {ADC_PIN0};      //This is the ADC pin definition
+	const tADCDevice ADCConfigForKey =               //Put the definition to this structure
+	{
+		  .ADCEnabledPinNum = NUM_OF_ADC_KEY_PIN,
+		  .pADCPinSet = ADCPinsForKey
+	};
+\endcode
+    </li>
+	<li> <b>ADC key driver configuration</b>\n
+	The final step is to configure adc key driver\n
+	<b>First</b> define the macros for adc value range.\n
+	Supposed we have the reference voltage V_Ref = 3.3, the adc resolution is 10 bits which means a maximum value of 1024.\n
+	So if the spect has defination such as
+	<pre>        <b>Max voltage</b>  <b>Mini voltage</b> 
+    <b>BT_KEY</b> 1.700v			 1.600v
+    </pre>
+	This means any adc value of ADC_PIN0 between (1.6/3.3)*1024 = 496  and (1.7/3.3)*1024 = 527 means a BT_KEY down event \n
+	To make it more stable, the range is always larger than the theoretical values, for example 450 to 550 \n
+\code
+	#define ADC_THRESHOLD_LEVEL_1   265
+	#define ADC_THRESHOLD_LEVEL_2   875
+	#define ADC_THRESHOLD_LEVEL_3   1501
+	#define ADC_THRESHOLD_LEVEL_4   2060
+	#define ADC_THRESHOLD_LEVEL_5   2647
+	#define ADC_THRESHOLD_RANGE_1   ADC_THRESHOLD_LEVEL_1,ADC_THRESHOLD_LEVEL_2
+	#define ADC_THRESHOLD_RANGE_2   ADC_THRESHOLD_LEVEL_2,ADC_THRESHOLD_LEVEL_3
+	#define ADC_THRESHOLD_RANGE_3   ADC_THRESHOLD_LEVEL_3,ADC_THRESHOLD_LEVEL_4
+	#define ADC_THRESHOLD_RANGE_4   ADC_THRESHOLD_LEVEL_4,ADC_THRESHOLD_LEVEL_5
+\endcode
+	<b>Second</b> configure the adc keys
+\code
+	const tAdcKey adcKeys[]= 
+	{  // key_id         key_ADC_channel   adc threshold
+		{BT_KEY,              ADC_PIN0,   ADC_THRESHOLD_RANGE_1},
+		{VOLUME_DOWN_KEY,     ADC_PIN0,   ADC_THRESHOLD_RANGE_2},
+		{VOLUME_UP_KEY,       ADC_PIN0,   ADC_THRESHOLD_RANGE_3},
+		{PLAY_PAUSE_KEY,      ADC_PIN0,   ADC_THRESHOLD_RANGE_4}, 
+    };
+
+	tAdcKeyboardDevice adcKeyboardConfig = 
+	{
+        .adcKeyboard.deviceInfo.deviceID = KEYBOARD_ID,
+        .adcKeyboard.deviceInfo.deviceType = ADC_TYPE,
+        .adcKeyboard.keyNum = NUM_OF_ADC_KEY,
+        .attachedDeviceObjConfig = &ADCConfigForKey.
+        .pAdcKeySet = adcKeys
+    };
+\endcode
+<HR>
+	<b>Third</b> put the configurations to devices, for example:
+\code
+	const tDevice * const devices[] =
+    {
+        (tDevice*)&ledConfig,
+        (tDevice*)&adcKeyboardConfig,
+        (tDevice*)&gpioKeyboardConfig,
+        (tDevice*)&dsp_iHome_iBT150_Config,
+        (tDevice*)&UartDebugConfig,
+        (tDevice*)&nvmConfig,
+    };
+\endcode
+	</li>
+	</ol>
+</li>
+</ol>
+\section CombKey Combination key configuration
+<HR>
+The key server provide combination key service. This is a very common feature which has already exist in many of our products.
+This service covers most of the key combination scenario including combination with sequence and combination without sequence.
+for example, you can define a sequential combination key with the sequence of KEY_A pressed then KEY_B press which generates a COMB_KEY_C pressed.
+you can also define a no sequential combination COMB_KEY_C whenever KEY_A and KEY_B are both pressed. Before starting to illustrate the details,
+it is necessary to highlight that combination key configurations are located on the server layer, all configurations should be done in the file <b>KeySrv.conf</b>
+except the <b>HAS_COMB_KEY</b> which should be defined in <b>product.conf</b>.
+<ol>
+<li> <b>Enable Comb key service: </b>Define <b>HAS_COMB_KEY</b> in <b>product.conf</b>, this macro will enable combination key service.</li>
+<li> <b>Define the numbers: </b>In KeySrv.conf, add #define NUM_OF_COMB_KEYS  <b>NUM_OF_COMB_KEYS</b>,\n
+  for example: #define NUM_OF_COMB_KEYS    4 \n
+  This will tell the server how many combination keys it should handle </li>
+<li> <b>Define key elements: </b>Define the elements of each combination keys, for example, if SYS_RESET_KEY is composed of VOLUME_UP_KEY and PREV_KEY, it should be predefined as following\n
+\code
+static tCombKeyElem  combKeyGroup0[] =
+{
+    {.keyId = VOLUME_UP_KEY,    .combKeyTrigEvt = KEY_EVT_DOWN},
+    {.keyId = PREV_KEY,         .combKeyTrigEvt = KEY_EVT_DOWN}
+}
+
+static tCombKeyElem  combKeyGroup3[] =
+{
+    {.pKeysId = VOLUME_DOWN_KEY,  .combKeyTrigEvt = KEY_EVT_SHORT_PRESS},
+    {.pKeysId = VOLUME_UP_KEY,    .combKeyTrigEvt = KEY_EVT_SHORT_PRESS},
+    {.pKeysId = PLAY_PAUSE_KEY,   .combKeyTrigEvt = KEY_EVT_SHORT_PRESS},
+    {.pKeysId = NEXT_KEY,         .combKeyTrigEvt = KEY_EVT_SHORT_PRESS},
+    {.pKeysId = PREV_KEY,         .combKeyTrigEvt = KEY_EVT_SHORT_PRESS}
+};
+\endcode
+The structure tCombKeyElem is define in \ref keySrv.h
+We explain a little bit more of the combKeyGroup0 here: The keyId is the generic key id, you can refer to \ref deviceTypes.h, \n
+combKeyTrigEvt defines the trigger event, it means a combination key event will be generated if key event(KEY_EVT_DOWN) of VOLUME_UP_KEY \n
+and PREV_KEY are both generated.</li>
+<li><b>Other Features: </b> including combination key id, comb key type, reset time and so on. For example:
+\code
+static tCombDef combKeysDef[NUM_OF_COMB_KEYS] =
+{
+   {
+        .combKeyId = COMB_KEY_ID_0,             <b>This should be unique</b>
+        .combKeyType = NORMAL_KEY_COMB_TYPE,    <b>Refer to \ref KeySrv.h</b>
+        .numOfKeyElem = 2,                      <b>This is up to the elements number which defined in the key group, the above example will have the value of 2</b>
+        .timeElapse = 0,                        <b>The time elapsed from the previous matched evt to the current matched key evt,simply give an init value 0</b>
+        .pCombKeyElems = combKeyGroup0,         <b>The group defined above</b>
+    },
+    {
+        .combKeyId = COMB_KEY_ID_3,
+        .combKeyType = SEQ_KEY_PRESS_COMB_TYPE,
+        .numOfKeyElem = 5,
+        .timeElapse = 0,
+        .resetTime = 5000,                      <b>This is in ms</b>
+        .pCombKeyElems = combKeyGroup3,
+	}
+};
+\endcode
+Note: resetTime is used for the case when the combKeyType is SEQ_KEY_PRESS_COMB_TYPE. This timer will reset the comb key service if the timer of two key events
+elapse more than <b>resetTime</b> 
+There are three types of combKeyType, they are:\n
+<b>SEQ_KEY_PRESS_COMB_TYPE: </b>Sequential key press, for exmaple: A press->B press->C press \n
+<b>SEQ_KEY_SHIFT_COMB_TYPE: </b>Shift like key,for example A hold->B hold->C hold or A hold-> B press \n
+<b>NORMAL_KEY_COMB_TYPE: </b>No sequential key hold, for example, A hold, B hold, C hold or B hold, A hold, C hold\n
+<b>The combnation key service is ready to kick off with the configuration above.</b>
+</li>
+</ol>
+
+\section IRKey Infrared Key Configuration
+<HR>
+
+It is very necessary to have a chapter for infared key because the infared key is quite different from any of the other keys. Let me have a brief introduction about
+the difference. Take GPIO key for example, a key normally has two status, "key down" and "key up", the status is represented by the IO votage of a "high" and "low", some
+times it is "low" and "high", this is determined by the way of how you design the hardware. When there is a high on the IO pin, we could say "the key is down" and vice versa.
+From this point of view, we would say the status of "key down" and "key up" is represented by hardware status. Imaging the ADC keys, it is very similar, right?
+
+In the very begining, when we design the infared keys, we relized that the IR key is quite different. It doesn't have a hardware status which represent the key status of a
+"key down" and "key up". Basically it only send a series of code and relese the button doesn't have any pulse signal which indicate this action, so at the beginning the 
+infared key is designed specially, the driver sends the key event when it detects a complete key code. This has limitations such as not porting scalability, driver is specially
+fit for a project, you have to modify the driver even you use the same hardware however with different UI design. we did investigations and fortunately we figure out a way to simply
+everything. The idea is basically simulating the IR code to a "key down" and "key up". Please refer to below picture
+
+\image html irKeySimulation.png
+<ol>
+<li> <b>The macros definition</b>. \n
+For infared key, we have to define the below macro to enable the function
+\code
+	#define HAS_INFRARED_KEY
+\endcode
+</li>
+
+<li> <b>IR code and Key Map definition</b>. \n
+This defination should be done in the \ref attachedDevices.c
+\code
+    // IR key configuration 
+	#define POWER_IR_CODE          0x020240BF
+	#define VOL_DOWN_IR_CODE       0x020220DF
+	#define VOL_UP_IR_CODE         0x0202609F
+	#define PREV_IR_CODE           0x0202906F
+	#define NEXT_IR_CODE           0x0202B04F
+	#define ENTER_IR_CODE          0x0202708F
+	#define BACK_IR_CODE           0x020230CF
+	#define MUTE_IR_CODE           0X0202906F
+	#define PRESET1_IR_CODE        0x020228D7
+	#define PRESET2_IR_CODE        0x0202A857
+	#define PRESET3_IR_CODE        0x02026897
+	#define BRIGHTNESS_BTN_IR_CODE 0x02028877
+
+	static tIrKeyIdMapCode keyIdIrCodeMap[NUM_OF_IR_KEY] = 
+	{
+		{SCREEN_OFF_ON_KEY,     BRIGHTNESS_BTN_IR_CODE},
+		{IR_VOLUME_UP_KEY,      VOL_UP_IR_CODE},
+		{IR_VOLUME_DOWN_KEY,    VOL_DOWN_IR_CODE},
+		{PREV_KEY,              PREV_IR_CODE},
+		{NEXT_KEY,              NEXT_IR_CODE},
+		{ENTER_KEY,             ENTER_IR_CODE},
+		{RETURN_KEY,            BACK_IR_CODE},
+		{IR_PRESET_KEY_1,       PRESET1_IR_CODE},
+		{IR_PRESET_KEY_2,       PRESET2_IR_CODE},
+		{IR_PRESET_KEY_3,       PRESET3_IR_CODE},
+		{MUTE_KEY,              MUTE_IR_CODE},
+	};
+\endcode
+</li>
+
+<li> <b>Low level hardware configuration</b>. \n
+This should be defined in \ref attachedDevices.c as well
+\code
+	static tIRKeyboardDevice IrKeyBoardConfig =
+	{
+		.irKeyboard.deviceInfo.deviceID = KEYBOARD_DEV_ID,
+		.irKeyboard.deviceInfo.deviceType = INFRARED_DEV_TYPE,
+		.irKeyboard.keyNum = NUM_OF_IR_KEY,
+		.keyIdIrCodeMap = keyIdIrCodeMap,
+		.ioAttr = 
+		  {
+			GPIO_10,
+			IO_PORT_A,
+			IO_BIT_11,
+			GPIO_DIGITAL_INPUT,
+			GPIO_ACTIVE_HIGH,
+			ODC_DISABLE
+		  }
+	};
+\endcode
+</li>
+</ol>
+
+*/
+
+
+

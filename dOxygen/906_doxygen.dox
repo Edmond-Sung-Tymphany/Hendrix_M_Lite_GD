@@ -1,0 +1,111 @@
+/**
+\anchor page
+\page dOxygen dOxygen - How-to
+
+\image html logo.png
+
+<a href="http://www.stack.nl/~dimitri/doxygen/"><strong>dOxygen</strong></a> is a code documentation tool. 
+It looks in you code files and extracts comments/code blocks and generates html documentation.
+
+<HR>
+\section Running Running Doxygen
+First make sure you have download doxygen, <a href="http://www.graphviz.org/Download..php">GraphViz</a> & <a href="http://www.mcternan.me.uk/mscgen/">Mscgen</a>
+Where ever you install them just make sure their location is in your environment PATH.
+
+To run Doxygen open the doxygen wizard and load the file found under sw/project_files/name_of_project/support/Doxyfile
+Alternatively you can run doxygen on the command line like so: \c doxygen.exe \c sw/project_files/name_of_project/support/Doxyfile
+
+\image html doxy_run.png
+
+Once finished there will be a folder under the support directory called \c html. You can open \c html/index.html. This is the top html page.
+
+On top of running this yourself you may open Jenkins and load the doxygen for the project build of your choice (must be enabled in the jenkins jobs).
+
+<HR>
+\section Adding Adding to Doxygen
+
+<h2> Setting you project doxyfile up </h2>
+
+When setting up an new project its best you copy the \c doxyfile from a previous project then make some small changes.
+First you want to change the name of the project.
+
+\code
+PROJECT_NAME           = "name_of_project"
+\endcode
+
+To add new sections to your own tymphany platform project you may alter the sw/project_files/name_of_project/support/Doxyfile.
+To do this first make your changes to a file called sw/project_files/name_of_project/support/Doxyfile/name_of_project.txt
+This file should be written as commented html. See tymphany_platform/doxygen/doxygen.txt for example. That pages is what you are reading now!
+Follow that convention. Once you have done this you then open the dOxyfile and add the new text file to the \c INPUT label. Example:
+
+\code
+INPUT                  = ../../../ \
+                         ../../../../dOxygen/tp.txt \
+                         name_of_project.txt
+\endcode
+
+\image html doxy_added.png
+
+Remember to remove any referenced txt file from the project you may have copied from.
+Save and then run again. You should see you new page added to the left navigation panel within doxygen.
+
+<h2> Code comment format </h2>
+
+doxygen zips through all files you provide and looks for comments with a specfic style. 
+If it finds comments in the style it will extract them and add them to the html documentation.
+The comment blocks examples here please ignore the first forward-slash (formatting issue).
+
+For your file description you can use:
+
+\code
+//**
+/*  \@file      controller.c
+/*  \@brief     Source file for controller object. Helps control access to resources
+/*  \@author    Christopher Alexander
+/*  \@date      26-Oct-2013
+/*  \@copyright Tymphany Ltd.
+/*/
+\endcode
+
+Functions in public headers:
+
+\code
+//** \\brief Controller start up allows you to switch mode of operation
+/* \\a mode you wish to use \sa modes.h
+/*/
+\endcode
+
+You may notice \c \@brief and \c \\brief. Both are ok. 
+\c \\a means Attribute. It will associate the line of text to an attribute you name. 
+\c \\sa mean see also since you may wish to reference something else
+
+<a href="http://www.star.bnl.gov/public/comp/sofi/doxygen/commands.html">See this page for a complete reference of the special commands you can use</a>
+
+<h2> Adding diagrams using mscgen </h2>
+
+We can also add diagrams to you header files to explain the message sequence providing you have mscgen.exe installed (see above).
+
+Here is an example:
+
+\code
+//** Controller object is responsible for launching all servers and apps at system start up
+/ * and ensuring they are swapped out when the when the mode of operation must change.
+/ *
+/ *  \msc
+/ *    main, controller, ServerList, AppList;
+/ *    main->controller [label="Controller_Ctor(mode)", URL="\ref Controller_Ctor()"];
+/ *    controller->ServerList [label="StartUp()"];
+/ *    controller->AppList [label="StartUp()"];
+/ *  \endmsc
+/ *
+/ *****************************************************************************/
+\endcode
+
+This will generate:
+
+\image html doxy_msc.png
+			 
+<HR>
+\image html logo.png
+*/
+

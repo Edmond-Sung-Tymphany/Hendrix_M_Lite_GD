@@ -1,0 +1,1739 @@
+{
+  "version": {
+    "SW_MAJOR_VERSION": 1,
+    "SW_MINOR_VERSION1": 0,
+    "SW_MINOR_VERSION2": 0
+  },
+  "setting_conf": {
+    "SETTING_CHUNK_SIZE": 68,
+    "SETID_DSP_INIT_DATA": 4,
+    "SETID_DSP_TUNABLE_PART": 5
+  },
+    "signal_sys_header_conf": {
+    "IND_SIG_DATA_OFFSET": 0,
+    "RESP_SIG_DATA_OFFSET": 0,
+    "REQ_SIG_DATA_OFFSET": 0
+  },
+  "signal_definition": [
+  {
+      "sig_id": 246,
+      "sig_name": "BLE_PRODUCTION_TEST_RQE_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 5,
+      "sig_display_mode": 1,
+      "sig_event_fields_num": 1,
+      "sig_event_field": [
+        {
+          "ef_name": "bleCmd",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 1,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "GetInformation",
+              "enum_value": 13
+            }
+          ]
+        }
+      ]
+    },
+	{
+      "sig_id": 247,
+      "sig_name": "BLE_PRODUCTION_TEST_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 5,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+	  "sig_event_field": [
+        {
+          "ef_name": "version",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "date",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 4
+        },
+        {
+          "ef_name": "address",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 6
+        },
+        {
+          "ef_name": "device name",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 8
+        }
+        
+      ]
+    },
+    {
+      "sig_id": 224,
+      "sig_name": "MAINAPP_SET_VOL_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 1,
+      "sig_event_field": [
+        {
+          "ef_name": "volume(-dB)",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        }
+      ]
+    },
+    {
+      "sig_id": 225,
+      "sig_name": "MAINAPP_GET_VOL_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 0
+    },
+    {
+      "sig_id": 226,
+      "sig_name": "MAINAPP_GET_VOL_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "evtReturn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "volume(-dB)",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        }
+      ]
+    },
+    {
+      "sig_id": 56,
+      "sig_name": "LED_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 8,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+      "sig_event_field": [
+        {
+          "ef_name": "ledCommand",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "LED_PURE_ON_CMD",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "ledMask",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 19,
+          "ef_enum_values": [
+            {
+              "enum_name": "LED_MASK_LED_BAR_1",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_2",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_3",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_4",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_5",
+              "enum_value": 16
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_6",
+              "enum_value": 32
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_7",
+              "enum_value": 64
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_8",
+              "enum_value": 128
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_9",
+              "enum_value": 256
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_10",
+              "enum_value": 512
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR_11",
+              "enum_value": 1024
+            },
+            {
+              "enum_name": "LED_MASK_LED_PLUS",
+              "enum_value": 2048
+            },
+            {
+              "enum_name": "LED_MASK_LED_MINUS",
+              "enum_value": 4096
+            },
+            {
+              "enum_name": "LED_MASK_LED_VOL",
+              "enum_value": 8192
+            },
+            {
+              "enum_name": "LED_MASK_LED_STBY_BLUE",
+              "enum_value": 16384
+            },
+            {
+              "enum_name": "LED_MASK_LED_STBY_AMBER",
+              "enum_value": 32768
+            },
+            {
+              "enum_name": "LED_MASK_LED_BAR",
+              "enum_value": 2047
+            },
+            {
+              "enum_name": "LED_MASK_LED_UPGRADING",
+              "enum_value": 1799
+            },
+            {
+              "enum_name": "LED_MASK_ALL_LEDS",
+              "enum_value": 65535
+            }
+          ]
+        },
+        {
+          "ef_name": "patternId",
+          "ef_type": "IGNORE_TYPE",
+          "ef_size": 4
+        },
+        {
+          "ef_name": "color",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 5,
+          "ef_enum_values": [
+            {
+              "enum_name": "OFF",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "25%",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "50%",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "75%",
+              "enum_value": 10
+            },
+            {
+              "enum_name": "100%",
+              "enum_value": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 129,
+      "sig_name": "DEBUG_ADC_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 18,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "port",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 7,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_PORT_A",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_PORT_B",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_PORT_C",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_PORT_D",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_PORT_E",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_PORT_F",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_PORT_G",
+              "enum_value": 6
+            }
+          ]
+        },
+        {
+          "ef_name": "bit",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 32,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_BIT_0",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_BIT_1",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_BIT_2",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_BIT_3",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_BIT_4",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_BIT_5",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_BIT_6",
+              "enum_value": 6
+            },
+            {
+              "enum_name": "IO_BIT_7",
+              "enum_value": 7
+            },
+            {
+              "enum_name": "IO_BIT_8",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "IO_BIT_9",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "IO_BIT_10",
+              "enum_value": 10
+            },
+            {
+              "enum_name": "IO_BIT_11",
+              "enum_value": 11
+            },
+            {
+              "enum_name": "IO_BIT_12",
+              "enum_value": 12
+            },
+            {
+              "enum_name": "IO_BIT_13",
+              "enum_value": 13
+            },
+            {
+              "enum_name": "IO_BIT_14",
+              "enum_value": 14
+            },
+            {
+              "enum_name": "IO_BIT_15",
+              "enum_value": 15
+            },
+            {
+              "enum_name": "IO_BIT_16",
+              "enum_value": 16
+            },
+            {
+              "enum_name": "IO_BIT_17",
+              "enum_value": 17
+            },
+            {
+              "enum_name": "IO_BIT_18",
+              "enum_value": 18
+            },
+            {
+              "enum_name": "IO_BIT_19",
+              "enum_value": 19
+            },
+            {
+              "enum_name": "IO_BIT_20",
+              "enum_value": 20
+            },
+            {
+              "enum_name": "IO_BIT_21",
+              "enum_value": 21
+            },
+            {
+              "enum_name": "IO_BIT_22",
+              "enum_value": 22
+            },
+            {
+              "enum_name": "IO_BIT_23",
+              "enum_value": 23
+            },
+            {
+              "enum_name": "IO_BIT_24",
+              "enum_value": 24
+            },
+            {
+              "enum_name": "IO_BIT_25",
+              "enum_value": 25
+            },
+            {
+              "enum_name": "IO_BIT_26",
+              "enum_value": 26
+            },
+            {
+              "enum_name": "IO_BIT_27",
+              "enum_value": 27
+            },
+            {
+              "enum_name": "IO_BIT_28",
+              "enum_value": 28
+            },
+            {
+              "enum_name": "IO_BIT_29",
+              "enum_value": 29
+            },
+            {
+              "enum_name": "IO_BIT_30",
+              "enum_value": 30
+            },
+            {
+              "enum_name": "IO_BIT_31",
+              "enum_value": 31
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 49,
+      "sig_name": "DEBUG_ADC_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 18,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+      "sig_event_field": [
+        {
+          "ef_name": "evtReturn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "port",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 7,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_PORT_A",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_PORT_B",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_PORT_C",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_PORT_D",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_PORT_E",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_PORT_F",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_PORT_G",
+              "enum_value": 6
+            }
+          ]
+        },
+        {
+          "ef_name": "bit",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 32,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_BIT_0",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_BIT_1",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_BIT_2",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_BIT_3",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_BIT_4",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_BIT_5",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_BIT_6",
+              "enum_value": 6
+            },
+            {
+              "enum_name": "IO_BIT_7",
+              "enum_value": 7
+            },
+            {
+              "enum_name": "IO_BIT_8",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "IO_BIT_9",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "IO_BIT_10",
+              "enum_value": 10
+            },
+            {
+              "enum_name": "IO_BIT_11",
+              "enum_value": 11
+            },
+            {
+              "enum_name": "IO_BIT_12",
+              "enum_value": 12
+            },
+            {
+              "enum_name": "IO_BIT_13",
+              "enum_value": 13
+            },
+            {
+              "enum_name": "IO_BIT_14",
+              "enum_value": 14
+            },
+            {
+              "enum_name": "IO_BIT_15",
+              "enum_value": 15
+            },
+            {
+              "enum_name": "IO_BIT_16",
+              "enum_value": 16
+            },
+            {
+              "enum_name": "IO_BIT_17",
+              "enum_value": 17
+            },
+            {
+              "enum_name": "IO_BIT_18",
+              "enum_value": 18
+            },
+            {
+              "enum_name": "IO_BIT_19",
+              "enum_value": 19
+            },
+            {
+              "enum_name": "IO_BIT_20",
+              "enum_value": 20
+            },
+            {
+              "enum_name": "IO_BIT_21",
+              "enum_value": 21
+            },
+            {
+              "enum_name": "IO_BIT_22",
+              "enum_value": 22
+            },
+            {
+              "enum_name": "IO_BIT_23",
+              "enum_value": 23
+            },
+            {
+              "enum_name": "IO_BIT_24",
+              "enum_value": 24
+            },
+            {
+              "enum_name": "IO_BIT_25",
+              "enum_value": 25
+            },
+            {
+              "enum_name": "IO_BIT_26",
+              "enum_value": 26
+            },
+            {
+              "enum_name": "IO_BIT_27",
+              "enum_value": 27
+            },
+            {
+              "enum_name": "IO_BIT_28",
+              "enum_value": 28
+            },
+            {
+              "enum_name": "IO_BIT_29",
+              "enum_value": 29
+            },
+            {
+              "enum_name": "IO_BIT_30",
+              "enum_value": 30
+            },
+            {
+              "enum_name": "IO_BIT_31",
+              "enum_value": 31
+            }
+          ]
+        },
+        {
+          "ef_name": "value",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        }
+      ]
+    },
+    {
+      "sig_id": 62,
+      "sig_name": "DEBUG_GPIO_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 18,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 5,
+      "sig_event_field": [
+        {
+          "ef_name": "port",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 7,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_PORT_A",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_PORT_B",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_PORT_C",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_PORT_D",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_PORT_E",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_PORT_F",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_PORT_G",
+              "enum_value": 6
+            }
+          ]
+        },
+        {
+          "ef_name": "bit",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 32,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_BIT_0",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_BIT_1",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "IO_BIT_2",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "IO_BIT_3",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "IO_BIT_4",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "IO_BIT_5",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "IO_BIT_6",
+              "enum_value": 6
+            },
+            {
+              "enum_name": "IO_BIT_7",
+              "enum_value": 7
+            },
+            {
+              "enum_name": "IO_BIT_8",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "IO_BIT_9",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "IO_BIT_10",
+              "enum_value": 10
+            },
+            {
+              "enum_name": "IO_BIT_11",
+              "enum_value": 11
+            },
+            {
+              "enum_name": "IO_BIT_12",
+              "enum_value": 12
+            },
+            {
+              "enum_name": "IO_BIT_13",
+              "enum_value": 13
+            },
+            {
+              "enum_name": "IO_BIT_14",
+              "enum_value": 14
+            },
+            {
+              "enum_name": "IO_BIT_15",
+              "enum_value": 15
+            },
+            {
+              "enum_name": "IO_BIT_16",
+              "enum_value": 16
+            },
+            {
+              "enum_name": "IO_BIT_17",
+              "enum_value": 17
+            },
+            {
+              "enum_name": "IO_BIT_18",
+              "enum_value": 18
+            },
+            {
+              "enum_name": "IO_BIT_19",
+              "enum_value": 19
+            },
+            {
+              "enum_name": "IO_BIT_20",
+              "enum_value": 20
+            },
+            {
+              "enum_name": "IO_BIT_21",
+              "enum_value": 21
+            },
+            {
+              "enum_name": "IO_BIT_22",
+              "enum_value": 22
+            },
+            {
+              "enum_name": "IO_BIT_23",
+              "enum_value": 23
+            },
+            {
+              "enum_name": "IO_BIT_24",
+              "enum_value": 24
+            },
+            {
+              "enum_name": "IO_BIT_25",
+              "enum_value": 25
+            },
+            {
+              "enum_name": "IO_BIT_26",
+              "enum_value": 26
+            },
+            {
+              "enum_name": "IO_BIT_27",
+              "enum_value": 27
+            },
+            {
+              "enum_name": "IO_BIT_28",
+              "enum_value": 28
+            },
+            {
+              "enum_name": "IO_BIT_29",
+              "enum_value": 29
+            },
+            {
+              "enum_name": "IO_BIT_30",
+              "enum_value": 30
+            },
+            {
+              "enum_name": "IO_BIT_31",
+              "enum_value": 31
+            }
+          ]
+        },
+        {
+          "ef_name": "action",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "GPIO_DEFAULT_OUT_HIGH",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "GPIO_DEFAULT_OUT_LOW",
+              "enum_value": 4
+            }
+          ]
+        },
+        {
+          "ef_name": "mode",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "IO_PORT_READ",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "IO_PORT_WRITE",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "direction",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "GPIO_DIGITAL_INPUT",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "GPIO_DIGITAL_OUTPUT",
+              "enum_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 45,
+      "sig_name": "DEBUG_GPIO_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "evtReturn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "value",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 1
+        },
+        {
+          "ef_name": "",
+          "ef_type": "IGNORE_TYPE",
+          "ef_size": 3
+        }
+      ]
+    },
+    {
+      "sig_id": 128,
+      "sig_name": "DEBUG_I2C_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 18,
+      "sig_display_mode": 4,
+      "sig_event_fields_num": 7,
+      "sig_event_field": [
+        {
+          "ef_name": "mode",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "I2C_READ",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "I2C_WRITE",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "channel",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "I2C_CHANNEL_ONE",
+              "enum_value": 0
+            }
+          ]
+        },
+        {
+          "ef_name": "regAddr",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 4
+        },
+        {
+          "ef_name": "regAddrLen",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "REG_LEN_8BITS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "REG_LEN_16BITS",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "length",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "devAddr",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 1
+        },
+        {
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 16
+        }
+      ]
+    },
+    {
+      "sig_id": 48,
+      "sig_name": "DEBUG_I2C_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 5,
+      "sig_event_fields_num": 8,
+      "sig_event_field": [
+        {
+          "ef_name": "evtReturn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "mode",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "I2C_READ",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "I2C_WRITE",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "channel",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "I2C_CHANNEL_ONE",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "I2C_CHANNEL_TWO",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "regAddr",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 4
+        },
+        {
+          "ef_name": "regAddrLen",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "REG_LEN_8BITS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "REG_LEN_16BITS",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "length",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "devAddr",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 1
+        },
+        {
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 16
+        }
+      ]
+    },
+    {
+      "sig_id": 7,
+      "sig_name": "KEY_STATE_SIG",
+      "sig_type": "IND_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "keyId",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 14,
+          "ef_enum_values": [
+            {
+              "enum_name": "VOLUME_KEY",
+              "enum_value": 72
+            },
+            {
+              "enum_name": "LPF_KEY",
+              "enum_value": 73
+            },
+            {
+              "enum_name": "PHASE_KEY",
+              "enum_value": 74
+            },
+            {
+              "enum_name": "PLUS_KEY",
+              "enum_value": 76
+            },
+            {
+              "enum_name": "MINUS_KEY",
+              "enum_value": 75
+            },
+            {
+              "enum_name": "AUTO/ON_KEY",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "STANDBY_TEST_KEY",
+              "enum_value": 81
+            },
+            {
+              "enum_name": "FACTORY_RESET_KEY",
+              "enum_value": 35
+            },
+            {
+              "enum_name": "PRESET1_LOAD_KEY",
+              "enum_value": 24
+            },
+            {
+              "enum_name": "PRESET1_SAVE_KEY",
+              "enum_value": 28
+            },
+            {
+              "enum_name": "PRESET2_LOAD_KEY",
+              "enum_value": 25
+            },
+            {
+              "enum_name": "PRESET2_SAVE_KEY",
+              "enum_value": 29
+            },
+            {
+              "enum_name": "PRESET3_LOAD_KEY",
+              "enum_value": 26
+            },
+            {
+              "enum_name": "PRESET3_SAVE_KEY",
+              "enum_value": 30
+            },
+            {
+              "enum_name": "PRESET4_LOAD_KEY",
+              "enum_value": 27
+            }
+          ]
+        },
+        {
+          "ef_name": "keyEvent",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 10,
+          "ef_enum_values": [
+            {
+              "enum_name": "KEY_EVT_INVALID",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "KEY_EVT_DOWN",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "KEY_EVT_HOLD",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "KEY_EVT_REPEAT",
+              "enum_value": 3
+            },
+            {
+              "enum_name": "KEY_EVT_VERY_LONG_HOLD",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "COMB_KEY_EVT",
+              "enum_value": 5
+            },
+            {
+              "enum_name": "KEY_EVT_UP",
+              "enum_value": 6
+            },
+            {
+              "enum_name": "KEY_EVT_SHORT_PRESS",
+              "enum_value": 7
+            },
+            {
+              "enum_name": "KEY_EVT_LONG_PRESS",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "KEY_EVT_VERY_LONG_PRESS",
+              "enum_value": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 106,
+      "sig_name": "SETTING_READ_OFFSET_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 12,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 3,
+      "sig_event_field": [
+        {
+          "ef_name": "setting_id",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 5,
+          "ef_enum_values": [
+            {
+              "enum_name": "SETID_MENU_DATA",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "SETID_SW_VER",
+              "enum_value": 11
+            },
+            {
+              "enum_name": "SETID_HW_VER",
+              "enum_value": 12
+            },
+            {
+              "enum_name": "SETID_DSP_VER",
+              "enum_value": 13
+            },
+            {
+              "enum_name": "SETID_AMP_TEMP_LEVEL",
+              "enum_value": 23
+            }
+          ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        }
+      ]
+    },
+    {
+      "sig_id": 105,
+      "sig_name": "SETTING_WRITE_OFFSET_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 12,
+      "sig_display_mode": 2,
+      "sig_event_fields_num": 4,
+      "sig_event_field": [
+        {
+            "ef_name": "setting_id",
+            "ef_type": "ENUM_TYPE",
+            "ef_size": 4,
+            "ef_enum_values_num": 4,
+            "ef_enum_values":[
+                {
+                  "enum_name": "SETID_MENU_DATA",
+                  "enum_value": 4
+                },
+                {
+                  "enum_name": "SETID_SW_VER",
+                  "enum_value": 21
+                },
+                {
+                  "enum_name": "SETID_DSP_VER",
+                  "enum_value": 22
+                },
+                {
+                  "enum_name": "SETID_AMP_TEMP_LEVEL",
+                  "enum_value": 23
+                }
+            ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 16
+        }
+      ]
+    },
+    {
+      "sig_id": 46,
+      "sig_name": "SETTING_READ_OFFSET_RESP_SIG",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 5,
+      "sig_event_field": [
+        {
+          "ef_name": "evtReturn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "setting_id",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "RET_SUCCESS",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "RET_FAIL",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "RET_NOT_SUPPORTED",
+              "enum_value": 2
+            },
+            {
+              "enum_name": "RET_BUSY",
+              "enum_value": 3
+            }
+          ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 64
+        }
+      ]
+    },
+    {
+      "sig_id": 240,
+      "sig_name": "BLE_WRITE_DATA_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+	  "sig_event_field": [
+        {
+          "ef_name": "setting_id",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "SETID_MENU_DATA",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "SETID_PRESET_1_NAME",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "SETID_PRESET_2_NAME",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "SETID_PRESET_3_NAME",
+              "enum_value": 10
+            }
+          ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+		{
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 16
+        }
+      ]
+    },
+	{
+      "sig_id": 241,
+      "sig_name": "BLE_READ_DATA_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 1,
+      "sig_event_fields_num": 3,
+      "sig_event_field": [
+        {
+          "ef_name": "setting_id",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "SETID_MENU_DATA",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "SETID_PRESET_1_NAME",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "SETID_PRESET_2_NAME",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "SETID_PRESET_3_NAME",
+              "enum_value": 10
+            }
+          ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        }
+      ]
+    },
+	{
+      "sig_id": 242,
+      "sig_name": "BLE_READ_DATA_RESP",
+      "sig_type": "RESP_SIG_TYPE",
+      "sig_target_srv": 5,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+	  "sig_event_field": [
+        {
+          "ef_name": "setting_id",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 4,
+          "ef_enum_values": [
+            {
+              "enum_name": "SETID_MENU_DATA",
+              "enum_value": 4
+            },
+            {
+              "enum_name": "SETID_PRESET_1_NAME",
+              "enum_value": 8
+            },
+            {
+              "enum_name": "SETID_PRESET_2_NAME",
+              "enum_value": 9
+            },
+            {
+              "enum_name": "SETID_PRESET_3_NAME",
+              "enum_value": 10
+            }
+          ]
+        },
+        {
+          "ef_name": "offset",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+        {
+          "ef_name": "size",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 2
+        },
+		{
+          "ef_name": "data",
+          "ef_type": "BSTREAM_TYPE",
+          "ef_size": 4
+        }
+      ]
+    },
+	{
+      "sig_id": 243,
+      "sig_name": "BLE_RESET_ITEM_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 1,
+      "sig_event_fields_num": 1,
+      "sig_event_field": [
+        {
+          "ef_name": "numberOfFeature",
+          "ef_type": "NUMBER_TYPE",
+		  "ef_size": 1
+        }
+      ]
+    },
+	{
+      "sig_id": 244,
+      "sig_name": "BLE_MENU_FEATURE_REQ_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 31,
+      "sig_display_mode": 1,
+      "sig_event_fields_num": 0
+    },
+    {
+      "sig_id": 86,
+      "sig_name": "AUDIO_MUTE_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 7,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+	  "sig_event_field": [
+        {
+          "ef_name": "mute",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "Mute",
+              "enum_value": 1
+            },
+            {
+              "enum_name": "Unmute",
+              "enum_value": 0
+            }
+          ]
+        },
+        {
+          "ef_name": "audioMuteType",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "AUDIO_DSP_DACOUT_MUTE",
+              "enum_value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 20,
+      "sig_name": "AUDIO_MUSIC_STREAM_STATE_SIG",
+      "sig_type": "IND_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "JackId",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "RCA_JACK",
+              "enum_value": 0
+            }
+          ]
+        },
+        {
+          "ef_name": "hasMusicStream",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 1,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "No",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "Yes",
+              "enum_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 19,
+      "sig_name": "AUDIO_STATE_SIG",
+      "sig_type": "IND_SIG_TYPE",
+      "sig_target_srv": 0,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 2,
+      "sig_event_field": [
+        {
+          "ef_name": "JackId",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "AUXIN_JACK",
+              "enum_value": 0
+            }
+          ]
+        },
+        {
+          "ef_name": "IsJackIn",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "No",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "Yes",
+              "enum_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sig_id": 88,
+      "sig_name": "AUDIO_SET_SIG",
+      "sig_type": "REQ_SIG_TYPE",
+      "sig_target_srv": 7,
+      "sig_display_mode": 255,
+      "sig_event_fields_num": 4,
+	  "sig_event_field": [
+        {
+          "ef_name": "aduioSettId",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 1,
+          "ef_enum_values": [
+            {
+              "enum_name": "DSP_PASSTHROUGH_SETT_ID",
+              "enum_value": 19
+            }
+          ]
+        },
+        {
+          "ef_name": "enable",
+          "ef_type": "ENUM_TYPE",
+          "ef_size": 4,
+          "ef_enum_values_num": 2,
+          "ef_enum_values": [
+            {
+              "enum_name": "OFF",
+              "enum_value": 0
+            },
+            {
+              "enum_name": "ON",
+              "enum_value": 1
+            }
+          ]
+        },
+        {
+          "ef_name": "param",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 4
+        },
+		{
+          "ef_name": "param2",
+          "ef_type": "NUMBER_TYPE",
+          "ef_size": 4
+        }
+      ]
+    }
+  ]
+}

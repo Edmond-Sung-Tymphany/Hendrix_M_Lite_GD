@@ -1,0 +1,5 @@
+//cmmand set
+#dsp_set 1
+#sleep 2
+
+

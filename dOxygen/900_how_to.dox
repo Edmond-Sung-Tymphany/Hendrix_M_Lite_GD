@@ -1,0 +1,26 @@
+/**
+\anchor page
+\page HowTo How-To summary
+
+\image html logo.png
+
+A Summary page of all How-To
+
+<HR>
+\ref qspy
+
+QSpy is a software tracing tool provided by QP.
+
+<HR>
+\ref dOxygen
+
+A documentation generation tool for writing software reference documentation.
+
+<HR>
+\ref SettingSrv
+
+Setting Server is the data centre and this how-to page provide a step-by-step instruction on adding a new entry.
+
+<HR>
+*/
+

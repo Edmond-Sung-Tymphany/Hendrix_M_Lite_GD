@@ -1,0 +1,28 @@
+/**
+\anchor page
+\page Controller Controller
+
+\image html logo.png
+
+The controller is the start point into Tymphany Platform. It is started through a call to Controller_Ctor(uint16 mode_id). Since the controller "owns" all persistent objects in the system it will launch those that belong in the mode passed in. 
+Therefore it may be used to shut down and start up the persistent objects in the product depending on the \ref Modes.
+The controller object also allows us to "hide" the actual persistent objects from each other. This means all comm must go through the standardised interface and prevents misuse of private object data.
+
+
+
+<h2> Class diagram </h2>
+
+The controller owns an array each of both apps and servers. This it can then use to iterate through (or index in to for O(1) operations) to find the correct server / app id and start / stop it.
+The arrays are generated as part of product configuration. Each app and server that goes in to making a product is pulled in and the modes they are associated with are also generated through configuration.
+
+\image html Servers.png
+
+\section Modes
+Modes are a way of easily allowing individual services to be started and stopped independently of the system and more dependent on the requirements.
+So for example if the product has a "diagnostics" or a "DFU" mode then we can easily switch to it and close down all unused objects.
+
+\sa modes.h
+
+<HR>
+\image html logo.png
+*/

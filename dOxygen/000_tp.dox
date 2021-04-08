@@ -1,0 +1,307 @@
+/**
+
+\anchor main_page
+\mainpage About Tymphany Platform
+\tableofcontents
+
+<a href="http://sw.tymphany.com/redmine/projects/freertos/wiki"><strong>Tymphany Platform</strong></a> is a code framework that has been built to enable easier development of Tymphany products.
+
+\section introduction Introduction
+
+Tymphany platform is designed to replace the old way of working. In the old way we would get projects and divide them up to a set of loosely based "platforms".
+
+However these platforms were worked on in isolation. Code that was commonly used was never written to be shared, thus written over and over. Additionally the code aged badly. 
+As people picked apart code files and tried to re-use them in these "platforms" they would completely re-write parts of the code that made them specialized and fragmented.
+
+With Tymphany Platform we aim to remove this cycle and replace it with clean, fault free code that has a structured way of doing things. 
+
+<h2> What are the long-term goals of our platform? </h2>
+
+Benefit  | Detail
+------------- | -------------
+Reduced development time  | With a platform SW has higher turnaround simply because you are not writing from scratch each time. The "Don't Repeat Yourself (DRY) principle":http://en.wikipedia.org/wiki/Don%27t_repeat_yourself way |
+Maintainability  | The code is also more robust and therefore easier to keep "healthy". You have to work at this but its highly valuable to look after 1 code base that's re-used in multiple projects
+Portability | Platform code also enables one code base to run in many environments with lower porting effort
+Scalability | ... this also enables us to readily scale the application of the software. From a simple audio device to a multiple input audio powerhouse
+Testability | Inherently if you write stable modular code (which a platform must have) it becomes easier to test (Unit test / integration test)
+Readability | ... and if its testable its because its highly readable by itself. Additional writing documention once for the platform has a higher value than constantly update it across various code bases
+Higher collaboration | By working on one platform we allow better understand or this common code. Code reviews are more helpful and insightful, work can be moved across people and we all have a common goal
+
+Tymphany Platform&trade; Makes use of <a href="http://www.state-machine.com/qm/"><strong>QP&trade; (Quantum Platform)</strong></a>.
+QP is a event-driven framework that provides a base for Tymphany Platform.
+Get the book here: https://sw.tymphany.com/redmine/attachments/download/1462/PracticalUMLStatechartsInC.pdf
+
+
+We have extended QP to provide a layered, structured architecture. There are 3 layers of objects in our platform.
+UI Layer (sub divided into applications and delegates see UILayer main page), Server & Drivers
+Each set of objects has a distinct job to do.
+
+<ol>
+<li> \ref UI provides UI and control logic.</li>
+<li> \ref Servers act as middle-ware offering a standard API for all other objects as well as providing access to services</li>
+<li> \ref Drivers are the HW specific layer. It is through these that servers may provide HW agnostic services.</li>
+</ol> 
+
+\image html TymPlatOverview.png
+
+As illustrated the Active Objects may share a publish-subscribe bus. 
+This means that clients may register (subscribe) for events without even knowing the generator of those event.
+
+<h2> Class diagram </h2>
+\image html Servers.png
+
+<HR>
+\section contact Contacts
+
+- Redmine Wiki page: http://sw.tymphany.com/redmine/projects/freertos/wiki
+- See Tymphany Platform backlog here: http://flow.tymphany.com/redmine/rb/master_backlog/sw_pna_team
+- Platform Bug tracking: https://pm.tymphany.com/SpiraTeam/134.aspx
+For specific projects contact the correct PJM/LSE. There should be a segment based on the product embedded in this documentation. See an "About xx" section where xx is a project. 
+If it is missing you are probably reading the general platform documentation. Specific project documentation can be retrieved from Jenkins.
+
+<HR>
+\section files Directories and Files
+
+The following annotated directory tree lists the most important directories
+and files provided.
+
+\code
+sw\                 - Root SW directory
+  |
+  +-bootloaders\        - Bootloader code for projects.
+  |
+  |-bsp\ 				- board support packages and libraries for particular boards go here.
+  |
+  +-common\             - Common libs, API's & QP framework
+  | | +-controller\       - Contains the controller object. See architecture pages for details.
+  | | +-datatype\         - Complex dataypes and libs for them go here
+  | | +-include\          - public headers for common code
+  |
+  | | +-qp              - QP/C root directory
+  |
+  | +-ports\           - Platform-specific QP ports
+  | | | . . .
+  | | | | +-pic32\         - Ports with the PIC32 compiler
+  | | | | | +-vanilla\
+  | | | | | +-xc32\        - batch script for building QP libraries
+  | | | | | +-qep_port.h   - QEP platform-dependent include file
+  | | | | | +-qf_port.h    - QF  platform-dependent include file
+  | | | | | +-qs_port.h    - QS  platform-dependent include file
+  | | | | | +-qp_port.h    - QP  platform-dependent include file
+  | | | | . . .
+  |
+  | +-include\         - QP platform-independent header files
+  | | +-qassert.h      - QP assertions
+  | | +-qevt.h         - QEvt declaration
+  | | +-qep.h          - QEP platform-independent interface
+  | | +-qf.h           - QF platform-independent interface
+  | | +-qk.h           - QK platform-independent interface
+  | | +-qs.h           - QS platform-independent active interface
+  | | +-qs_dummy.h     - QS platform-independent inactive interface
+  | | +-qequeue.h      - QF native event queue facility
+  | | +-qmpool.h       - QF native memory pool facility
+  | | +-qpset.h        - QF native priority set facility
+  | | +-qvanilla.h     - QF native "vanilla" cooperative kernel interface
+  | | +-qp_port.h      - QP port include file
+  |
+  | +-qep\             - QEP hierarchical event processor
+  | | +-source\        - QEP platform-independent source code (*.c files)
+  | | | +- . . .
+  |
+  | +-qf\              - QF real-time framework
+  | | +-source\        - QF platform-independent source code (*.c files)
+  | | | +- . . .
+  |
+  | +-qk\              - QK pre-emptive kernel
+  | | +-source\        - QK platform-independent source code (*.c files)
+  | | | +- . . .
+  |
+  | +-qs\              - QS software tracing (target component)
+  | | +-source\        - QS platform-independent source code (*.c files)
+  | | | +- . . .
+  |
+  +-driver\                - Hardware drivers go here
+  | | +-allplay_driver\    - Qualcomm AllPlay Driver (any and all variations of it)
+  | | +-bluetooth_driver\  - BT Driver for low level comms to a BT chip (any and all variations of it e.g. Witron/Rayson)
+  | | +-i2c_driver\        - I2C Driver supplies a simple interface to talk across the i2c bus (any and all variations of it e.g. PIC32/Win32)
+  | | +-uart_driver\       - Talk across the Uart protocol(any and all variations of it e.g. PIC32/Win32)
+  | | +-include\           - Public headers for drivers
+  |
+  +-hardware_management\   - Hardware configuration libraries. These provide API's to set/get HW config
+  | | +-include\           - Public headers
+  |
+  +-include\               - Public headers for all entities (Signals/Modes generation)
+  |
+  +-project_files\         - Project specific files go under here. Each project has its own sub folder.
+  | | +- . . .
+  |
+  +-scripts\               - Helper scripts for config/file generation etc...
+  | | +- . . .
+  |
+  +-server\                - Hardware drivers go here
+  | | +-allplay_driver\    - Handles comms to/from an All play module.
+  | | +-power_server\      - Handles power management
+  | | +-i2c_server\        - Handles i2c data transfer
+  | | +-include\           - Public headers for servers
+  |
+  +-ui_layer\              - Hardware drivers go here
+  | | +-application\       - Base for application objects and other apps may go here. 
+  | | +-delegate\          - Delegate base code and sub folders 
+  | | | +-allplay_dlg\     - Delegate for allplay UI.
+  | | +-include\           - Public headers for ui_layer (apps/dlgs)
+  |
+\endcode
+
+<HR>
+\section derivation Object-Oriented Programming in C
+
+Tymphany Platform is implemented in standard ANSI-C. However it uses
+object-oriented design principles such as encapsulation (classes) and 
+single inheritance. At the C language level, encapsulation and inheritance
+become just simple coding idioms, which this section briefly describes.
+
+<b>Encapsulation</b> is the ability to package data with operations into
+<b>classes</b>. In Tymphany Platform, we do this using a set of <b>Marcos</b> defined in cplus.h.
+CLASS(name) & SUBCLASS(name, superclass) are paired with END_CLASS to encapsulate a \c struct - this is the data of a class. 
+Sandwiched between these we use the METHODS macro to define what operations use this data.
+All operations take the class as a pointer in the first argument.
+For example, the "class" \c ::cAllPlaySrv packages the AllPlay Server data (including inherited data) with the functions that operate on this
+data. The declaration of this class in C is as follows:
+ 
+\code
+SUBCLASS(cAllPlaySrv, cServer)
+    /* private: */
+    QTimeEvt timeEvt;
+    int32 timer;
+METHODS
+    /* public functions */
+	void AllPlaySrv_StartUp(cPersistantObj *me);
+	void AllPlaySrv_ShutDown(cPersistantObj *me);
+END_CLASS
+\endcode
+
+You will note that the StartUp and ShutDown in this case does not pass the cAllPlaySrv type nor does it pass
+the cServer type. These are special case functions and will be discussed further later. 
+Additionally you can see Tymphany Platform applies a number of coding and naming conventions.
+This helps strengthen the association between the class and the functions that operate on it.
+Also set precedence for other developers to follow a pattern. See <a href="#naming">Naming Conventions</a>
+      
+<b>Inheritance</b> is the ability to derive new classes based on existing
+classes in order to reuse and organize code. You can implement single
+inheritance in C very simply by literally embedding the base struct as the
+first member of the derived struct. For example, \ref FA1 "Figure 1"(a)
+shows the struct ScoreEvt derived from the base struct QEvt by
+embedding the QEvt instance as the first member of ScoreEvt. To make this
+idiom better stand out, in QP the base struct member is always named <b>super</b>.
+
+\anchor FA1 \image html FA1.jpg "Figure 1 (a) Derivation of structures in C, (b) memory alignment, and (c) the UML class diagram."
+
+As shown in \ref FA1 "Figure 1"(b), such nesting of structs always aligns
+the data member \c super at the beginning of every instance of the derived
+struct. In particular, this alignment lets you treat a pointer to the
+derived \c ScoreEvt struct as a pointer to the \c QEvt base struct.
+Consequently, you can always safely pass a pointer to \c ScoreEvt to any C
+function that expects a pointer to \c QEvt. (To be strictly correct in C, you
+should explicitly cast this pointer. In OOP such casting is called upcasting
+and is always safe.) Therefore, all functions designed for the \c QEvt
+"class" are automatically available to the ScoreEvt "class" as well as
+other "classes" derived from \c QEvt. \ref FA1 "Figure 1"(c) shows the UML
+class diagram depicting the inheritance relationship between \c ScoreEvt and
+\c QEvt classes.
+
+QP uses single inheritance quite extensively not just for derivation of events
+with parameters, but also for derivation of state machines and active objects.
+Of course, the C++ version of QP uses the native C++ support for class
+inheritance rather than "derivation of structures".
+
+<HR>
+\section naming Naming Conventions
+
+First of all we shall use <b>camelBack</b> for all naming. That's classes, identifiers, libraries, methods, functions, file names, everything! 
+This means the first word is lower case but each subsequent word starts in UPPERCASE.
+A few specifics are laid out below:
+
+<h2> Classes </h2>
+
+All classes start with a "c" followed by an UPPERCASE character following the camelBack rules. Make use of the macros found in cplus.h like so:
+
+\code
+SUBCLASS(cHelloWorldSrv, cServer)
+METHODS
+/* public functions */
+END_CLASS
+\endcode
+
+<h2> File names and folders </h2>
+
+Files should be named after the classes (if they contain classes) or library functionality they contain.
+Only difference is there should not be a "c" in front (that would just make index search difficult!).
+
+\code
+BluetoothSrv.c      <--- Main C file for BT Server
+BluetoothSrv.h      <--- Header file - loacted in the correct include/ dir
+BluetoothSrv_priv.h <--- Local private header file allows for local redefine's / declarations */
+\endcode
+
+<h2> Instances of a class </h2>
+
+Server objects should be post-pended Srv, Applications with App, Drivers with Drv and Delegates with Dlg. This is simply to allow you to easily and consistently identify objects like so:
+\code
+cHelloWorldApp helloWorldApp; /* I instantly know this is a application obj */
+cHelloWorldSrv helloWorldSrv; /* I instantly know this is a server obj */
+cHelloWorldDrv helloWorldDrv; /* I instantly know this is a driver obj */
+cHelloWorldDlg helloWorldDlg; /* I instantly know this is a delegate obj */
+\endcode
+
+<h2> Public functions of a class </h2>
+
+Public functions should be pre-pended NameOfClassMinusTheC followed by the _ then function name for consistency. Note this is not using camelBack but actually CamelBack. Like so:
+\code
+HelloWorldApp_GetID(cHelloWorldApp *me); /* If I see this anywhere I know where to find the function */
+\endcode
+
+Additionally functions that work on the object should take a pointer to the object as the 1st parameter labelled me as shown above.
+
+<h2> Structures </h2>
+
+All structures should start with a t followed by an uppercase following the camelBack rules.
+\code
+typedef struct tDevice
+{
+uint16 deviceID;
+eDeviceType deviceType;
+}tDevice;
+\endcode
+
+<h2> Enums </h2>
+
+All enums type definitions (those that are typedef'd instantiate-able) should start with a e followed by an uppercase following the camelBack rules.
+\code
+typedef enum eDeviceType{
+I2C_DEV,
+UART_DEV,
+SPI_DEV,
+} eDeviceType;
+\endcode
+
+Also to note is that the enumerated values may be UPPER case or lower case.
+However UPPER is preferred when the enumeration is meant to define a macro-like definitions, meaning these values should be considered publicly available constants and you should not use offsets from these values.
+An example would be an enumeration of object ID's.
+
+<h2> Library functions </h2>
+
+Library functions (functions which are not defined in drivers, servers or UI components) should still adhere to the camaelBack format.
+
+\code
+RingBuf_GetFreeSize(cRingBuf* me);
+\endcode
+
+With this example I know I can find this function in the ring buffer library.
+
+
+
+
+<HR>
+\image html logo.png
+*/
+

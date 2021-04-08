@@ -1,0 +1,37 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user}
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+ 
+
+#ifndef ${file}SRV_H
+#define ${file}SRV_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "server.h"
+
+SUBCLASS(c${name}Srv, cServer)
+    /* private data */
+METHODS
+    /* public functions */
+END_CLASS
+
+/* Implement these so the controller can launch the server */
+void ${name}Srv_StartUp(cPersistantObj *me);
+void ${name}Srv_ShutDown(cPersistantObj *me);
+
+/* Single instance object. Must be defined in controller */
+extern c${name}Srv ${name}Srv;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${file}SRV_H */
+

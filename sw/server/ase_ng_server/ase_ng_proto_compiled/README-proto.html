@@ -1,0 +1,6270 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Protocol Documentation</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic"/>
+    <style>
+      body {
+        width: 60em;
+        margin: 1em auto;
+        color: #222;
+        font-family: "Ubuntu", sans-serif;
+        padding-bottom: 4em;
+      }
+
+      h1 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      h2 {
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+        margin: 1.5em 0;
+      }
+
+      h3 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      a {
+        text-decoration: none;
+        color: #567e25;
+      }
+
+      table {
+        width: 100%;
+        font-size: 80%;
+        border-collapse: collapse;
+      }
+
+      thead {
+        font-weight: 700;
+        background-color: #dcdcdc;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5ex 2ex;
+      }
+
+      td p {
+        text-indent: 1em;
+        margin: 0;
+      }
+
+      td p:nth-child(1) {
+        text-indent: 0; /* No indent on first p in td */
+      }
+
+      /* Table of fields */
+      .field-table td:nth-child(1) { /* Field */
+        width: 10em;
+      }
+      .field-table td:nth-child(2) { /* Type */
+        width: 10em;
+      }
+      .field-table td:nth-child(3) { /* Label */
+        width: 6em;
+      }
+      .field-table td:nth-child(4) { /* Description */
+        width: auto;
+      }
+
+      /* Table of extensions */
+      .extension-table td:nth-child(1) { /* Extension */
+        width: 10em;
+      }
+      .extension-table td:nth-child(2) { /* Type */
+        width: 10em;
+      }
+      .extension-table td:nth-child(3) { /* Base */
+        width: 10em;
+      }
+      .extension-table td:nth-child(4) { /* Number */
+        width: 5em;
+      }
+      .extension-table td:nth-child(5) { /* Description */
+        width: auto;
+      }
+
+      /* Table of enum values. */
+      .enum-table td:nth-child(1) { /* Name */
+        width: 10em;
+      }
+      .enum-table td:nth-child(2) { /* Number */
+        width: 10em;
+      }
+      .enum-table td:nth-child(3) { /* Description */
+        width: auto;
+      }
+
+      /* Table of scalar value types. */
+      .scalar-value-types-table tr {
+        height: 3em;
+      }
+
+      /* Table of contents. */
+      #toc-container ul {
+        list-style-type: none;
+        padding-left: 1em;
+        line-height: 180%;
+        margin: 0;
+      }
+      #toc > li > a {
+        font-weight: bold;
+      }
+
+      /* File heading div */
+      .file-heading {
+        width: 100%;
+        display: table;
+        border-bottom: 1px solid #aaa;
+        margin: 4em 0 1.5em 0;
+      }
+      .file-heading h2 {
+        border: none;
+        display: table-cell;
+      }
+      .file-heading a {
+        text-align: right;
+        display: table-cell;
+      }
+
+      /* The 'M', 'E' and 'X' badges in the ToC */
+      .badge {
+        width: 1.6em;
+        height: 1.6em;
+        display: inline-block;
+
+        line-height: 1.6em;
+        text-align: center;
+        font-weight: bold;
+        font-size: 60%;
+
+        color: #89ba48;
+        background-color: #dff0c8;
+
+        margin: 0.5ex 1em 0.5ex -1em;
+        border: 1px solid #fbfbfb;
+        border-radius: 1ex;
+      }
+    </style>
+
+    <!-- User custom CSS -->
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+  </head>
+
+  <body>
+
+    <h1 id="title">Protocol Documentation</h1>
+
+    <h2>Table of Contents</h2>
+
+    <div id="toc-container">
+      <ul id="toc">
+        <li>
+          <a href="#ase-fep-ReqResp.proto">ase-fep-ReqResp.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.AseFep.ReqResp">
+                <span class="badge">E</span>
+                ReqResp
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#ase-fep.proto">ase-fep.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.AseFep.Event">
+                <span class="badge">M</span>
+                Event
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.AseFep.Req">
+                <span class="badge">M</span>
+                Req
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.AseFep.Resp">
+                <span class="badge">M</span>
+                Resp
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.AseFep.Event.Type">
+                <span class="badge">E</span>
+                Event.Type
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#common.proto">common.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Core.GenericResponse">
+                <span class="badge">M</span>
+                GenericResponse
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Core.GenericResponse.Status">
+                <span class="badge">E</span>
+                GenericResponse.Status
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#core.proto">core.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Core.AseFepMessage">
+                <span class="badge">M</span>
+                AseFepMessage
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Core.FepAseMessage">
+                <span class="badge">M</span>
+                FepAseMessage
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#dsp.proto">dsp.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Dsp.AbsoluteVolume">
+                <span class="badge">M</span>
+                AbsoluteVolume
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.InternalAmplifierCommand">
+                <span class="badge">M</span>
+                InternalAmplifierCommand
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.InternalSpeaker">
+                <span class="badge">M</span>
+                InternalSpeaker
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.LineInSensitivity">
+                <span class="badge">M</span>
+                LineInSensitivity
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.Mute">
+                <span class="badge">M</span>
+                Mute
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.NTCDataEvent">
+                <span class="badge">M</span>
+                NTCDataEvent
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.NTCDataEvent.NTCValue">
+                <span class="badge">M</span>
+                NTCDataEvent.NTCValue
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.Parameter">
+                <span class="badge">M</span>
+                Parameter
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.PositionSoundMode">
+                <span class="badge">M</span>
+                PositionSoundMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.RelativeVolumeChange">
+                <span class="badge">M</span>
+                RelativeVolumeChange
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.RequestAudioInput">
+                <span class="badge">M</span>
+                RequestAudioInput
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.RequestInternalSpeakerCompensation">
+                <span class="badge">M</span>
+                RequestInternalSpeakerCompensation
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.RequestPositionSoundMode">
+                <span class="badge">M</span>
+                RequestPositionSoundMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ResponseInternalSpeakerCompensation">
+                <span class="badge">M</span>
+                ResponseInternalSpeakerCompensation
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ResponsePositionSoundMode">
+                <span class="badge">M</span>
+                ResponsePositionSoundMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.SpeakerEnableCommand">
+                <span class="badge">M</span>
+                SpeakerEnableCommand
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.SpeakerEnableCommand.Speaker">
+                <span class="badge">M</span>
+                SpeakerEnableCommand.Speaker
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ToneTouch">
+                <span class="badge">M</span>
+                ToneTouch
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ToslinkOutSampleRate">
+                <span class="badge">M</span>
+                ToslinkOutSampleRate
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.InternalAmplifierCommand.State">
+                <span class="badge">E</span>
+                InternalAmplifierCommand.State
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.InternalSpeaker.Position">
+                <span class="badge">E</span>
+                InternalSpeaker.Position
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.InternalSpeaker.Type">
+                <span class="badge">E</span>
+                InternalSpeaker.Type
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.LineInSensitivity.Sensitivity">
+                <span class="badge">E</span>
+                LineInSensitivity.Sensitivity
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.NTCDataEvent.NTCValue.NTC">
+                <span class="badge">E</span>
+                NTCDataEvent.NTCValue.NTC
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.Parameter.Type">
+                <span class="badge">E</span>
+                Parameter.Type
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.PositionSoundMode.Orientation">
+                <span class="badge">E</span>
+                PositionSoundMode.Orientation
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.PositionSoundMode.Position">
+                <span class="badge">E</span>
+                PositionSoundMode.Position
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.RequestAudioInput.AudioInput">
+                <span class="badge">E</span>
+                RequestAudioInput.AudioInput
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ResponseInternalSpeakerCompensation.Error">
+                <span class="badge">E</span>
+                ResponseInternalSpeakerCompensation.Error
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.ResponsePositionSoundMode.Error">
+                <span class="badge">E</span>
+                ResponsePositionSoundMode.Error
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Dsp.SpeakerEnableCommand.Speaker.Id">
+                <span class="badge">E</span>
+                SpeakerEnableCommand.Speaker.Id
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#eeb.proto">eeb.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Eeb.EebTelegram">
+                <span class="badge">M</span>
+                EebTelegram
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Eeb.EebTelegram.PacketType">
+                <span class="badge">E</span>
+                EebTelegram.PacketType
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#fep-ase-ReqResp.proto">fep-ase-ReqResp.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.FepAse.ReqResp">
+                <span class="badge">E</span>
+                ReqResp
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#fep-ase.proto">fep-ase.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.FepAse.Event">
+                <span class="badge">M</span>
+                Event
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FepAse.Req">
+                <span class="badge">M</span>
+                Req
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FepAse.Resp">
+                <span class="badge">M</span>
+                Resp
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FepAse.Event.Type">
+                <span class="badge">E</span>
+                Event.Type
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#firmware-update.proto">firmware-update.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.FirmwareUpdate.Chunk">
+                <span class="badge">M</span>
+                Chunk
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.ChunkResponse">
+                <span class="badge">M</span>
+                ChunkResponse
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.VersionInfo">
+                <span class="badge">M</span>
+                VersionInfo
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.VersionInfo.Module">
+                <span class="badge">M</span>
+                VersionInfo.Module
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.WplOption">
+                <span class="badge">M</span>
+                WplOption
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.Chunk.ModuleType">
+                <span class="badge">E</span>
+                Chunk.ModuleType
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.ChunkResponse.Status">
+                <span class="badge">E</span>
+                ChunkResponse.Status
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.WplOption.ID">
+                <span class="badge">E</span>
+                WplOption.ID
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.WplOption.ModuleID">
+                <span class="badge">E</span>
+                WplOption.ModuleID
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.FirmwareUpdate.WplOption.PartID">
+                <span class="badge">E</span>
+                WplOption.PartID
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#hdmi.proto">hdmi.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Hdmi.Arc">
+                <span class="badge">M</span>
+                Arc
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.AudioFormat">
+                <span class="badge">M</span>
+                AudioFormat
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.AudioModeSelect">
+                <span class="badge">M</span>
+                AudioModeSelect
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.HdmiInput">
+                <span class="badge">M</span>
+                HdmiInput
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.InputSelected">
+                <span class="badge">M</span>
+                InputSelected
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.InputSense">
+                <span class="badge">M</span>
+                InputSense
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.InputsSense">
+                <span class="badge">M</span>
+                InputsSense
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.InputsSense.SenseState">
+                <span class="badge">M</span>
+                InputsSense.SenseState
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.StandbyCmd">
+                <span class="badge">M</span>
+                StandbyCmd
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.UhdDeepColour">
+                <span class="badge">M</span>
+                UhdDeepColour
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.UhdDeepColour.UhdDCState">
+                <span class="badge">M</span>
+                UhdDeepColour.UhdDCState
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.Arc.Status">
+                <span class="badge">E</span>
+                Arc.Status
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.AudioFormat.AudioMode">
+                <span class="badge">E</span>
+                AudioFormat.AudioMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.AudioModeSelect.Type">
+                <span class="badge">E</span>
+                AudioModeSelect.Type
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.InputSelected.AudioSelected">
+                <span class="badge">E</span>
+                InputSelected.AudioSelected
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Hdmi.StandbyCmd.Type">
+                <span class="badge">E</span>
+                StandbyCmd.Type
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#light-sensor.proto">light-sensor.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.LightSensor.Command">
+                <span class="badge">M</span>
+                Command
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.LightSensor.LightLevel">
+                <span class="badge">M</span>
+                LightLevel
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.LightSensor.ReplyData">
+                <span class="badge">M</span>
+                ReplyData
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.LightSensor.Command.Type">
+                <span class="badge">E</span>
+                Command.Type
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#player.proto">player.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Player.Data">
+                <span class="badge">M</span>
+                Data
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Player.Data.Source">
+                <span class="badge">E</span>
+                Data.Source
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Player.Data.State">
+                <span class="badge">E</span>
+                Data.State
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#power-link.proto">power-link.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.PowerLink.AllSensesStatus">
+                <span class="badge">M</span>
+                AllSensesStatus
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.PowerLink.AllSensesStatus.PortState">
+                <span class="badge">M</span>
+                AllSensesStatus.PortState
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.PowerLink.Data">
+                <span class="badge">M</span>
+                Data
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.PowerLink.SenseEvent">
+                <span class="badge">M</span>
+                SenseEvent
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.PowerLink.SetMute">
+                <span class="badge">M</span>
+                SetMute
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.PowerLink.SetON">
+                <span class="badge">M</span>
+                SetON
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#production.proto">production.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Production.ButtonState">
+                <span class="badge">M</span>
+                ButtonState
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Production.GetButtonState">
+                <span class="badge">M</span>
+                GetButtonState
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Production.LedModeSet">
+                <span class="badge">M</span>
+                LedModeSet
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Production.Tunnel">
+                <span class="badge">M</span>
+                Tunnel
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Production.GetButtonState.ButtonId">
+                <span class="badge">E</span>
+                GetButtonState.ButtonId
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Production.LedModeSet.StatusLed">
+                <span class="badge">E</span>
+                LedModeSet.StatusLed
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#puc.proto">puc.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Puc.PucCommand">
+                <span class="badge">M</span>
+                PucCommand
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Puc.PucCommand.CommandFormat">
+                <span class="badge">E</span>
+                PucCommand.CommandFormat
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Puc.PucCommand.ModulationMode">
+                <span class="badge">E</span>
+                PucCommand.ModulationMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Puc.PucCommand.SendMode">
+                <span class="badge">E</span>
+                PucCommand.SendMode
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#soundwall.proto">soundwall.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.SoundWall.A2Bmode">
+                <span class="badge">M</span>
+                A2Bmode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.BassAndRoomEQ">
+                <span class="badge">M</span>
+                BassAndRoomEQ
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.DriverGain">
+                <span class="badge">M</span>
+                DriverGain
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.DspEqParam">
+                <span class="badge">M</span>
+                DspEqParam
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.GainAndDelay">
+                <span class="badge">M</span>
+                GainAndDelay
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.MuteMode">
+                <span class="badge">M</span>
+                MuteMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.NodeIndex">
+                <span class="badge">M</span>
+                NodeIndex
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.PowerMode">
+                <span class="badge">M</span>
+                PowerMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.ReqTestTone">
+                <span class="badge">M</span>
+                ReqTestTone
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.RespGetTotalNodes">
+                <span class="badge">M</span>
+                RespGetTotalNodes
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.A2Bmode.Mode">
+                <span class="badge">E</span>
+                A2Bmode.Mode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.MuteMode.Mode">
+                <span class="badge">E</span>
+                MuteMode.Mode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.SoundWall.PowerMode.Mode">
+                <span class="badge">E</span>
+                PowerMode.Mode
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#spdif.proto">spdif.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Spdif.AudioFormatChanged">
+                <span class="badge">M</span>
+                AudioFormatChanged
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Spdif.AudioFormatChanged.AudioMode">
+                <span class="badge">E</span>
+                AudioFormatChanged.AudioMode
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Spdif.AudioFormatChanged.SampleFrequency">
+                <span class="badge">E</span>
+                AudioFormatChanged.SampleFrequency
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#system.proto">system.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.System.AudioCue">
+                <span class="badge">M</span>
+                AudioCue
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.Log">
+                <span class="badge">M</span>
+                Log
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo">
+                <span class="badge">M</span>
+                NetworkInfo
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo.NetworkInterface">
+                <span class="badge">M</span>
+                NetworkInfo.NetworkInterface
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo.NetworkInterface.WiFi">
+                <span class="badge">M</span>
+                NetworkInfo.NetworkInterface.WiFi
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerRequest">
+                <span class="badge">M</span>
+                PowerRequest
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerStatus">
+                <span class="badge">M</span>
+                PowerStatus
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerSupplyVoltage">
+                <span class="badge">M</span>
+                PowerSupplyVoltage
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.RespGetBoardVersion">
+                <span class="badge">M</span>
+                RespGetBoardVersion
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.Voltage">
+                <span class="badge">M</span>
+                Voltage
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo.NetworkInterface.State">
+                <span class="badge">E</span>
+                NetworkInfo.NetworkInterface.State
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo.NetworkInterface.Type">
+                <span class="badge">E</span>
+                NetworkInfo.NetworkInterface.Type
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.NetworkInfo.NetworkInterface.WiFi.Quality">
+                <span class="badge">E</span>
+                NetworkInfo.NetworkInterface.WiFi.Quality
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerRequest.Type">
+                <span class="badge">E</span>
+                PowerRequest.Type
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerStatus.ACLineStatus">
+                <span class="badge">E</span>
+                PowerStatus.ACLineStatus
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerStatus.BatteryHealthStatus">
+                <span class="badge">E</span>
+                PowerStatus.BatteryHealthStatus
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.PowerStatus.BatteryStatus">
+                <span class="badge">E</span>
+                PowerStatus.BatteryStatus
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.System.Voltage.Type">
+                <span class="badge">E</span>
+                Voltage.Type
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#wpl.proto">wpl.proto</a>
+          <ul>
+            <li>
+              <a href="#Proto.Wpl.Event">
+                <span class="badge">M</span>
+                Event
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Wpl.Request">
+                <span class="badge">M</span>
+                Request
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Wpl.Response">
+                <span class="badge">M</span>
+                Response
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Wpl.Command">
+                <span class="badge">E</span>
+                Command
+              </a>
+            </li>
+            <li>
+              <a href="#Proto.Wpl.Status">
+                <span class="badge">E</span>
+                Status
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#scalar-value-types">Scalar Value Types</a></li>
+      </ul>
+    </div>
+
+    <div class="file-heading">
+      <h2 id="ase-fep-ReqResp.proto">ase-fep-ReqResp.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.AseFep.ReqResp">ReqResp</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FIRMWARE_UPDATE_VERSION_INFO</td>
+          <td>0</td>
+          <td><p>has Response data of type FirmwareUpdate.VersionInfo</p></td>
+        </tr>
+        <tr>
+          <td>FIRMWARE_UPDATE_CHUNK</td>
+          <td>1</td>
+          <td><p>has Response data of type FirmwareUpdate.ChunkResponse</p></td>
+        </tr>
+        <tr>
+          <td>FIRMWARE_UPDATE_SWITCH_TO_BOOTLOADER</td>
+          <td>2</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_STATUS</td>
+          <td>3</td>
+          <td><p>Has response Hdmi.Arc.Status</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_START</td>
+          <td>4</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_END</td>
+          <td>5</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_INPUT_SELECT</td>
+          <td>6</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>POWER_STATUS</td>
+          <td>7</td>
+          <td><p>has Response data of type System.PowerStatus</p></td>
+        </tr>
+        <tr>
+          <td>LINE_IN_SENSITIVITY</td>
+          <td>8</td>
+          <td><p>has Request and Response data of type Dsp.LineInSensitivity
+/ Request may have missing Dsp.LineInSensitivity data field. It means query
+/ of the current linein sensitivity
+/ Response should always have Dsp.LineInSensitivity data field populated</p></td>
+        </tr>
+        <tr>
+          <td>AUDIO_INPUT</td>
+          <td>9</td>
+          <td><p>Generic response
+/ Has request data of type Dsp.AudioInput</p></td>
+        </tr>
+        <tr>
+          <td>POSITION_SOUND_MODE</td>
+          <td>10</td>
+          <td><p>has request data of type Dsp.RequestPositionSoundMode
+/ has response data of type Dsp.ResponsePositionSoundMode</p></td>
+        </tr>
+        <tr>
+          <td>INTERNAL_SPEAKER_COMPENSATION</td>
+          <td>11</td>
+          <td><p>has request data of type Dsp.RequestInternalSpeakerCompensation
+/ has response data of type Dsp.ResponseInternalSpeakerCompensation</p></td>
+        </tr>
+        <tr>
+          <td>POWER_LINK_ALL_SENSES_STATUS</td>
+          <td>12</td>
+          <td><p>has Generic request
+/ has response data of type PowerLink.AllSensesStatus</p></td>
+        </tr>
+        <tr>
+          <td>POWER_LINK_SET_ON</td>
+          <td>13</td>
+          <td><p>has request data of type PowerLink.SetON
+/ has Generic response</p></td>
+        </tr>
+        <tr>
+          <td>POWER_LINK_SET_MUTE</td>
+          <td>14</td>
+          <td><p>has request data of type PowerLink.SetMute
+/ has Generic response</p></td>
+        </tr>
+        <tr>
+          <td>INTERNAL_AMPLIFIER_COMMAND</td>
+          <td>15</td>
+          <td><p>has request data of type Dsp.InternalAmplifierCommand
+/ has Generic response</p></td>
+        </tr>
+        <tr>
+          <td>FEP_APPLICATION_IS_RUNNING</td>
+          <td>16</td>
+          <td><p>checks whether the Application is running right now.
+/ has Generic response
+/ DONE if the application is running
+/ ERROR if the application is not running</p></td>
+        </tr>
+        <tr>
+          <td>EEB_TELEGRAM_TRANSMIT</td>
+          <td>17</td>
+          <td><p>has request data of type Eeb.EebTelegram
+/ has generic response
+/ DONE if the telegram was transmitted
+/ ERROR if the transmission failed</p></td>
+        </tr>
+        <tr>
+          <td>PRODUCTION_LED_MODE_SET</td>
+          <td>18</td>
+          <td><p>has request data of type Production.LedModeSet
+/ has Generic response response
+/ DONE if the led is valid
+/ ERROR if the led is invalid for the product</p></td>
+        </tr>
+        <tr>
+          <td>PRODUCTION_GET_BUTTON_STATE</td>
+          <td>19</td>
+          <td><p>has request data of type Production.GetButtonState
+/ has Production.ButtonState response for valid buttons
+/ has generic ERROR response for invalid buttons on the product</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_SEND_STANDBY</td>
+          <td>20</td>
+          <td><p>Generic response
+/ Send CEC command Standby</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_SEND_POWER_UP_TV</td>
+          <td>21</td>
+          <td><p>Generic response
+/ Send CEC command to power up TV</p></td>
+        </tr>
+        <tr>
+          <td>WPL_COMMAND</td>
+          <td>22</td>
+          <td><p>has request data of type Wpl.Request
+/ has Wpl.Response response</p></td>
+        </tr>
+        <tr>
+          <td>PUC_COMMAND_SEND</td>
+          <td>23</td>
+          <td><p>has request data of type Puc.PucCommand
+/ has generic response
+/ DONE if the command was send
+/ ERROR if the command failed
+/ NOT_SUPPORTED if the command contains any unsupported types</p></td>
+        </tr>
+        <tr>
+          <td>POWER_REQUEST</td>
+          <td>24</td>
+          <td><p>has request data of type System.PowerRequest
+/ has generic response
+/ DONE if the power request has been accepted
+/ ERROR if the command failed</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_UHD_DEEP_COLOUR_ON</td>
+          <td>25</td>
+          <td><p>Generic response
+/ Add UHD deep colour setting to EDID if present in TV
+/ HdmiInput parameter</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_UHD_DEEP_COLOUR_OFF</td>
+          <td>26</td>
+          <td><p>Generic response
+/ Remove UHD deep colour setting from EDID if present
+/ HdmiInput parameter</p></td>
+        </tr>
+        <tr>
+          <td>POWERSUPPLY_VOLTAGE</td>
+          <td>27</td>
+          <td><p>has response data of type System.PowerSupplyVoltage</p></td>
+        </tr>
+        <tr>
+          <td>SEND_POWER_LINK_DATA</td>
+          <td>28</td>
+          <td><p>has request data of type PowerLink.Data
+/ has generic response</p></td>
+        </tr>
+        <tr>
+          <td>TOSLINK_OUT_ADJUST_SAMPLE_RATE</td>
+          <td>29</td>
+          <td><p>has request data of type Dsp.ToslinkOutSampleRate
+/ has generic response</p></td>
+        </tr>
+        <tr>
+          <td>TOSLINK_OUT_VOLUME_REGULATION_ON</td>
+          <td>30</td>
+          <td><p>request without data
+/ has generic response</p></td>
+        </tr>
+        <tr>
+          <td>TOSLINK_OUT_VOLUME_REGULATION_OFF</td>
+          <td>31</td>
+          <td><p>request without data
+/ has generic response</p></td>
+        </tr>
+        <tr>
+          <td>GET_HDMI_UHD_DEEP_COLOUR_STATUS</td>
+          <td>32</td>
+          <td><p>Get HDMI UHD Deep colour setting values for all HDMI inputs
+/ Response has Hdmi.UhdDeepColour</p></td>
+        </tr>
+        <tr>
+          <td>GET_HDMI_AUDIO_FORMAT</td>
+          <td>33</td>
+          <td><p>Get HDMI AudioFormat, it is also sent as an event, so it should only be asked for after application boot.
+/ Response has Hdmi.AudioFormat</p></td>
+        </tr>
+        <tr>
+          <td>GET_HDMI_INPUT_SELECTED</td>
+          <td>34</td>
+          <td><p>Get HDMI Input selected (input number or ARC), it is also sent as an event, so it should only be asked for after application boot.
+/ Response has Hdmi.InputSelected</p></td>
+        </tr>
+        <tr>
+          <td>GET_HDMI_SENSE_STATUS</td>
+          <td>35</td>
+          <td><p>HDMI sense ON/OFF for all inputs
+/ Response has Hdmi.InputsSense</p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_ENABLE_COMMAND</td>
+          <td>36</td>
+          <td><p>Request has data of type Dsp.SpeakerEnableCommand
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_AUDIO_MODE_SELECT</td>
+          <td>37</td>
+          <td><p>Request HDMI input audio to be automatically detected from inputs or always ARC (Audio guidance)
+/ Input parameter Hdmi.AudioModeSelect
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>LIGHT_SENSOR_TELEGRAM</td>
+          <td>38</td>
+          <td><p>has request data of type LightSensor.Command
+/ has response data of type LightSensor.ReplyData</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_A2B_MODE</td>
+          <td>39</td>
+          <td><p>Get the A2B mode from soundwall
+/ Response has SoundWall.A2Bmode</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_A2B_MODE</td>
+          <td>40</td>
+          <td><p>Set the A2B mode to soundwall
+/ Input parameter SoundWall.A2Bmode
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_GAIN_AND_DELAY</td>
+          <td>41</td>
+          <td><p>set the &quot;GAIN_AND_DELAY&quot; parameter to soundwall
+/ Input parameter SoundWall.GainAndDelay
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_DRIVER_GAIN</td>
+          <td>42</td>
+          <td><p>set the &quot;DRIVER_GAIN&quot; parameter to soundwall
+/ Input parameter SoundWall.DriverGain
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_BASS_AND_ROOMEQ</td>
+          <td>43</td>
+          <td><p>set the &quot;BASS_AND_ROOMEQ&quot; parameter to soundwall
+/ Input parameter SoundWall.BassAndRoomEQ
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_TOTAL_NODES</td>
+          <td>44</td>
+          <td><p>Get total active soundwalls nodes.
+/ Response has SoundWall.RespGetTotalNodes</p></td>
+        </tr>
+        <tr>
+          <td>DSP_PARAMETER</td>
+          <td>45</td>
+          <td><p>Request DSP paramter change
+/ Request has value of type Dsp.Parameter
+/ Possible ERROR is set inside generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_POWER_MODE</td>
+          <td>46</td>
+          <td><p>Get power mode of soundwalls, standby/working
+/ Response has SoundWall.PowerMode</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_POWER_MODE</td>
+          <td>47</td>
+          <td><p>Set power mode to soundwalls, standby/working
+/ Input parameter : SoundWall.PowerMode</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_WRITE_DSP_PARAM</td>
+          <td>48</td>
+          <td><p>store the DSP parameter to MCU flash
+/ input parameter : SoundWall.NodeIndex
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_MUTE_MODE</td>
+          <td>49</td>
+          <td><p>Mute/Unmute control
+/ Input parameter : SoundWall.MuteMode</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_NTC_INFO</td>
+          <td>50</td>
+          <td><p>Get version info from specify soundwall
+/ input parameter : SoundWall.NodeIndex, N/A to get MasterTile version
+/ Response has Dsp.NTCDataEvent if nodeIndex is correct.
+/ Response genericResponse:Error when input wrong nodeIndex</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SYSTEM_RESTART</td>
+          <td>51</td>
+          <td><p>Restart the soundwall without power cycle the AC cable.
+/ Input parameter : N/A
+/ Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_GAIN_AND_DELAY</td>
+          <td>52</td>
+          <td><p>Description: get the &quot;GAIN_AND_DELAY&quot; parameter from soundwall
+/ Parameters: nodeIndex
+/ Response: Soundwall.GainAndDelay</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_DRIVER_GAIN</td>
+          <td>53</td>
+          <td><p>Description: get the &quot;DRIVER_GAIN&quot; parameter from soundwall
+/ Parameters: nodeIndex
+/ Response: Soundwall.DriverGain</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_GET_BASS_AND_ROOMEQ</td>
+          <td>54</td>
+          <td><p>Description: get the &quot;BASS_AND_ROOMEQ&quot; parameter from soundwall
+/ Parameters: nodeIndex
+/ Response: Soundwall.BassAndRoomEQ</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_SET_TEST_TONE</td>
+          <td>55</td>
+          <td><p>Description: generator the white-noise the specify speaker tile no.
+/ Parameters: ReqTestTone
+/ Response: GenericResponse</p></td>
+        </tr>
+        <tr>
+          <td>DSP_VOLUME_FADE</td>
+          <td>56</td>
+          <td><p>Request volume fade
+/ Input parameter Dsp.AbsoluteVolume with fade_duration field set
+/ Response: Generic response. If successful, this response should be delivered upon volume fade is finished</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_GET_BOARD_VERSION</td>
+          <td>57</td>
+          <td><p>Description: get the boardversion from FEP.
+/ Parameters: N/A
+/ Response: System.RespGetBoardVersion</p></td>
+        </tr>
+        <tr>
+          <td>SOUNDWALL_FACTORY_RESET</td>
+          <td>58</td>
+          <td><p>Description: Factory Reset command to soundwall
+/ Parameters: nodeIndex
+/ Generic response</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="ase-fep.proto">ase-fep.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.AseFep.Event">Event</h3>
+    <p>Event report from ASE to FEP (Local UI).</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.AseFep.Event.Type">Event.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>soundwallParam</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>productionTunnel</td>
+          <td><a href="#Proto.Production.Tunnel">Tunnel</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td><a href="#Proto.Dsp.AbsoluteVolume">AbsoluteVolume</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>mute</td>
+          <td><a href="#Proto.Dsp.Mute">Mute</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>networkInfo</td>
+          <td><a href="#Proto.System.NetworkInfo">NetworkInfo</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>playerData</td>
+          <td><a href="#Proto.Player.Data">Data</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>dspToneTouch</td>
+          <td><a href="#Proto.Dsp.ToneTouch">ToneTouch</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.AseFep.Req">Req</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.AseFep.ReqResp">ReqResp</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>firmwareUpdateChunk</td>
+          <td><a href="#Proto.FirmwareUpdate.Chunk">Chunk</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>hdmiInput</td>
+          <td><a href="#Proto.Hdmi.HdmiInput">HdmiInput</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lineInSensitivity</td>
+          <td><a href="#Proto.Dsp.LineInSensitivity">LineInSensitivity</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioInput</td>
+          <td><a href="#Proto.Dsp.RequestAudioInput">RequestAudioInput</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>positionSoundMode</td>
+          <td><a href="#Proto.Dsp.RequestPositionSoundMode">RequestPositionSoundMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>internalSpeakerCompensation</td>
+          <td><a href="#Proto.Dsp.RequestInternalSpeakerCompensation">RequestInternalSpeakerCompensation</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerLinkSetOn</td>
+          <td><a href="#Proto.PowerLink.SetON">SetON</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerLinkSetMute</td>
+          <td><a href="#Proto.PowerLink.SetMute">SetMute</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>internalAmplifierCommand</td>
+          <td><a href="#Proto.Dsp.InternalAmplifierCommand">InternalAmplifierCommand</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>eebTelegramTransmit</td>
+          <td><a href="#Proto.Eeb.EebTelegram">EebTelegram</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ledMode</td>
+          <td><a href="#Proto.Production.LedModeSet">LedModeSet</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>getButtonState</td>
+          <td><a href="#Proto.Production.GetButtonState">GetButtonState</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>standbyType</td>
+          <td><a href="#Proto.Hdmi.StandbyCmd">StandbyCmd</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>wplRequest</td>
+          <td><a href="#Proto.Wpl.Request">Request</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>sendPucCommand</td>
+          <td><a href="#Proto.Puc.PucCommand">PucCommand</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerRequest</td>
+          <td><a href="#Proto.System.PowerRequest">PowerRequest</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerLinkData</td>
+          <td><a href="#Proto.PowerLink.Data">Data</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>toslinkOutSampleRate</td>
+          <td><a href="#Proto.Dsp.ToslinkOutSampleRate">ToslinkOutSampleRate</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>speakerEnableCommand</td>
+          <td><a href="#Proto.Dsp.SpeakerEnableCommand">SpeakerEnableCommand</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioMode</td>
+          <td><a href="#Proto.Hdmi.AudioModeSelect">AudioModeSelect</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lightSensorCommand</td>
+          <td><a href="#Proto.LightSensor.Command">Command</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqA2Bmode</td>
+          <td><a href="#Proto.SoundWall.A2Bmode">A2Bmode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqGainAndDelay</td>
+          <td><a href="#Proto.SoundWall.GainAndDelay">GainAndDelay</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqDriverGain</td>
+          <td><a href="#Proto.SoundWall.DriverGain">DriverGain</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqBassAndRoomEQ</td>
+          <td><a href="#Proto.SoundWall.BassAndRoomEQ">BassAndRoomEQ</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>dspParameter</td>
+          <td><a href="#Proto.Dsp.Parameter">Parameter</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqPowerMode</td>
+          <td><a href="#Proto.SoundWall.PowerMode">PowerMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#Proto.SoundWall.NodeIndex">NodeIndex</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>muteMode</td>
+          <td><a href="#Proto.SoundWall.MuteMode">MuteMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>reqTestTone</td>
+          <td><a href="#Proto.SoundWall.ReqTestTone">ReqTestTone</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>dspAbsoluteVolume</td>
+          <td><a href="#Proto.Dsp.AbsoluteVolume">AbsoluteVolume</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.AseFep.Resp">Resp</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.FepAse.ReqResp">ReqResp</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>genericResponse</td>
+          <td><a href="#Proto.Core.GenericResponse">GenericResponse</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>networkInfo</td>
+          <td><a href="#Proto.System.NetworkInfo">NetworkInfo</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td><a href="#Proto.Dsp.AbsoluteVolume">AbsoluteVolume</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.AseFep.Event.Type">Event.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BOOTED</td>
+          <td>0</td>
+          <td><p>ASE has completed the boot sequence and is ready to receive messages from FEP</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_STANDBY</td>
+          <td>1</td>
+          <td><p>Event send when ASE enter source standby</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_ON</td>
+          <td>2</td>
+          <td><p>Event send when exiting standby (a source has started from standby)</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_ASE_RESTART</td>
+          <td>3</td>
+          <td><p>ASE is going to restart, FEP will gracefully shut down DSP and amplifier and signal reboot on the local UI.</p></td>
+        </tr>
+        <tr>
+          <td>FACTORY_RESET_DONE</td>
+          <td>4</td>
+          <td><p>Event send when &gt;&gt;reset to factory&lt;&lt; is done
+/ When starting factory reset procedure, FACTORY_RESET_START is sent</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_ON_NO_OPERATION</td>
+          <td>5</td>
+          <td><p>Event send when the product is ON, but no user interaction is registered for a given time period, default is
+/ 5 minutes. How the FEP will react to the event is product specific, dimming the LEDs is one option.</p></td>
+        </tr>
+        <tr>
+          <td>TUNNEL</td>
+          <td>6</td>
+          <td><p>associated data in productionTunnel</p></td>
+        </tr>
+        <tr>
+          <td>SW_UPDATE_STARTED</td>
+          <td>7</td>
+          <td><p>Software update of the ASE has started, local UI must show software update in progress. ASE reboot is part
+/ of the update process, if new firmware is available for the FEP, firmware update starts after ASE reboot.</p></td>
+        </tr>
+        <tr>
+          <td>SW_UPDATE_FINISHED</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SW_UPDATE_FAILED</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>COMFORT_TONE_START</td>
+          <td>10</td>
+          <td><p>ASE indicates to FEP when the comfort sound playback starts. FEP has to turn on the DSP in case the DSP is off.</p></td>
+        </tr>
+        <tr>
+          <td>COMFORT_TONE_DONE</td>
+          <td>11</td>
+          <td><p>ASE indicates to FEP when the comfort sound playback is finished. FEP can turn off the DSP in case it was off
+/ before the comfort sound playback.</p></td>
+        </tr>
+        <tr>
+          <td>VOLUME_CHANGED</td>
+          <td>12</td>
+          <td><p>associated data in field of type Dsp.AbsoluteVolume
+/ field fade_duration should be ignored. Use DSP_VOLUME_FADE request to fade volume</p></td>
+        </tr>
+        <tr>
+          <td>MUTE_CHANGED</td>
+          <td>13</td>
+          <td><p>associated data in field of type Dsp.Mute</p></td>
+        </tr>
+        <tr>
+          <td>NETWORK_INFO</td>
+          <td>14</td>
+          <td><p>associated data in field of type System.NetworkInfo</p></td>
+        </tr>
+        <tr>
+          <td>PLAYER_DATA</td>
+          <td>15</td>
+          <td><p>associated data in field of type Player.Data</p></td>
+        </tr>
+        <tr>
+          <td>FACTORY_RESET_START</td>
+          <td>16</td>
+          <td><p>Event send when &gt;&gt;reset to factory&lt;&lt; is initiated
+/ FACTORY_RESET_DONE is sent when factory reset procedure has finished</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_ENABLED</td>
+          <td>17</td>
+          <td><p>Bluetooth pairing is active. ASE is in discoverable state(BT).</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_DISABLED</td>
+          <td>18</td>
+          <td><p>Bluetooth pairing is inactive. ASE is NOT in discoverable state(BT).</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_FAILED</td>
+          <td>19</td>
+          <td><p>Pair of Bluetooth accessory failed.</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_SUCCEEDED</td>
+          <td>20</td>
+          <td><p>A Bluetooth accessory has been successfully paired.</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_ENABLED</td>
+          <td>21</td>
+          <td><p>Bluetooth Low Energy pairing is active. ASE is in discoverable state(BTLE).</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_DISABLED</td>
+          <td>22</td>
+          <td><p>Bluetooth Low Energy pairing is inactive. ASE is NOT in discoverable state(BTLE).</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_FAILED</td>
+          <td>23</td>
+          <td><p>Pair of Bluetooth Low Energy accessory failed.</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_SUCCEEDED</td>
+          <td>24</td>
+          <td><p>A Bluetooth Low Energy accessory has been successfully paired.</p></td>
+        </tr>
+        <tr>
+          <td>LOG_MESSAGE_AVAILABLE</td>
+          <td>25</td>
+          <td><p>Informs the peer that System.Log message is ready to be received</p></td>
+        </tr>
+        <tr>
+          <td>LOG_MESSAGE_UNAVAILABLE</td>
+          <td>26</td>
+          <td><p>This is a symmetric event to LOG_MESSAGE_AVAILABLE</p></td>
+        </tr>
+        <tr>
+          <td>DSP_TONE_TOUCH</td>
+          <td>27</td>
+          <td><p>Event that is reporting currently set ToneTouch parameters.
+/ Fep should apply parameters from data if possible
+/ associated data is of type Dsp.ToneTouch</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_STANDBY_MULTIROOM</td>
+          <td>28</td>
+          <td><p>Event send when ASE enter source multiroom standby</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_TURNING_ON</td>
+          <td>29</td>
+          <td><p>Event send when on state is requested</p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_STATUS_AUDIO_ONLY</td>
+          <td>30</td>
+          <td><p>Event send when audio only state is requested</p></td>
+        </tr>
+        <tr>
+          <td>BT_PLAYER_CONNECTED</td>
+          <td>31</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>BT_PLAYER_DISCONNECTED</td>
+          <td>32</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="common.proto">common.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Core.GenericResponse">GenericResponse</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>status</td>
+          <td><a href="#Proto.Core.GenericResponse.Status">GenericResponse.Status</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Core.GenericResponse.Status">GenericResponse.Status</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DONE</td>
+          <td>0</td>
+          <td><p>This is sent when the request was handled</p></td>
+        </tr>
+        <tr>
+          <td>ERROR</td>
+          <td>1</td>
+          <td><p>This is sent when the request finished with error</p></td>
+        </tr>
+        <tr>
+          <td>NOT_SUPPORTED</td>
+          <td>2</td>
+          <td><p>This is sent when the request is not handled
+/ This is not meant to be used when reporting statuses from the user's handler</p></td>
+        </tr>
+        <tr>
+          <td>UNKNOWN_REQUEST</td>
+          <td>3</td>
+          <td><p>This is sent when the request cannot be parsed from the message
+/ This is not meant to be used when reporting statuses from the user's handler</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="core.proto">core.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Core.AseFepMessage">AseFepMessage</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>aseFepEvent</td>
+          <td><a href="#Proto.AseFep.Event">Event</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>aseFepReq</td>
+          <td><a href="#Proto.AseFep.Req">Req</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>aseFepResp</td>
+          <td><a href="#Proto.AseFep.Resp">Resp</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Core.FepAseMessage">FepAseMessage</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>fepAseEvent</td>
+          <td><a href="#Proto.FepAse.Event">Event</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>fepAseReq</td>
+          <td><a href="#Proto.FepAse.Req">Req</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>fepAseResp</td>
+          <td><a href="#Proto.FepAse.Resp">Resp</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="dsp.proto">dsp.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Dsp.AbsoluteVolume">AbsoluteVolume</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>volume</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>fade_duration</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>In milliseconds the duration of the fade operation</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.InternalAmplifierCommand">InternalAmplifierCommand</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>state</td>
+          <td><a href="#Proto.Dsp.InternalAmplifierCommand.State">InternalAmplifierCommand.State</a></td>
+          <td>optional</td>
+          <td><p>Desired amplifier state</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.InternalSpeaker">InternalSpeaker</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>position</td>
+          <td><a href="#Proto.Dsp.InternalSpeaker.Position">InternalSpeaker.Position</a></td>
+          <td>optional</td>
+          <td><p>Valid combinations for FS1:
+/ CENTRE - WOOFER
+/ CENTRE - FULLRANGE
+/
+/ Valid combinations for FS2:
+/ CENTRE - WOOFER
+/ LEFT - MIDRANGE
+/ RIGHT - MIDRANGE
+/ CENTRE - TWEETER</p></td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Dsp.InternalSpeaker.Type">InternalSpeaker.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>compensation</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p>The amount of gain compensation to apply to the speaker unit in dB</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.LineInSensitivity">LineInSensitivity</h3>
+    <p>Set the line-in sensitivity level.</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sensitivity</td>
+          <td><a href="#Proto.Dsp.LineInSensitivity.Sensitivity">LineInSensitivity.Sensitivity</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.Mute">Mute</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mute</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.NTCDataEvent">NTCDataEvent</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ntcValues</td>
+          <td><a href="#Proto.Dsp.NTCDataEvent.NTCValue">NTCDataEvent.NTCValue</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.NTCDataEvent.NTCValue">NTCDataEvent.NTCValue</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td><a href="#Proto.Dsp.NTCDataEvent.NTCValue.NTC">NTCDataEvent.NTCValue.NTC</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td><a href="#int32">int32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.Parameter">Parameter</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Dsp.Parameter.Type">Parameter.Type</a></td>
+          <td>optional</td>
+          <td><p>Mandatory field - specifies which dsp parameter should be altered</p></td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td><a href="#int32">int32</a></td>
+          <td>optional</td>
+          <td><p>Mandatory field - parameter value</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.PositionSoundMode">PositionSoundMode</h3>
+    <p>Position sound mode setting</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>position</td>
+          <td><a href="#Proto.Dsp.PositionSoundMode.Position">PositionSoundMode.Position</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>orientation</td>
+          <td><a href="#Proto.Dsp.PositionSoundMode.Orientation">PositionSoundMode.Orientation</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.RelativeVolumeChange">RelativeVolumeChange</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>volumeChange</td>
+          <td><a href="#int32">int32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.RequestAudioInput">RequestAudioInput</h3>
+    <p>Set audio input request</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>input</td>
+          <td><a href="#Proto.Dsp.RequestAudioInput.AudioInput">RequestAudioInput.AudioInput</a></td>
+          <td>optional</td>
+          <td><p>Configure the audio input path.</p></td>
+        </tr>
+        <tr>
+          <td>local</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p>Configure whether to use local playback or not when ever the input/output path allows it.</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.RequestInternalSpeakerCompensation">RequestInternalSpeakerCompensation</h3>
+    <p>Set the internal speaker compensation gain for one or more speaker units.
+/ If a speaker unit's performance deviates from the specifications, a gain value can be applied to compensated for the
+/ deviation. The FEP or one of its sub-components persist the compensation gain in non-volatile memory. FEP replies
+/ with RequestInternalSpeakerCompensation.</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>internalSpeaker</td>
+          <td><a href="#Proto.Dsp.InternalSpeaker">InternalSpeaker</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.RequestPositionSoundMode">RequestPositionSoundMode</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>positionSoundMode</td>
+          <td><a href="#Proto.Dsp.PositionSoundMode">PositionSoundMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ResponseInternalSpeakerCompensation">ResponseInternalSpeakerCompensation</h3>
+    <p>Response when setting or getting internal speaker compensation</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>error</td>
+          <td><a href="#Proto.Dsp.ResponseInternalSpeakerCompensation.Error">ResponseInternalSpeakerCompensation.Error</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>internalSpeaker</td>
+          <td><a href="#Proto.Dsp.InternalSpeaker">InternalSpeaker</a></td>
+          <td>repeated</td>
+          <td><p>Current internal speaker compensation</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ResponsePositionSoundMode">ResponsePositionSoundMode</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>error</td>
+          <td><a href="#Proto.Dsp.ResponsePositionSoundMode.Error">ResponsePositionSoundMode.Error</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>mode</td>
+          <td><a href="#Proto.Dsp.PositionSoundMode">PositionSoundMode</a></td>
+          <td>optional</td>
+          <td><p>Current position sound mode</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.SpeakerEnableCommand">SpeakerEnableCommand</h3>
+    <p>Speaker enable command - provides api to enable or disable speakers
+/ Only speakers that are listed should be modified. Other speakers should be left intact.</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>speaker</td>
+          <td><a href="#Proto.Dsp.SpeakerEnableCommand.Speaker">SpeakerEnableCommand.Speaker</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.SpeakerEnableCommand.Speaker">SpeakerEnableCommand.Speaker</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td><a href="#Proto.Dsp.SpeakerEnableCommand.Speaker.Id">SpeakerEnableCommand.Speaker.Id</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ToneTouch">ToneTouch</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gx1</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Gy1</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Gx2</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Gy2</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Gz</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>k5</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>k6</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ToslinkOutSampleRate">ToslinkOutSampleRate</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sampleRate</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.InternalAmplifierCommand.State">InternalAmplifierCommand.State</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OFF</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ON</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.InternalSpeaker.Position">InternalSpeaker.Position</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LEFT</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>RIGHT</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>CENTRE</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.InternalSpeaker.Type">InternalSpeaker.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TWEETER</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MIDRANGE</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WOOFER</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FULLRANGE</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.LineInSensitivity.Sensitivity">LineInSensitivity.Sensitivity</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HIGH</td>
+          <td>0</td>
+          <td><p>Line-in is triggered by a weak input signal. Suitable for most MP3 players.</p></td>
+        </tr>
+        <tr>
+          <td>MEDIUM</td>
+          <td>1</td>
+          <td><p>Line-in is triggered by a medium input signal. Use with standard audio equipment and computers.</p></td>
+        </tr>
+        <tr>
+          <td>LOW</td>
+          <td>2</td>
+          <td><p>Line-in is triggered by a strong input signal. Suitable for DVD/BD players.</p></td>
+        </tr>
+        <tr>
+          <td>DISABLED</td>
+          <td>3</td>
+          <td><p>Line-in sense is disabled</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.NTCDataEvent.NTCValue.NTC">NTCDataEvent.NTCValue.NTC</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>EXT_NTC1</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC2</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC3</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC4</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC5</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC6</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC7</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EXT_NTC8</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH1</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH2_3</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH4</td>
+          <td>10</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH5</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH6_7</td>
+          <td>12</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>AMP_NTC_CH8</td>
+          <td>13</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NTC_PSU</td>
+          <td>14</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NTC_DSP</td>
+          <td>15</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NTC_AMP</td>
+          <td>16</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.Parameter.Type">Parameter.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LOUDNESS</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>BASS</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TREBLE</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.PositionSoundMode.Orientation">PositionSoundMode.Orientation</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NONE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HORIZONTAL</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>VERTICAL</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.PositionSoundMode.Position">PositionSoundMode.Position</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UNDEFINED</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FREE</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WALL</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>CORNER</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TABLE</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.RequestAudioInput.AudioInput">RequestAudioInput.AudioInput</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ASE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LINE</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TOS_LINK</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POWER_LINK</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WIRELESS_MULTICHANNEL</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MICROPHONE_1</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MICROPHONE_2</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ResponseInternalSpeakerCompensation.Error">ResponseInternalSpeakerCompensation.Error</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NO_ERROR</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POSITION_ERROR</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TYPE_ERROR</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POSITION_TYPE_COMBINATION_ERROR</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GAIN_ERROR</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.ResponsePositionSoundMode.Error">ResponsePositionSoundMode.Error</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NO_ERROR</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POSITION_ERROR</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ORIENTATION_ERROR</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>COMBINATION_ERROR</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Dsp.SpeakerEnableCommand.Speaker.Id">SpeakerEnableCommand.Speaker.Id</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FRONT</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>REAR</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="eeb.proto">eeb.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Eeb.EebTelegram">EebTelegram</h3>
+    <p>Input parameter for to AseFep.ReqResp(EEB_TELEGRAM_TRANSMIT) and FepAse.Event(EEB_TELEGRAM_RECEIVE)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>packetType</td>
+          <td><a href="#Proto.Eeb.EebTelegram.PacketType">EebTelegram.PacketType</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>groupId</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>telegramType</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>telegramCommand</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Eeb.EebTelegram.PacketType">EebTelegram.PacketType</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CONFIGURATION_PACKET</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>COMMAND_PACKET</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="fep-ase-ReqResp.proto">fep-ase-ReqResp.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.FepAse.ReqResp">ReqResp</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PING</td>
+          <td>0</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>PLAY</td>
+          <td>1</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>PAUSE</td>
+          <td>2</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>STOP</td>
+          <td>3</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>NEXT</td>
+          <td>4</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>PREV</td>
+          <td>5</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>NEXT_SOURCE</td>
+          <td>6</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>JOIN</td>
+          <td>7</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>PLAY_PAUSE_TOGGLE</td>
+          <td>8</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUND_SILENCE_TOGGLE</td>
+          <td>9</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SOUND</td>
+          <td>10</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>SILENCE</td>
+          <td>11</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>MUTE</td>
+          <td>12</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>UNMUTE</td>
+          <td>13</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_ON</td>
+          <td>14</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_OFF</td>
+          <td>15</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_ON</td>
+          <td>16</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>BTLE_PAIRING_OFF</td>
+          <td>17</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>BT_PAIRING_TOGGLE</td>
+          <td>18</td>
+          <td><p>Generic response</p></td>
+        </tr>
+        <tr>
+          <td>OFF</td>
+          <td>19</td>
+          <td><p>Generic response. When the request is done, ASE is ready to be shut down
+/ STORAGE and OFF commands make the product turn off
+/ When error is set, shutdown is not possible.</p></td>
+        </tr>
+        <tr>
+          <td>STORAGE</td>
+          <td>20</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FACTORY_RESET</td>
+          <td>21</td>
+          <td><p>Generic response. When the request is done, factory reset has started</p></td>
+        </tr>
+        <tr>
+          <td>NETWORK_SETUP</td>
+          <td>22</td>
+          <td><p>Generic response. When the request is done, network setup is initiated</p></td>
+        </tr>
+        <tr>
+          <td>STANDBY</td>
+          <td>23</td>
+          <td><p>Generic response. When the request is done, ASE is put to standby</p></td>
+        </tr>
+        <tr>
+          <td>ALL_STANDBY</td>
+          <td>24</td>
+          <td><p>Generic response. When the request is done, ALL STANDBY request is
+/ sent over the network and ASE is put to standby.</p></td>
+        </tr>
+        <tr>
+          <td>NETWORK_INFO</td>
+          <td>25</td>
+          <td><p>has Response data of type System.NetworkInfo</p></td>
+        </tr>
+        <tr>
+          <td>VOLUME_CHANGE</td>
+          <td>26</td>
+          <td><p>Request has data  of type Dsp.AbsoluteVolume or Dsp.RelativeVolumeChange
+/ Request may have missing data field. It means query
+/ of the current volume level. In this scenario response has data of type Dsp.AbsoluteVolume.</p></td>
+        </tr>
+        <tr>
+          <td>WPL_COMMAND</td>
+          <td>27</td>
+          <td><p>Response Wpl.Response.Status is set to Done if command was successfuly
+/ executed, or to Error if any error ocured.</p></td>
+        </tr>
+        <tr>
+          <td>PLAY_AUDIO_CUE</td>
+          <td>28</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="fep-ase.proto">fep-ase.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.FepAse.Event">Event</h3>
+    <p>Event report from FEP to ASE (Local UI).</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.FepAse.Event.Type">Event.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>productionTunnel</td>
+          <td><a href="#Proto.Production.Tunnel">Tunnel</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerLinkSense</td>
+          <td><a href="#Proto.PowerLink.SenseEvent">SenseEvent</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>eebTelegramReceiveEvent</td>
+          <td><a href="#Proto.Eeb.EebTelegram">EebTelegram</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>wplEvent</td>
+          <td><a href="#Proto.Wpl.Event">Event</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ntcData</td>
+          <td><a href="#Proto.Dsp.NTCDataEvent">NTCDataEvent</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioFormat</td>
+          <td><a href="#Proto.Hdmi.AudioFormat">AudioFormat</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>logMessage</td>
+          <td><a href="#Proto.System.Log">Log</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>inputSelected</td>
+          <td><a href="#Proto.Hdmi.InputSelected">InputSelected</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>inputSense</td>
+          <td><a href="#Proto.Hdmi.InputSense">InputSense</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lightSensorLightLevel</td>
+          <td><a href="#Proto.LightSensor.LightLevel">LightLevel</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>spdifAudioFormat</td>
+          <td><a href="#Proto.Spdif.AudioFormatChanged">AudioFormatChanged</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FepAse.Req">Req</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.FepAse.ReqResp">ReqResp</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>absoluteVolume</td>
+          <td><a href="#Proto.Dsp.AbsoluteVolume">AbsoluteVolume</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>relativeVolumeChange</td>
+          <td><a href="#Proto.Dsp.RelativeVolumeChange">RelativeVolumeChange</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioCue</td>
+          <td><a href="#Proto.System.AudioCue">AudioCue</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FepAse.Resp">Resp</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.AseFep.ReqResp">ReqResp</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>this should be copied from the request to the response
+/ to be able to pair messages</p></td>
+        </tr>
+        <tr>
+          <td>genericResponse</td>
+          <td><a href="#Proto.Core.GenericResponse">GenericResponse</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>firmwareUpdateChunk</td>
+          <td><a href="#Proto.FirmwareUpdate.ChunkResponse">ChunkResponse</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>firmwareUpdateVersionInfo</td>
+          <td><a href="#Proto.FirmwareUpdate.VersionInfo">VersionInfo</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>hdmiArc</td>
+          <td><a href="#Proto.Hdmi.Arc">Arc</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerStatus</td>
+          <td><a href="#Proto.System.PowerStatus">PowerStatus</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lineInSensitivity</td>
+          <td><a href="#Proto.Dsp.LineInSensitivity">LineInSensitivity</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>positionSoundMode</td>
+          <td><a href="#Proto.Dsp.ResponsePositionSoundMode">ResponsePositionSoundMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>internalSpeakerCompensation</td>
+          <td><a href="#Proto.Dsp.ResponseInternalSpeakerCompensation">ResponseInternalSpeakerCompensation</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerLinkSensesStatus</td>
+          <td><a href="#Proto.PowerLink.AllSensesStatus">AllSensesStatus</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>buttonState</td>
+          <td><a href="#Proto.Production.ButtonState">ButtonState</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>wplResponse</td>
+          <td><a href="#Proto.Wpl.Response">Response</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>powerSupplyVoltage</td>
+          <td><a href="#Proto.System.PowerSupplyVoltage">PowerSupplyVoltage</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>uhdDeepColour</td>
+          <td><a href="#Proto.Hdmi.UhdDeepColour">UhdDeepColour</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioFormat</td>
+          <td><a href="#Proto.Hdmi.AudioFormat">AudioFormat</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>inputSelected</td>
+          <td><a href="#Proto.Hdmi.InputSelected">InputSelected</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>inputsSense</td>
+          <td><a href="#Proto.Hdmi.InputsSense">InputsSense</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lightSensorReplyData</td>
+          <td><a href="#Proto.LightSensor.ReplyData">ReplyData</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respA2Bmode</td>
+          <td><a href="#Proto.SoundWall.A2Bmode">A2Bmode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respTotalNodes</td>
+          <td><a href="#Proto.SoundWall.RespGetTotalNodes">RespGetTotalNodes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respPowerMode</td>
+          <td><a href="#Proto.SoundWall.PowerMode">PowerMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respDriverGain</td>
+          <td><a href="#Proto.SoundWall.DriverGain">DriverGain</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respBassAndRoomEQ</td>
+          <td><a href="#Proto.SoundWall.BassAndRoomEQ">BassAndRoomEQ</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respGainAndDelay</td>
+          <td><a href="#Proto.SoundWall.GainAndDelay">GainAndDelay</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>respGetBoardVersion</td>
+          <td><a href="#Proto.System.RespGetBoardVersion">RespGetBoardVersion</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FepAse.Event.Type">Event.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LINE_IN_SENSE_ACTIVE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LINE_IN_SENSE_INACTIVE</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TOSLINK_SENSE_ACTIVE</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TOSLINK_SENSE_INACTIVE</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_START_REQUEST</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_STARTED</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_END_REQUEST</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_ENDED</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_AUDIO_MODE_ON</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_AUDIO_MODE_OFF</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>TUNNEL</td>
+          <td>10</td>
+          <td><p>associated data in productionTunnel</p></td>
+        </tr>
+        <tr>
+          <td>BOOTLOADER_READY</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FIRMWARE_UPDATE_FINISHED</td>
+          <td>12</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POWERLINK_SENSE_EVENT</td>
+          <td>13</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>EEB_TELEGRAM_RECEIVE</td>
+          <td>14</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WPL_EVENT</td>
+          <td>15</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DSP_NTC_DATA_EVENT</td>
+          <td>16</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_AUDIO_FORMAT</td>
+          <td>17</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LOG_MESSAGE</td>
+          <td>18</td>
+          <td><p>associated data in field of type System.Log</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_VOLUME_UP</td>
+          <td>19</td>
+          <td><p>Volume UP via HDMI CEC User control message</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_VOLUME_DOWN</td>
+          <td>20</td>
+          <td><p>Volume DOWN via HDMI CEC User control message</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_VOLUME_MUTE</td>
+          <td>21</td>
+          <td><p>Volume MUTE via HDMI CEC User control message</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_INPUT_SELECTED</td>
+          <td>22</td>
+          <td><p>HDMI Input selected (input number or ARC)</p></td>
+        </tr>
+        <tr>
+          <td>POWERFAIL</td>
+          <td>23</td>
+          <td><p>indicates power failure</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_INPUT_SENSE_CHANGED</td>
+          <td>24</td>
+          <td><p>One input sense change ON/OFF Hdmi.InputSense</p></td>
+        </tr>
+        <tr>
+          <td>LIGHT_SENSOR_LIGHT_LEVEL</td>
+          <td>25</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPDIF_AUDIO_FORMAT_CHANGED</td>
+          <td>26</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="firmware-update.proto">firmware-update.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.FirmwareUpdate.Chunk">Chunk</h3>
+    <p>Message that contains one chunk of firmware update file
+/ into request data</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>totalSize</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>offset</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>required</td>
+          <td><p>size of data is encoded as a part of data field - avoid duplicit information</p></td>
+        </tr>
+        <tr>
+          <td>crc</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>moduleType</td>
+          <td><a href="#Proto.FirmwareUpdate.Chunk.ModuleType">Chunk.ModuleType</a></td>
+          <td>optional</td>
+          <td><p>type of a module being updated</p></td>
+        </tr>
+        <tr>
+          <td>wplOption</td>
+          <td><a href="#Proto.FirmwareUpdate.WplOption">WplOption</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.ChunkResponse">ChunkResponse</h3>
+    <p>Response to Chunk</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>status</td>
+          <td><a href="#Proto.FirmwareUpdate.ChunkResponse.Status">ChunkResponse.Status</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>offset</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>offset for which this status applies</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.VersionInfo">VersionInfo</h3>
+    <p>Response from AseFepReq(VERSION_INFO)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>module</td>
+          <td><a href="#Proto.FirmwareUpdate.VersionInfo.Module">VersionInfo.Module</a></td>
+          <td>repeated</td>
+          <td><p>Contains version information about the connected hardware, it may consist of multiple modules.</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.VersionInfo.Module">VersionInfo.Module</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>name</td>
+          <td><a href="#string">string</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td><a href="#string">string</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>metadata</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.WplOption">WplOption</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td><a href="#Proto.FirmwareUpdate.WplOption.ID">WplOption.ID</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>moduleID</td>
+          <td><a href="#Proto.FirmwareUpdate.WplOption.ModuleID">WplOption.ModuleID</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>partID</td>
+          <td><a href="#Proto.FirmwareUpdate.WplOption.PartID">WplOption.PartID</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.Chunk.ModuleType">Chunk.ModuleType</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FEP</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WPL</td>
+          <td>1</td>
+          <td><p>in case of WPL maximum 128 bytes should be sent</p></td>
+        </tr>
+        <tr>
+          <td>PLD</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.ChunkResponse.Status">ChunkResponse.Status</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OK</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ERROR_CRC</td>
+          <td>1</td>
+          <td><p>when CRC supplied is invalid for provided chunk</p></td>
+        </tr>
+        <tr>
+          <td>ERROR_WRITE</td>
+          <td>2</td>
+          <td><p>when an error occurs during the write of the image to the flash</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.WplOption.ID">WplOption.ID</h3>
+    <p>ID of speaker that is being updated.
+/ In case of master wpl module update
+/ MASTER should be set</p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SPEAKER_0</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_1</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_2</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_3</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_4</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_5</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_6</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_7</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_8</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_9</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_10</td>
+          <td>10</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SPEAKER_11</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MASTER</td>
+          <td>254</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.WplOption.ModuleID">WplOption.ModuleID</h3>
+    <p>Module that is being updated</p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FEP</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Summit</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DSP</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.FirmwareUpdate.WplOption.PartID">WplOption.PartID</h3>
+    <p>ID of firmware part sent</p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>APP</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MFG</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DFS</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SYSTEM_DATA</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="hdmi.proto">hdmi.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Hdmi.Arc">Arc</h3>
+    <p>Response from AseFep.Req(HDMI_ARC_STATUS)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>status</td>
+          <td><a href="#Proto.Hdmi.Arc.Status">Arc.Status</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.AudioFormat">AudioFormat</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>audioInfoFrameData</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>channelStatusData</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioMode</td>
+          <td><a href="#Proto.Hdmi.AudioFormat.AudioMode">AudioFormat.AudioMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.AudioModeSelect">AudioModeSelect</h3>
+    <p>Input parameter for to AseFep.ReqResp(HDMI_AUDIO_MODE_SELECT)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Hdmi.AudioModeSelect.Type">AudioModeSelect.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.HdmiInput">HdmiInput</h3>
+    <p>Input parameter for to AseFep.ReqResp(HDMI_INPUT_SELECT)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>number</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.InputSelected">InputSelected</h3>
+    <p>Sent as an event or could be asked as a request AseFep.Req(GET_HDMI_INPUT_SELECTED)
+/Main reason for having this is HDMI-CEC 'One touch play' feature</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>audio</td>
+          <td><a href="#Proto.Hdmi.InputSelected.AudioSelected">InputSelected.AudioSelected</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>inputNumber</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>If audio from HDMI then HDMI input number</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.InputSense">InputSense</h3>
+    <p>Event from Fep (HDMI_INPUT_SENSE_CHANGED)
+/ HDMI sense ON/OFF for individual input</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>senseOn</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>hdmiPort</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>1-4</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.InputsSense">InputsSense</h3>
+    <p>Response from AseFep.Req(GET_HDMI_SENSE_STATUS)
+/ HDMI sense ON/OFF for all inputs</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>senseStatus</td>
+          <td><a href="#Proto.Hdmi.InputsSense.SenseState">InputsSense.SenseState</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.InputsSense.SenseState">InputsSense.SenseState</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>senseOn</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>hdmiPort</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>1-4</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.StandbyCmd">StandbyCmd</h3>
+    <p>Input parameter for to AseFep.ReqResp(HDMI_CEC_SEND_STANDBY)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Hdmi.StandbyCmd.Type">StandbyCmd.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.UhdDeepColour">UhdDeepColour</h3>
+    <p>Response from AseFep.Req(GET_HDMI_UHD_DEEP_COLOUR_STATUS)
+/ UHD Deep colour ON/OFF for all inputs</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>uhddcStatus</td>
+          <td><a href="#Proto.Hdmi.UhdDeepColour.UhdDCState">UhdDeepColour.UhdDCState</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.UhdDeepColour.UhdDCState">UhdDeepColour.UhdDCState</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>uhddcEnabled</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>hdmiPort</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>1-4</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.Arc.Status">Arc.Status</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HDMI_ARC_NOT_STARTED</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_STARTED</td>
+          <td>1</td>
+          <td><p>HDMI-ARC is started, next step is wait audio mode ON from TV</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_START_BY_TV</td>
+          <td>2</td>
+          <td><p>HDMI-ARC start is initiated by TV, not started yet</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_START_BY_US</td>
+          <td>3</td>
+          <td><p>HDMI-ARC start is initiated by ASE, not started yet</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_END_BY_TV</td>
+          <td>4</td>
+          <td><p>HDMI-ARC end is initiated by TV, not ended yet</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_END_BY_US</td>
+          <td>5</td>
+          <td><p>HDMI-ARC end is initiated by ASE, not ended yet</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_ENDED</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_AUDIO_MODE_ON</td>
+          <td>7</td>
+          <td><p>HDMI-ARC is started and audio mode is set to ON (sound from TV)</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_ARC_AUDIO_MODE_OFF</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.AudioFormat.AudioMode">AudioFormat.AudioMode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CHANNELS_2</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>CHANNELS_8</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HBRA</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DSD</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.AudioModeSelect.Type">AudioModeSelect.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AUTOMATIC</td>
+          <td>0</td>
+          <td><p>Default case. HDMI input audio is taken directly from inputs and audio from TV via ARC
+/ Needs to be set only when ARC_ONLY has been set previously</p></td>
+        </tr>
+        <tr>
+          <td>ARC_ONLY</td>
+          <td>1</td>
+          <td><p>Request HDMI input audio to be directed to TV and played back using ARC. Used when 'Audio guidance' is enabled</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.InputSelected.AudioSelected">InputSelected.AudioSelected</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ARC</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>HDMI</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Hdmi.StandbyCmd.Type">StandbyCmd.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HDMI_CEC_STANDBY_TV</td>
+          <td>0</td>
+          <td><p>Send CEC standby command to connected TV</p></td>
+        </tr>
+        <tr>
+          <td>HDMI_CEC_STANDBY_ALL</td>
+          <td>1</td>
+          <td><p>Send CEC standby command to all connected HDMI devices</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="light-sensor.proto">light-sensor.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.LightSensor.Command">Command</h3>
+    <p>Input parameter for to AseFep.Req (LIGHT_SENSOR_TELEGRAM)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.LightSensor.Command.Type">Command.Type</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>calibrationLightLevel</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.LightSensor.LightLevel">LightLevel</h3>
+    <p>Event from Fep (LIGHT_SENSOR_LIGHT_LEVEL)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lux</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.LightSensor.ReplyData">ReplyData</h3>
+    <p>Response from AseFep.Resp (LIGHT_SENSOR_TELEGRAM)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>successful</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>rawCombinedValue</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>rawIrValue</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>calibrationConst</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>lux</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.LightSensor.Command.Type">Command.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>INITIALIZE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>READ_RAW</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>CALIBRATE</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>READ_CALIBRATION</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>READ_LIGHT_LEVEL</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="player.proto">player.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Player.Data">Data</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>state</td>
+          <td><a href="#Proto.Player.Data.State">Data.State</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td><a href="#Proto.Player.Data.Source">Data.Source</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Player.Data.Source">Data.Source</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UNKNOWN</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>BLUETOOTH</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Player.Data.State">Data.State</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PLAYING</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PAUSED</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>STOPPED</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="power-link.proto">power-link.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.PowerLink.AllSensesStatus">AllSensesStatus</h3>
+    <p>Response from AseFep.Req(POWER_LINK_ALL_SENSES_STATUS)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>senses</td>
+          <td><a href="#Proto.PowerLink.AllSensesStatus.PortState">AllSensesStatus.PortState</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.PowerLink.AllSensesStatus.PortState">AllSensesStatus.PortState</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>connected</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>port</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>Zero based index</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.PowerLink.Data">Data</h3>
+    <p>Request from AseFep.Req(SEND_POWER_LINK_DATA) to send data throught PL DATA pin</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>telegram</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>wired</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p>Send to wired speakers</p></td>
+        </tr>
+        <tr>
+          <td>wireless</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p>Send to wpl speakers</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.PowerLink.SenseEvent">SenseEvent</h3>
+    <p>Event from FepAse about the the change on PowerLink port</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>connected</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>port</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>Zero based index</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.PowerLink.SetMute">SetMute</h3>
+    <p>Request from AseFep.Req(POWER_LINK_SET_MUTE) to control MUTE pin</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>enable</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.PowerLink.SetON">SetON</h3>
+    <p>Request from AseFep.Req(POWER_LINK_SET_ON) to control ON pins</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>port</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>Zero based index</p></td>
+        </tr>
+        <tr>
+          <td>enable</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="production.proto">production.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Production.ButtonState">ButtonState</h3>
+    <p>Response for AseFep.Req(PRODUCTION_GET_BUTTON_STATE)</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>pressed</td>
+          <td><a href="#bool">bool</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Production.GetButtonState">GetButtonState</h3>
+    <p>Request from AseFep.Req(PRODUCTION_GET_BUTTON_STATE) for TestdASEProductionRpcGen.GetButtonState</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>buttonId</td>
+          <td><a href="#Proto.Production.GetButtonState.ButtonId">GetButtonState.ButtonId</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Production.LedModeSet">LedModeSet</h3>
+    <p>Request from AseFep.Req(PRODUCTION_LED_MODE_SET) for TestdASEProductionRpcGen.LedModeSet</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>led</td>
+          <td><a href="#Proto.Production.LedModeSet.StatusLed">LedModeSet.StatusLed</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>onTimeMs</td>
+          <td><a href="#int32">int32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>offTimeMs</td>
+          <td><a href="#int32">int32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Production.Tunnel">Tunnel</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>data</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Production.GetButtonState.ButtonId">GetButtonState.ButtonId</h3>
+    <p>this has NOTHING with TestdASEProduction.ButtonIdentifier</p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BLE_Pairing</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SoftAP</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Production.LedModeSet.StatusLed">LedModeSet.StatusLed</h3>
+    <p>synchonized with TestdASEProduction.StatusLed</p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NetBlue</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NetOrange</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NetRed</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NetWhite</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ProdOrange</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ProdRed</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ProdWhite</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ProdGreen</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PairBlue</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PairRed</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="puc.proto">puc.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Puc.PucCommand">PucCommand</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sendMode</td>
+          <td><a href="#Proto.Puc.PucCommand.SendMode">PucCommand.SendMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>modulationMode</td>
+          <td><a href="#Proto.Puc.PucCommand.ModulationMode">PucCommand.ModulationMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>commandFormat</td>
+          <td><a href="#Proto.Puc.PucCommand.CommandFormat">PucCommand.CommandFormat</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>pucOutput</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>code</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>main</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>alt</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>repeat_signal_main</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>repeat_signal_alt</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>flanks</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>altFlanks</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Puc.PucCommand.CommandFormat">PucCommand.CommandFormat</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>IR_PROTOCOL_NEC_FORMAT</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_PROTOCOL_RC5_FORMAT</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_PROTOCOL_BITSTREAM_FORMAT</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_PROTOCOL_RAW_FORMAT</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Puc.PucCommand.ModulationMode">PucCommand.ModulationMode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>IR_MODULATION_OFF</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_MODULATION_ON</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Puc.PucCommand.SendMode">PucCommand.SendMode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>IR_SEND_COMMAND_ONCE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_SEND_COMMAND_CONTINUOUS</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_SEND_COMMAND_CONTINUOUS_END</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_SET_PUC_OUTPUT_LOW</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>IR_SET_PUC_OUTPUT_HIGH</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="soundwall.proto">soundwall.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.SoundWall.A2Bmode">A2Bmode</h3>
+    <p>*********************************************************************</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mode</td>
+          <td><a href="#Proto.SoundWall.A2Bmode.Mode">A2Bmode.Mode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.BassAndRoomEQ">BassAndRoomEQ</h3>
+    <p>in the &quot;Soundwall MCU BO DSP Tuning Parameter Interface v1.5.docx&quot;
+/ the RoomEQ need 16*5*32bits</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>which node you want to update?</p></td>
+        </tr>
+        <tr>
+          <td>bass_gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>BASS_AND_ROOMEQ setting</p></td>
+        </tr>
+        <tr>
+          <td>eqParam</td>
+          <td><a href="#Proto.SoundWall.DspEqParam">DspEqParam</a></td>
+          <td>repeated</td>
+          <td><p>EQ array...</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.DriverGain">DriverGain</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>which node you want to update?</p></td>
+        </tr>
+        <tr>
+          <td>Tile_1_B_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>DRIVER_GAIN setting : [8:24] format</p></td>
+        </tr>
+        <tr>
+          <td>Tile_1_MT_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_2_B_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_2_MT_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_3_B_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_3_MT_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_4_B_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_4_MT_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_1_TW_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_2_TW_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_3_TW_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Tile_4_TW_Cal_Gain</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.DspEqParam">DspEqParam</h3>
+    <p>define the EQ parameter for 1 'point'</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>param1</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>eq parameter : [8:24] format</p></td>
+        </tr>
+        <tr>
+          <td>param2</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>param3</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>param4</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>param5</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.GainAndDelay">GainAndDelay</h3>
+    <p>---------------------------------------------------------------------------
+/ for the parameter definition and data format,
+/ refer to &quot;Soundwall MCU BO DSP Tuning Parameter Interface v1.5.docx&quot;</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>which node you want to update?</p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_L_1</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>gain setting : [8.24] format</p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_R_1</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_L_2</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_R_2</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_L_3</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_R_3</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_L_4</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_gain_R_4</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_L_1</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>delay setting : [32.0] format</p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_R_1</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_L_2</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_R_2</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_L_3</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_R_3</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_L_4</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MT_TW_delay_R_4</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>MUTE_L_R</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p>mute setting : [8:24] format</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.MuteMode">MuteMode</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mode</td>
+          <td><a href="#Proto.SoundWall.MuteMode.Mode">MuteMode.Mode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.NodeIndex">NodeIndex</h3>
+    <p>in case of specify node, 
+/ e.g version_info, ntc_info, write_dsp_param</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.PowerMode">PowerMode</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mode</td>
+          <td><a href="#Proto.SoundWall.PowerMode.Mode">PowerMode.Mode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.ReqTestTone">ReqTestTone</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>nodeIndex</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>speakerTile</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>required</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.RespGetTotalNodes">RespGetTotalNodes</h3>
+    <p>soundwall response the total soundwall nodes</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>totalNodes</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.A2Bmode.Mode">A2Bmode.Mode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A2B_STANDALONE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>A2B_MASTER</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>A2B_SLAVE</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.MuteMode.Mode">MuteMode.Mode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MUTE</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>UNMUTE</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.SoundWall.PowerMode.Mode">PowerMode.Mode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>STANDBY</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>WORKING</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="spdif.proto">spdif.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Spdif.AudioFormatChanged">AudioFormatChanged</h3>
+    <p>Event from Fep (SPDIF_AUDIO_FORMAT_CHANGED)
+/ PCM/NON-PCM and changes in fs or channelstatusdata</p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sampleFrequency</td>
+          <td><a href="#Proto.Spdif.AudioFormatChanged.SampleFrequency">AudioFormatChanged.SampleFrequency</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>channelStatusData</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>audioMode</td>
+          <td><a href="#Proto.Spdif.AudioFormatChanged.AudioMode">AudioFormatChanged.AudioMode</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Spdif.AudioFormatChanged.AudioMode">AudioFormatChanged.AudioMode</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PCM</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>NONPCM</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Spdif.AudioFormatChanged.SampleFrequency">AudioFormatChanged.SampleFrequency</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FS_ERROR</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_8000</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_11025</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_12000</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_16000</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_22050</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_24000</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_32000</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_44100</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_48000</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_64000</td>
+          <td>10</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_88200</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_96000</td>
+          <td>12</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_128000</td>
+          <td>13</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_176400</td>
+          <td>14</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>FS_192000</td>
+          <td>15</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="system.proto">system.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.System.AudioCue">AudioCue</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>name</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.Log">Log</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>msg</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo">NetworkInfo</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>networkInterface</td>
+          <td><a href="#Proto.System.NetworkInfo.NetworkInterface">NetworkInfo.NetworkInterface</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo.NetworkInterface">NetworkInfo.NetworkInterface</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.System.NetworkInfo.NetworkInterface.Type">NetworkInfo.NetworkInterface.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td><a href="#Proto.System.NetworkInfo.NetworkInterface.State">NetworkInfo.NetworkInterface.State</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>wifi</td>
+          <td><a href="#Proto.System.NetworkInfo.NetworkInterface.WiFi">NetworkInfo.NetworkInterface.WiFi</a></td>
+          <td>optional</td>
+          <td><p>WiFi member is only present when type equals WIFI</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo.NetworkInterface.WiFi">NetworkInfo.NetworkInterface.WiFi</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Configured</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p>When true, WiFi setup has been performed.</p></td>
+        </tr>
+        <tr>
+          <td>quality</td>
+          <td><a href="#Proto.System.NetworkInfo.NetworkInterface.WiFi.Quality">NetworkInfo.NetworkInterface.WiFi.Quality</a></td>
+          <td>optional</td>
+          <td><p>Connection quality. Because RSSI is vendor specific it is converted to the levels specified by Quality</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerRequest">PowerRequest</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.System.PowerRequest.Type">PowerRequest.Type</a></td>
+          <td>optional</td>
+          <td><p>Power request type</p></td>
+        </tr>
+        <tr>
+          <td>delay_ms</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>delay after which the FEP should do the power action specified in field 'type'</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerStatus">PowerStatus</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>acLineStatus</td>
+          <td><a href="#Proto.System.PowerStatus.ACLineStatus">PowerStatus.ACLineStatus</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>batteryStatus</td>
+          <td><a href="#Proto.System.PowerStatus.BatteryStatus">PowerStatus.BatteryStatus</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>batteryLevel</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p>The battery level in percent, 0-100%</p></td>
+        </tr>
+        <tr>
+          <td>healthStatus</td>
+          <td><a href="#Proto.System.PowerStatus.BatteryHealthStatus">PowerStatus.BatteryHealthStatus</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>charging</td>
+          <td><a href="#bool">bool</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerSupplyVoltage">PowerSupplyVoltage</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>voltage</td>
+          <td><a href="#Proto.System.Voltage">Voltage</a></td>
+          <td>repeated</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.RespGetBoardVersion">RespGetBoardVersion</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>bomVariantString</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>bomVariantLetter</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>pcbaVariant</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>pcbaVariantString</td>
+          <td><a href="#string">string</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.Voltage">Voltage</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.System.Voltage.Type">Voltage.Type</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td><a href="#double">double</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo.NetworkInterface.State">NetworkInfo.NetworkInterface.State</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UNKNOWN</td>
+          <td>0</td>
+          <td><p>The device's state is unknown</p></td>
+        </tr>
+        <tr>
+          <td>SCANNING</td>
+          <td>1</td>
+          <td><p>Searching for an available access point</p></td>
+        </tr>
+        <tr>
+          <td>CONNECTING</td>
+          <td>2</td>
+          <td><p>Currently setting up data connection</p></td>
+        </tr>
+        <tr>
+          <td>AUTHENTICATING</td>
+          <td>3</td>
+          <td><p>Network link established, performing authentication</p></td>
+        </tr>
+        <tr>
+          <td>ACQUIRING</td>
+          <td>4</td>
+          <td><p>Awaiting response from DHCP server in order to assign IP address information</p></td>
+        </tr>
+        <tr>
+          <td>CONNECTED</td>
+          <td>5</td>
+          <td><p>IP traffic should be available</p></td>
+        </tr>
+        <tr>
+          <td>DISCONNECTED</td>
+          <td>6</td>
+          <td><p>IP traffic not available</p></td>
+        </tr>
+        <tr>
+          <td>FAILED</td>
+          <td>7</td>
+          <td><p>Attempt to connect failed</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo.NetworkInterface.Type">NetworkInfo.NetworkInterface.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WIFI</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ETHERNET</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SOFT_AP</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.NetworkInfo.NetworkInterface.WiFi.Quality">NetworkInfo.NetworkInterface.WiFi.Quality</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>EXCELLENT</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GOOD</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POOR</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerRequest.Type">PowerRequest.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>POWER_OFF</td>
+          <td>0</td>
+          <td><p>FEP should power off the ASE</p></td>
+        </tr>
+        <tr>
+          <td>POWER_RESTART</td>
+          <td>1</td>
+          <td><p>FEP should do a power restart of ASE</p></td>
+        </tr>
+        <tr>
+          <td>POWER_ONLINE</td>
+          <td>2</td>
+          <td><p>FEP should go to online state, synchronous (ASE waits for completion)</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerStatus.ACLineStatus">PowerStatus.ACLineStatus</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UNPLUGGED</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PLUGGED</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerStatus.BatteryHealthStatus">PowerStatus.BatteryHealthStatus</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UNKNOWN</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GOOD</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>POOR</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.PowerStatus.BatteryStatus">PowerStatus.BatteryStatus</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>NO_BATTERY</td>
+          <td>0</td>
+          <td><p>The product does not have a battery</p></td>
+        </tr>
+        <tr>
+          <td>LEVEL_CRITICAL</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LEVEL_LOW</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LEVEL_MIDDLE</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>LEVEL_HIGH</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.System.Voltage.Type">Voltage.Type</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PSV_24V</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_14V_SB</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_12V</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_Plus12VA</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_5VA</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_5V</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_3V3</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_1V2</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_1V1_DSP3</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_1V1_DSP2</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_1V1_DSP1</td>
+          <td>10</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_1V05</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>PSV_3V3A</td>
+          <td>12</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="file-heading">
+      <h2 id="wpl.proto">wpl.proto</h2><a href="#title">Top</a>
+    </div>
+    
+    <h3 id="Proto.Wpl.Event">Event</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Wpl.Request">Request</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Wpl.Command">Command</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>raw</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>param</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Wpl.Response">Response</h3>
+    <p></p>
+    <table class="field-table">
+      <thead>
+        <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>type</td>
+          <td><a href="#Proto.Wpl.Command">Command</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td><a href="#Proto.Wpl.Status">Status</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>raw</td>
+          <td><a href="#bytes">bytes</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>param</td>
+          <td><a href="#uint32">uint32</a></td>
+          <td>optional</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Wpl.Command">Command</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Init</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Shutdown</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DiscoveryFull</td>
+          <td>2</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>DiscoveryFast</td>
+          <td>3</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>StoreSpkConfig</td>
+          <td>4</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>RemoveSpk</td>
+          <td>5</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ResetSpkConfig</td>
+          <td>6</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetSummitModuleInfo</td>
+          <td>7</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetSpkDesc</td>
+          <td>8</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetSpkState</td>
+          <td>9</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Mute</td>
+          <td>10</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetNetworkQualityThresholdLevel</td>
+          <td>11</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>RawCmd</td>
+          <td>12</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetSummitFwData</td>
+          <td>13</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetSpeakerMap</td>
+          <td>14</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetSpeakerMap</td>
+          <td>15</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetFwVersion</td>
+          <td>16</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetDFSRev</td>
+          <td>17</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>GetAPIVersion</td>
+          <td>18</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetTestSpkMac</td>
+          <td>19</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ClearTestSpkMac</td>
+          <td>20</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>ResetTXMaster</td>
+          <td>21</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetSpeakersOff</td>
+          <td>22</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetSpeakersOn</td>
+          <td>23</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>SetMasterMfgData</td>
+          <td>24</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="Proto.Wpl.Status">Status</h3>
+    <p></p>
+    <table class="enum-table">
+      <thead>
+        <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Done</td>
+          <td>0</td>
+          <td><p></p></td>
+        </tr>
+        <tr>
+          <td>Error</td>
+          <td>1</td>
+          <td><p></p></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="scalar-value-types">Scalar Value Types</h2>
+    <table class="scalar-value-types-table">
+      <thead>
+        <tr><td>.proto Type</td><td>Notes</td><td>C++ Type</td><td>Java Type</td><td>Python Type</td></tr>
+      </thead>
+      <tbody>
+        <tr id="double">
+          <td>double</td>
+          <td></td>
+          <td>double</td>
+          <td>double</td>
+          <td>float</td>
+        </tr>
+        <tr id="float">
+          <td>float</td>
+          <td></td>
+          <td>float</td>
+          <td>float</td>
+          <td>float</td>
+        </tr>
+        <tr id="int32">
+          <td>int32</td>
+          <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</td>
+          <td>int32</td>
+          <td>int</td>
+          <td>int</td>
+        </tr>
+        <tr id="int64">
+          <td>int64</td>
+          <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</td>
+          <td>int64</td>
+          <td>long</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="uint32">
+          <td>uint32</td>
+          <td>Uses variable-length encoding.</td>
+          <td>uint32</td>
+          <td>int</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="uint64">
+          <td>uint64</td>
+          <td>Uses variable-length encoding.</td>
+          <td>uint64</td>
+          <td>long</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="sint32">
+          <td>sint32</td>
+          <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</td>
+          <td>int32</td>
+          <td>int</td>
+          <td>int</td>
+        </tr>
+        <tr id="sint64">
+          <td>sint64</td>
+          <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</td>
+          <td>int64</td>
+          <td>long</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="fixed32">
+          <td>fixed32</td>
+          <td>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</td>
+          <td>uint32</td>
+          <td>int</td>
+          <td>int</td>
+        </tr>
+        <tr id="fixed64">
+          <td>fixed64</td>
+          <td>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</td>
+          <td>uint64</td>
+          <td>long</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="sfixed32">
+          <td>sfixed32</td>
+          <td>Always four bytes.</td>
+          <td>int32</td>
+          <td>int</td>
+          <td>int</td>
+        </tr>
+        <tr id="sfixed64">
+          <td>sfixed64</td>
+          <td>Always eight bytes.</td>
+          <td>int64</td>
+          <td>long</td>
+          <td>int/long</td>
+        </tr>
+        <tr id="bool">
+          <td>bool</td>
+          <td></td>
+          <td>bool</td>
+          <td>boolean</td>
+          <td>boolean</td>
+        </tr>
+        <tr id="string">
+          <td>string</td>
+          <td>A string must always contain UTF-8 encoded or 7-bit ASCII text.</td>
+          <td>string</td>
+          <td>String</td>
+          <td>str/unicode</td>
+        </tr>
+        <tr id="bytes">
+          <td>bytes</td>
+          <td>May contain any arbitrary sequence of bytes.</td>
+          <td>string</td>
+          <td>ByteString</td>
+          <td>str</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </body>
+</html>

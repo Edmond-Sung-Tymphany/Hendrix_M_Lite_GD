@@ -1,0 +1,28 @@
+syntax = "proto2";
+package Proto.BtState;
+
+
+enum ConnState {
+	CONNECTABLE = 0;
+	PAIRING = 1;
+	RECONNECTING = 2;
+	CONNECTED = 3;
+	A2DPSTREAMING = 4;
+}
+
+enum PlayState {
+	AVRCP_STOP = 0;
+	AVRCP_PLAYING = 1;
+	AVRCP_PAUSED = 2;
+	AVRCP_FWD_SEEK = 3;
+	AVRCP_REV_SEEK = 4;
+	AVRCP_ERROR = 5;
+}
+
+enum BleState {
+	IDLE = 0;
+	ADVERTISING = 1;
+	SCANNING = 2;
+	PERIPHERALS_CONNECTED = 3;
+	CENTRAL_CONNECTED = 4;
+}

@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# A script that will bundle up a customized set of files so
+# that they can be sent to Thundersoft for inclusion in a 
+# customized firmware build
+
+BASE_DIR=$(dirname $0)
+
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+usage() {
+	cat << EOF
+Usage: $0 [--help]
+
+	Bundle up files for integration into a customized firmware build.
+
+EOF
+}
+
+if [ "$1" = "--help" ] || [ -n "$1" ]; then
+	usage;
+	exit 1;
+fi
+
+DEPLOY_PKG_NAME=${OUTPUT_DIR}/oem-custom-deploy.tgz
+tar cvzf "${DEPLOY_PKG_NAME}" -C ${STAGING_DIR}/openwrt .

@@ -1,0 +1,5 @@
+* type:FT_IGNORE
+
+Proto.FirmwareUpdate.VersionInfo.module type:FT_DEFAULT
+Proto.FirmwareUpdate.VersionInfo.module.name type:FT_DEFAULT
+Proto.FirmwareUpdate.VersionInfo.module.version type:FT_DEFAULT

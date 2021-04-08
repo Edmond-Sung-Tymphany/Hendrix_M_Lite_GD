@@ -1,0 +1,63 @@
+/**
+\anchor page
+\page LedSrv Led Server
+
+\image html logo.png
+
+
+<HR>
+\section LedSrv Introduction
+Led Server provide the basic function for Led. Led provide the pattern feature to customize differnt styles for differnt needs.
+<ol>
+<li> Offering Foreground pattern and Background pattern </li>
+<li> The pattern is set by sending the signal LED_PAT_ON_CMD to LED_SRV_ID </li>
+<li> The same pattern could be set to multiple Leds at the same time through bit-masking Led ID in leds of LedReqEvt </li>
+<li> When a foreground pattern is finished, Led Server will publish the signal LED_STATE_SIG with the information of which Led and what pattern is finished </li>
+<li> The Led server is refreshing with the period LED_TICK_MS </li>
+</ol>
+
+
+<HR>
+\section LedSrvPattern Led Pattern
+Every project have its own patterns to show, this is configured through defining the <b>enum ePattern</b> and <b>const tPatternData patternConfig[]</b>. These data need to be one-to-one mapped. 
+
+<ol>
+<li> <b>ePattern</b> should always start with OFF_PATT and PAT_MAX_NUMBER to maintain the logic </li>
+<li> The number of entry in <b>patternConfig[]</b> should always be PAT_MAX_NUMBER </li>
+</ol>
+
+\section LedSrvFGBGPattern Foreground Pattern vs. Background Pattern
+Background pattern is a pattern that always exists unless another background pattern overwrites it. Background pattern is used to indicate a long lasting status.
+
+Contrast to background pattern, foreground pattern is used to indicate some special events. Foreground pattern has the life time, when it is finished, it will fall back to the background pattern and a signal will be publised to indicate a foreground pattern is finished.
+
+\section LedSrvColor Color vs. brightness
+Led Pattern offers LED_HAS_RGB for combining 3 Leds to form a new logical Led.
+In such case where color is needed, the following steps are needed:
+<ol>
+<li> define the macro LED_HAS_RGB </li>
+<li> in attachedDevices.c, declare which Led is RED, GREEN and BLUE component accordingly </li>
+<li> when a pattern is set, make sure the ledReqEvt->leds contains all 3 components Leds </li>
+</ol>
+
+Color is normally defined as uint8 for brightness level. 
+If the logical Led is need, Color is defined as uint32 which contains the 8-bit Red, Green, Blue and Alpha. 
+
+<HR>
+\image html LedDrv.png
+\section LedDrv Led Driver (cLedDrv)
+Led Driver is the super class of others sub-Led classes, i.e. Pwm Led driver, io expander Led driver. This provide a common interface to Led Server to operate the Led or destroy it. The virtual functions must be pointed by LedDrv->pLedFunc for general pattern handling.
+
+
+<HR>
+\image html device_key_led.png
+\section LedDevice Led Device
+Led Device is a descriptive structure for the Led and works across differnt Board Supported Packages. 
+When the Led driver object is created, the Led Device provide the corresponding information for the construction. 
+With the same type of Leds, they will all be defined under the same tLedDevice and the number of Led attached to this Led Device could be reference by ledNum.
+For the sub-LedDevice, it contains the shared attribute and the mapping for Leds with the corresponding attachment, i.e. GPIO pin, timer, register, color components, etc.
+
+<HR>
+
+*/
+

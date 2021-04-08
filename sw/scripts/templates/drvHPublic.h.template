@@ -1,0 +1,32 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user} 
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+
+#ifndef ${file}_DRV_H
+#define ${file}_DRV_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "cplus.h"
+#include "commonTypes.h"
+
+CLASS(c${name}Drv)
+    /* private data */
+METHODS
+    /* public functions */
+void ${name}Drv_Ctor(c${name}Drv *me);
+void ${name}Drv_Xtor(c${name}Drv *me);
+END_CLASS
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${file}_DRV_H */
+

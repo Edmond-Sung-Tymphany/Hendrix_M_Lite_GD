@@ -1,0 +1,11 @@
+_auto_build*
+debug/*
+release/*
+*.dep
+*.ewt
+*.zip
+*.hex
+*.dat
+*.params
+*.txt
+*.xml

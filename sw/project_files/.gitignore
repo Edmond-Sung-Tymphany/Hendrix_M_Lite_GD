@@ -1,0 +1,13 @@
+# ignore files for pic32 build
+**/mplab/build/*.*
+**/mplab/dist/*.*
+**/mplab/nbproject/*Makefile*
+**/mplab/nbproject/Package-*.bash
+**/mplab/nbproject/private/**
+# ignore files for win build
+win/Debug/*.*
+#ignore for iar builds
+**/iar/settings/*.*
+**/iar/Release/*.*
+**/iar/Debug/*.*
+**/iar/*.dep

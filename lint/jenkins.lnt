@@ -1,0 +1,28 @@
+/////////////////////////////////////////////
+//
+// GENERAL LINT OPTION FILE FOR USE WITH JENKINS
+//
+//
+// Please use this file for renases NC30 specific settings
+//
+// Add / remove the flags you need but read the Compiler documentation and PCLINT doc first
+//
+// + = Added setting
+// - = removed setting
+// Please add text to describe the setting. 
+
+/////////////////////////////////////////////
+
+-wlib(1) // libs only report errors - use this because most errors in libs are due to specific compiler settings 
+// such as using the #pragma	ADDRESS		pm0_addr		0004H - Don't know how to handle this neatly!
+
++ffn // force full path names
+-width(0,0) // don't insert line breaks (unlimited output width).
+-hf1 // message height one
+-"format=%f(%l): %t %n: %m"
+
+-ftg
+-zero(99)
++passes(2)
+-restore_at_end
+-summary()

@@ -1,0 +1,5 @@
+../server/key_server/keysrv_ut.mk
+../server/bt_server/BluetoothSrv_ut.mk
+../server/audio_server/AudioSrv_ut.mk
+../server/power_server/powersrv_ut.mk
+../common/datatype/ringbuf/ringbuf_ut.mk

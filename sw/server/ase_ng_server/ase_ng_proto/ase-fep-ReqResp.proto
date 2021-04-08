@@ -1,0 +1,264 @@
+syntax = "proto2";
+package Proto.AseFep;
+
+enum ReqResp {
+	/// has Response data of type FirmwareUpdate.VersionInfo
+	FIRMWARE_UPDATE_VERSION_INFO = 0;
+
+	/// has Response data of type FirmwareUpdate.ChunkResponse
+	FIRMWARE_UPDATE_CHUNK = 1;
+
+	/// Generic response
+	FIRMWARE_UPDATE_SWITCH_TO_BOOTLOADER = 2;
+
+	/// Has response Hdmi.Arc.Status
+	HDMI_ARC_STATUS = 3;
+
+	/// Generic response
+	HDMI_ARC_START = 4;
+
+	/// Generic response
+	HDMI_ARC_END = 5;
+
+	/// Generic response
+	HDMI_INPUT_SELECT = 6;
+
+	/// has Response data of type System.PowerStatus
+	POWER_STATUS = 7;
+
+	/// has Request and Response data of type Dsp.LineInSensitivity
+	/// Request may have missing Dsp.LineInSensitivity data field. It means query
+	/// of the current linein sensitivity
+	/// Response should always have Dsp.LineInSensitivity data field populated
+	LINE_IN_SENSITIVITY = 8;
+
+	/// Generic response
+	/// Has request data of type Dsp.AudioInput
+	AUDIO_INPUT = 9;
+
+	/// has request data of type Dsp.RequestPositionSoundMode
+	/// has response data of type Dsp.ResponsePositionSoundMode
+	POSITION_SOUND_MODE = 10;
+
+	/// has request data of type Dsp.RequestInternalSpeakerCompensation
+	/// has response data of type Dsp.ResponseInternalSpeakerCompensation
+	INTERNAL_SPEAKER_COMPENSATION = 11;
+
+	/// has Generic request
+	/// has response data of type PowerLink.AllSensesStatus
+	POWER_LINK_ALL_SENSES_STATUS = 12;
+
+	/// has request data of type PowerLink.SetON
+	/// has Generic response
+	POWER_LINK_SET_ON = 13;
+
+	/// has request data of type PowerLink.SetMute
+	/// has Generic response
+	POWER_LINK_SET_MUTE = 14;
+
+	/// has request data of type Dsp.InternalAmplifierCommand
+	/// has Generic response
+	INTERNAL_AMPLIFIER_COMMAND = 15;
+
+	/// checks whether the Application is running right now.
+	/// has Generic response
+	/// DONE if the application is running
+	/// ERROR if the application is not running
+	FEP_APPLICATION_IS_RUNNING = 16;
+	
+	/// has request data of type Eeb.EebTelegram
+	/// has generic response
+	/// DONE if the telegram was transmitted
+	/// ERROR if the transmission failed
+	EEB_TELEGRAM_TRANSMIT = 17;
+
+	/// has request data of type Production.LedModeSet
+	/// has Generic response response
+	/// DONE if the led is valid
+	/// ERROR if the led is invalid for the product
+	PRODUCTION_LED_MODE_SET = 18;
+
+	/// has request data of type Production.GetButtonState
+	/// has Production.ButtonState response for valid buttons
+	/// has generic ERROR response for invalid buttons on the product
+	PRODUCTION_GET_BUTTON_STATE = 19;
+
+	/// Generic response
+	/// Send CEC command Standby
+	HDMI_CEC_SEND_STANDBY = 20;
+
+	/// Generic response
+	/// Send CEC command to power up TV
+	HDMI_CEC_SEND_POWER_UP_TV = 21;
+
+	/// has request data of type Wpl.Request
+	/// has Wpl.Response response
+	WPL_COMMAND = 22;
+
+	/// has request data of type Puc.PucCommand
+	/// has generic response
+	/// DONE if the command was send
+	/// ERROR if the command failed
+	/// NOT_SUPPORTED if the command contains any unsupported types
+	PUC_COMMAND_SEND = 23;
+
+	/// has request data of type System.PowerRequest
+	/// has generic response
+	/// DONE if the power request has been accepted
+	/// ERROR if the command failed
+	POWER_REQUEST = 24;
+
+	/// Generic response
+	/// Add UHD deep colour setting to EDID if present in TV
+	/// HdmiInput parameter
+	HDMI_UHD_DEEP_COLOUR_ON = 25;
+	/// Generic response
+	/// Remove UHD deep colour setting from EDID if present
+	/// HdmiInput parameter
+	HDMI_UHD_DEEP_COLOUR_OFF = 26;
+
+	/// has response data of type System.PowerSupplyVoltage
+	POWERSUPPLY_VOLTAGE = 27;
+
+	/// has request data of type PowerLink.Data
+	/// has generic response
+	SEND_POWER_LINK_DATA = 28;
+
+	/// has request data of type Dsp.ToslinkOutSampleRate
+	/// has generic response
+	TOSLINK_OUT_ADJUST_SAMPLE_RATE = 29;
+
+	/// request without data
+	/// has generic response
+	TOSLINK_OUT_VOLUME_REGULATION_ON = 30;
+
+	/// request without data
+	/// has generic response
+	TOSLINK_OUT_VOLUME_REGULATION_OFF = 31;
+
+	/// Get HDMI UHD Deep colour setting values for all HDMI inputs
+	/// Response has Hdmi.UhdDeepColour
+	GET_HDMI_UHD_DEEP_COLOUR_STATUS = 32;
+
+	/// Get HDMI AudioFormat, it is also sent as an event, so it should only be asked for after application boot.
+	/// Response has Hdmi.AudioFormat
+	GET_HDMI_AUDIO_FORMAT = 33;
+
+	/// Get HDMI Input selected (input number or ARC), it is also sent as an event, so it should only be asked for after application boot.
+	/// Response has Hdmi.InputSelected
+	GET_HDMI_INPUT_SELECTED = 34;
+
+	/// HDMI sense ON/OFF for all inputs
+	/// Response has Hdmi.InputsSense
+	GET_HDMI_SENSE_STATUS = 35;
+
+	/// Request has data of type Dsp.SpeakerEnableCommand
+	/// Generic response
+	SPEAKER_ENABLE_COMMAND = 36;
+
+	/// Request HDMI input audio to be automatically detected from inputs or always ARC (Audio guidance)
+	/// Input parameter Hdmi.AudioModeSelect
+	/// Generic response
+	HDMI_AUDIO_MODE_SELECT = 37;
+
+	/// has request data of type LightSensor.Command
+	/// has response data of type LightSensor.ReplyData
+	LIGHT_SENSOR_TELEGRAM = 38;
+
+	/// Get the A2B mode from soundwall
+	/// Response has SoundWall.A2Bmode
+	SOUNDWALL_GET_A2B_MODE = 39;
+
+	/// Set the A2B mode to soundwall
+	/// Input parameter SoundWall.A2Bmode
+	/// Generic response
+	SOUNDWALL_SET_A2B_MODE = 40;
+
+	/// set the "GAIN_AND_DELAY" parameter to soundwall
+	/// Input parameter SoundWall.GainAndDelay
+	/// Generic response
+	SOUNDWALL_SET_GAIN_AND_DELAY = 41;
+
+	/// set the "DRIVER_GAIN" parameter to soundwall
+	/// Input parameter SoundWall.DriverGain
+	/// Generic response
+	SOUNDWALL_SET_DRIVER_GAIN = 42;
+
+	/// set the "BASS_AND_ROOMEQ" parameter to soundwall
+	/// Input parameter SoundWall.BassAndRoomEQ
+	/// Generic response
+	SOUNDWALL_SET_BASS_AND_ROOMEQ = 43;
+
+	/// Get total active soundwalls nodes.
+	/// Response has SoundWall.RespGetTotalNodes
+	SOUNDWALL_GET_TOTAL_NODES = 44;
+   
+	/// Request DSP paramter change
+	/// Request has value of type Dsp.Parameter
+	/// Possible ERROR is set inside generic response
+	DSP_PARAMETER = 45;
+   
+	/// Get power mode of soundwalls, standby/working
+	/// Response has SoundWall.PowerMode
+	SOUNDWALL_GET_POWER_MODE = 46;
+
+	/// Set power mode to soundwalls, standby/working
+	/// Input parameter : SoundWall.PowerMode
+	SOUNDWALL_SET_POWER_MODE = 47;
+
+	/// store the DSP parameter to MCU flash
+	/// input parameter : SoundWall.NodeIndex
+	/// Generic response
+	SOUNDWALL_WRITE_DSP_PARAM = 48;
+
+	/// Mute/Unmute control
+	/// Input parameter : SoundWall.MuteMode
+	SOUNDWALL_SET_MUTE_MODE = 49;
+
+	/// Get version info from specify soundwall
+	/// input parameter : SoundWall.NodeIndex, N/A to get MasterTile version
+	/// Response has Dsp.NTCDataEvent if nodeIndex is correct.
+	/// Response genericResponse:Error when input wrong nodeIndex
+	SOUNDWALL_GET_NTC_INFO = 50;
+
+	/// Restart the soundwall without power cycle the AC cable.
+	/// Input parameter : N/A
+	/// Generic response
+	SOUNDWALL_SYSTEM_RESTART = 51;
+
+	/// Description: get the "GAIN_AND_DELAY" parameter from soundwall
+	/// Parameters: nodeIndex
+	/// Response: Soundwall.GainAndDelay
+	SOUNDWALL_GET_GAIN_AND_DELAY = 52;
+
+	/// Description: get the "DRIVER_GAIN" parameter from soundwall
+	/// Parameters: nodeIndex
+	/// Response: Soundwall.DriverGain
+	SOUNDWALL_GET_DRIVER_GAIN = 53;
+	
+	/// Description: get the "BASS_AND_ROOMEQ" parameter from soundwall
+	/// Parameters: nodeIndex
+	/// Response: Soundwall.BassAndRoomEQ
+	SOUNDWALL_GET_BASS_AND_ROOMEQ = 54;
+
+	/// Description: generator the white-noise the specify speaker tile no.
+	/// Parameters: ReqTestTone
+	/// Response: GenericResponse
+	SOUNDWALL_SET_TEST_TONE = 55;
+
+	/// Request volume fade
+	/// Input parameter Dsp.AbsoluteVolume with fade_duration field set
+	/// Response: Generic response. If successful, this response should be delivered upon volume fade is finished
+	DSP_VOLUME_FADE = 56;
+
+	/// Description: get the boardversion from FEP.
+	/// Parameters: N/A
+	/// Response: System.RespGetBoardVersion
+	SYSTEM_GET_BOARD_VERSION = 57;
+
+	/// Description: Factory Reset command to soundwall
+	/// Parameters: nodeIndex
+	/// Generic response
+	SOUNDWALL_FACTORY_RESET = 58;
+}
+

@@ -1,0 +1,2 @@
+# ignore files for pic32 build
+gen_firmware_unix

@@ -1,0 +1,2 @@
+protoc -o ase_tk.pb ase_tk.proto
+python nanopb/generator/nanopb_generator.py message.pb

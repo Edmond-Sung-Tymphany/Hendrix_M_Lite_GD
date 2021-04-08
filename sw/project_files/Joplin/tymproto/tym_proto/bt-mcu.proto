@@ -1,0 +1,141 @@
+syntax = "proto2";
+import "bt-mcu-ReqResp.proto";
+import "mcu-bt-ReqResp.proto";
+import "bt_state.proto";
+import "bt_dev_info.proto";
+import "ble_eq_tuning.proto";
+import "ble_light.proto";
+
+package Proto.BtMcu;
+
+message Req {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional ReqResp type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+	oneof OneOf {
+		uint32 data = 10;
+	}
+}
+
+message Resp {
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional McuBt.ReqResp type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+	oneof OneOf {
+		uint32 data = 10;
+		uint32 swVersion = 11;
+		BtDevInfo.Data btInfo = 12;
+	}
+}
+
+
+/// Event report from BT module to MCU (Local UI).
+message Event {
+	enum Type {
+		/// BT module has completed the boot sequence and is ready to receive messages from MCU
+		BOOTED = 0;
+
+		/// Event send when BT module enter source standby
+		SYSTEM_STATUS_STANDBY = 1;
+		/// Event send when exiting standby (a source has started from standby)
+		SYSTEM_STATUS_ON = 2;
+		/// BT module is going to restart, MCU will gracefully shut down DSP and amplifier and signal reboot on the local UI.
+		SYSTEM_STATUS_BT_RESTART = 3;
+
+		/// Event send when >>reset to factory<< is done
+		/// When starting factory reset procedure, FACTORY_RESET_START is sent
+		FACTORY_RESET_DONE = 4;
+
+		/// Software update of the BT module has started, local UI must show software update in progress. BT module reboot is part
+		/// of the update process, if new firmware is available for the MCU, firmware update starts after BT module reboot.
+		SW_UPDATE_STARTED = 7;
+		SW_UPDATE_FINISHED = 8;
+		SW_UPDATE_FAILED = 9;
+
+		/// BT module indicates to MCU when the comfort sound playback starts. MCU has to turn on the DSP in case the DSP is off.
+		COMFORT_TONE_START = 10;
+		/// BT module indicates to MCU when the comfort sound playback is finished. MCU can turn off the DSP in case it was off
+		/// before the comfort sound playback.
+		COMFORT_TONE_DONE = 11;
+
+		/// associated data in field of type Dsp.AbsoluteVolume
+		/// field fade_duration should be ignored. Use DSP_VOLUME_FADE request to fade volume
+		VOLUME_CHANGED = 12;
+
+		/// associated data in field of type Dsp.Mute
+		MUTE_CHANGED = 13;
+
+		/// Event send when >>reset to factory<< is initiated
+		/// FACTORY_RESET_DONE is sent when factory reset procedure has finished
+		FACTORY_RESET_START = 16;
+
+		/// Bluetooth pairing is active. BT module is in discoverable state(BT).
+		BT_PAIRING_ENABLED = 17;
+
+		/// Bluetooth pairing is inactive. BT module is NOT in discoverable state(BT).
+		BT_PAIRING_DISABLED = 18;
+
+		/// Pair of Bluetooth accessory failed.
+		BT_PAIRING_FAILED = 19;
+
+		/// A Bluetooth accessory has been successfully paired.
+		BT_PAIRING_SUCCEEDED = 20;
+
+		/// Bluetooth Low Energy pairing is active. BT module is in discoverable state(BTLE).
+		BTLE_PAIRING_ENABLED = 21;
+
+		/// Bluetooth Low Energy pairing is inactive. BT module is NOT in discoverable state(BTLE).
+		BTLE_PAIRING_DISABLED = 22;
+
+		/// Pair of Bluetooth Low Energy accessory failed.
+		BTLE_PAIRING_FAILED = 23;
+
+		/// A Bluetooth Low Energy accessory has been successfully paired.
+		BTLE_PAIRING_SUCCEEDED = 24;
+
+		/// Event send when on state is requested
+		SYSTEM_STATUS_TURNING_ON = 29;
+
+		/// Event send when on state is requested
+		BT_CONNECTION_STATE = 30;
+
+		/// Bluetooth A2DP connected
+		BT_A2DP_CONNECTED = 31;
+
+		/// Bluetooth A2DP disconnected
+		BT_A2DP_DISCONNECTED = 32;
+
+		/// Bluetooth audio cue play start
+		BT_AUDIO_CUE_PLAY_START = 33;
+
+		/// Bluetooth audio cue play stop
+		BT_AUDIO_CUE_PLAY_STOP = 34;
+
+		SOURCE_CHANGED = 36;
+
+		EQ_SET = 37;
+
+		LIGHT_SET = 38;
+	}
+	optional Type type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+	oneof OneOf {
+		uint32 data = 10;
+		BtState.ConnState connState = 11;
+		BtState.PlayState playState = 12;
+		BtState.BleState bleState = 13;
+		uint32 absoluteVolume = 14;
+		uint32 volumeStep = 15;
+		uint32 source = 16;
+		BleEqTuning.Data eq = 17;
+		BleLight.Data light = 18;
+	}
+}

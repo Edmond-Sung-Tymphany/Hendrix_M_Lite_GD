@@ -1,0 +1,30 @@
+# By default ignore all data
+Proto.AseFep.Req.* type:FT_IGNORE
+Proto.AseFep.Event.* type:FT_IGNORE
+Proto.AseFep.Resp.* type:FT_IGNORE
+
+# Enable generation of control fields
+Proto.AseFep.Req.type type:FT_DEFAULT
+Proto.AseFep.Req.id type:FT_DEFAULT
+Proto.AseFep.Event.type type:FT_DEFAULT
+Proto.AseFep.Resp.type type:FT_DEFAULT
+Proto.AseFep.Resp.id type:FT_DEFAULT
+
+# Enable generation of data fields
+Proto.AseFep.Req.data type:FT_DEFAULT
+Proto.AseFep.Event.data type:FT_DEFAULT
+
+# Here you set type to FT_DEFAULT for data for which the definitions
+# should be generated
+Proto.AseFep.Resp.genericResponse type:FT_DEFAULT
+Proto.AseFep.Event.soundwallParam type:FT_DEFAULT
+Proto.AseFep.Req.audioInput type:FT_DEFAULT
+Proto.AseFep.Req.reqA2Bmode type:FT_DEFAULT
+Proto.AseFep.Req.reqGainAndDelay type:FT_DEFAULT
+Proto.AseFep.Req.reqDriverGain type:FT_DEFAULT
+Proto.AseFep.Req.reqBassAndRoomEQ type:FT_DEFAULT
+Proto.AseFep.Req.reqPowerMode type:FT_DEFAULT
+Proto.AseFep.Req.nodeIndex type:FT_DEFAULT
+Proto.AseFep.Req.muteMode type:FT_DEFAULT
+Proto.AseFep.Req.reqTestTone type:FT_DEFAULT
+

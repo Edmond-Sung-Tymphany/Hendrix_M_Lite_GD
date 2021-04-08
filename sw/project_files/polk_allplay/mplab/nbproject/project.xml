@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>com.microchip.mplab.nbide.embedded.makeproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/make-project/1">
+            <name>polk_allplay</name>
+            <creation-uuid>11f67445-a675-4f23-8a2b-9e8ad31e938b</creation-uuid>
+            <make-project-type>0</make-project-type>
+            <c-extensions>c</c-extensions>
+            <cpp-extensions/>
+            <header-extensions>config,h</header-extensions>
+            <sourceEncoding>ISO-8859-1</sourceEncoding>
+            <asminc-extensions>inc</asminc-extensions>
+            <make-dep-projects>
+                <make-dep-project>../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay</make-dep-project>
+                <make-dep-project>../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L</make-dep-project>
+            </make-dep-projects>
+        </data>
+    </configuration>
+</project>

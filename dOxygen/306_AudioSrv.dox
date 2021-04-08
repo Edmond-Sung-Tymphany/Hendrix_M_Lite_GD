@@ -1,0 +1,200 @@
+/**
+\anchor page
+\page AudioSrv AudioSrv - How-to configure power
+
+\image html logo.png
+
+AudioSrv - How-to configure power
+
+
+\section audio_section0 Introduction
+Audio Server offer the below features:
+<ol>
+<li> Initialize the DSP
+<li> Handle DSP EQ behaviour like Polarity, Phase, DRC
+<li> Handle volume level control
+<li> Handle mute status of the audio output
+<li> Handle the audio cue playback
+<li> Handle the audio channel selection
+</ol>
+
+
+\section audio_section1 How are the DSP and Audio Driver Work
+
+If the project include a DSP, most of the function like channel switch, volume control, bass management and EQ setting will be control by DSP driver.
+Amplifier control like mute pin and standby pin will be done by Audio driver.
+Audio server will access the audio driver and dsp driver to manipulate these function when other server request.
+
+\code
+
+        ret = TRUE;
+        AudioDrv_Mute(AMP_MUTE_ON);
+        (&dspDrv)->AuxinStatus=AUXIN_UNKNOWN;
+        /* Set the default channel */
+#ifdef AUDIO_MULTI_SOURCE
+        me->channel= AUDIO_DEFAULT_CHANNEL;
+        Setting_Set(SETID_CHANNEL, &me->channel);
+        AudioSrv_SetChannel(AUDIO_DEFAULT_CHANNEL);
+#else
+        me->channel= AUDIO_CHANNEL_INVALID;
+        Setting_Set(SETID_CHANNEL, &me->channel);
+#endif
+        me->isMuteReqested = TRUE;
+#ifdef REMEMBER_VOLUME
+        if(!Setting_IsReady(SETID_VOLUME))
+        {/*if volume is not set, set it for the first time*/
+            DSPDrv_SetVol(&dspDrv, dspDrv.default_vol);
+            Setting_Set(SETID_VOLUME, &dspDrv.default_vol);
+        }
+#else
+        /* Set the default volume level every time boot up the audioSrv*/
+        DSPDrv_SetVol(&dspDrv, (dspDrv.default_vol));
+        Setting_Set(SETID_VOLUME, &(dspDrv.default_vol));
+#endif
+
+
+\endcode
+
+
+\section audio_section2 How music state detect
+
+DSP will ask the music detection status in every certain period (like 1000ms) which is defined by <code>AUDIO_ACTIVE_MUSIC_DETECT_TIME</code>
+Once the music detect status change the audio server will publish the states to other server so they can make use of this information
+
+<code>AudioSrv_SendMusicDetectStateChange(cAudioSrv * const me, cDSPDrv* DSPDrv)</code> will be called every certain period of time
+
+\code
+
+static void AudioSrv_SendMusicDetectStateChange(cAudioSrv * const me, cDSPDrv* DSPDrv)
+{
+    static uint8 muteDelayCounter;
+    eMusicDetected currentStatus = DSPDrv_GetMusicDetected(DSPDrv);
+    if ((DSPDrv->MusicDetected!=currentStatus) ||
+        (currentStatus==MUSIC_DETECTED_ON && muteDelayCounter<MUTE_DELAY_TIME))
+    {
+        if (currentStatus==MUSIC_DETECTED_ON)
+        {
+            AudioDrv_Mute(FALSE);
+            AudioMusicDetectStateEvt* pAudioMusicStateEvt = Q_NEW(AudioMusicDetectStateEvt, AUDIO_MUSIC_DETECT_STATE_SIG);
+            DSPDrv->MusicDetected=currentStatus;
+            muteDelayCounter = MUTE_DELAY_TIME;
+            pAudioMusicStateEvt->bIsMusicDetected=1;
+            Setting_Set(SETID_MUSIC_DET, &(pAudioMusicStateEvt->bIsMusicDetected));
+            QF_PUBLISH(&pAudioMusicStateEvt->super, me);
+            TP_PRINTF("music states is %d\r\n", pAudioMusicStateEvt->bIsMusicDetected);
+        }
+        else if (currentStatus==MUSIC_DETECTED_OFF)
+        {
+            if(muteDelayCounter>0) /*Wait a while to make sure the music really stopped*/
+            {
+                muteDelayCounter--;
+            }
+            else
+            {
+                AudioMusicDetectStateEvt* pAudioMusicStateEvt = Q_NEW(AudioMusicDetectStateEvt, AUDIO_MUSIC_DETECT_STATE_SIG);
+                DSPDrv->MusicDetected=currentStatus;
+                pAudioMusicStateEvt->bIsMusicDetected=0;
+                AudioDrv_Mute(TRUE);
+                Setting_Set(SETID_MUSIC_DET, &(pAudioMusicStateEvt->bIsMusicDetected));
+                QF_PUBLISH(&pAudioMusicStateEvt->super, me);
+                TP_PRINTF("music states is %d\r\n", pAudioMusicStateEvt->bIsMusicDetected);
+            }
+        }
+    }
+}
+
+
+\endcode
+
+
+
+\section audio_section3 How the Bluetooth audio cue can be played
+
+When <code>AudioSrv_AudioMainHandler</code> receive the <code>AUDIO_SWITCH_CHANNEL_SIG</code> and the <code>ChannelSwitchReqEvt->channel</code> is <code>BT_TONE_CHANNEL</code>,
+audio channel will enter the PlayToneState.
+
+Other server or delegate can use <code> AudioSrv_SendAudioSrvToneCmd((QActive*)me, BT_TONE_PAIRING_CMD) </code> to command the BT play tone.
+
+Below is a example:
+
+\code
+
+static QState MainApp_PoweringDown(QActive * const me, QEvt const * const e)
+{
+    CAST_ME;
+    switch (e->sig)
+    {
+        case Q_ENTRY_SIG:
+        {
+            /* play the BT power off Q*/
+            if(MainApp_IsBtIdle() && MainApp_IsAuxInIdle() && FALSE==isEmergencyMode)
+            {
+                AudioSrv_SendAudioSrvToneCmd((QActive*)me, BT_TONE_POWER_OFF_CMD);
+                isSystemIdle = TRUE;
+            }
+            else
+            {
+                isSystemIdle = FALSE;
+            }
+            MainApp_StopBtDlg();
+            MainApp_PublishSystemStatus(MainApp, SYSTEM_SLEEP_STA);
+            PersistantObj_RefreshTick((cPersistantObj*)MainApp, MAIN_APP_TIMEOUT_IN_MS);
+            return Q_HANDLED();
+        }
+
+
+\endcode
+
+\section audio_section4 How to select the audio input channel
+
+Use the <code>AUDIO_SWITCH_CHANNEL_SIG</code>, select your channel and send the the signal to audio.
+below is the example used in <code>BluetoothDlg.c</code>
+
+\code
+static void BluetoothDlg_SwitchAudioChannel(cBluetoothDlg * const me, eAudioChannel channel)
+{
+#ifdef HAS_AUDIO_CONTROL
+    AudioChannelSwitchReqEvt* audio_switch = Q_NEW(AudioChannelSwitchReqEvt, AUDIO_SWITCH_CHANNEL_SIG);
+    audio_switch->channel = channel;
+    audio_switch->sender = (QActive *) me;
+    SendToServer(AUDIO_SRV_ID, (QEvt*)audio_switch);
+#endif
+}
+
+\endcode
+
+
+
+\section audio_section5 How to mute and unmute the audio
+
+Use the <code>AUDIO_MUTE_SIG</code>, select your mute state and send the signal to audio server.
+below is the example used in <code>MainApp.c</code>
+
+\code
+static void MainApp_RequestMuteAudio(cMainApp * const me, bool isMuteOn)
+{
+    AudioMuteReqEvt* muteReqEvt = Q_NEW(AudioMuteReqEvt, AUDIO_MUTE_SIG);
+    muteReqEvt->mute = isMuteOn;
+    muteReqEvt->sender = (QActive*)me;
+    SendToServer(AUDIO_SRV_ID,(QEvt*)muteReqEvt);
+}
+\endcode
+
+
+\section audio_section6 How audio server initial the DSP
+In <code>AudioSrv_DeActive</code> state, when it receive a <code>SYSTEM_ACTIVE_REQ_SIG</code> 
+<code>AudioSrv_DSPInitAndTick(cAudioSrv * const me)</code> will be called and it will manipulate the DSP initialization process.
+
+\code 
+        case SYSTEM_ACTIVE_REQ_SIG:
+        {
+            pRequestor=((CommonReqEvt*)e)->sender;
+            DSPDrv_Ctor(&dspDrv);
+            AudioSrv_DSPInitAndTick(me);
+            return Q_HANDLED();
+        }
+
+
+\endcode
+
+*/

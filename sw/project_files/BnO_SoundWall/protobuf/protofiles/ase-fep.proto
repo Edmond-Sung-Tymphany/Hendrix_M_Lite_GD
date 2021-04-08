@@ -1,0 +1,68 @@
+import "common.proto";
+import "ase-fep-ReqResp.proto";
+import "fep-ase-ReqResp.proto";
+import "beo_soundwall.proto";
+
+package Proto.AseFep;
+
+message Req {
+	optional ReqResp type = 1;
+
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional uint32 id = 2;
+
+	/// field numbers from 3 to 8 are reserved
+
+	oneof data {
+        uint32 dummy = 9;
+        SoundWallMessage.RequestVersionInfo requestVersionInfo = 10;
+        SoundWallMessage.RequestSetAudioInput requestSetAudioInput =11;
+        SoundWallMessage.RequestSelectSoundMode requestSelectSoundMode =12;
+        SoundWallMessage.RequestActiveSoundMode requestActiveSoundMode =13;
+        SoundWallMessage.RequestCreateSoundMode requestCreateSoundMode =14;
+        SoundWallMessage.RequestSetA2Bmode requestSetA2Bmode =15;
+	}
+}
+
+message Resp {
+	optional FepAse.ReqResp type = 1;
+
+	/// this should be copied from the request to the response
+	/// to be able to pair messages
+	optional uint32 id = 2;
+
+	optional Core.GenericResponse genericResponse = 3;
+
+	/// field numbers from 4 to 9 are reserved
+}
+
+
+/// basic event/command & production test
+message Event {
+	enum Type {
+        /// ASE has completed the boot sequence and is ready to receive messages from FEP
+        BOOTED = 0;
+        LOG_MESSAGE =1;
+        
+        // the following is for production test event/command
+        PRODUCT_TEST_CTL = 200;
+        VOLUME_CTL = 201;
+        VERSION_INFO_CTL = 202;
+        MUTE_CTL = 203;
+        LED_CTL = 204;
+        SOURCE_CTL = 205;
+        BYPASS_CTL = 206;
+        ENTER_DFU_CTL = 207;
+        A2B_MASTER_CTL = 208;
+        NTC_INFO_CTL = 209;
+        MUTE_AMP_CTL = 210;
+    	SYSTEM_RESET_CTL = 211;
+    	SYSTEM_STATUS_CTL = 212;
+	}
+	optional Type type = 1;
+
+	/// field numbers from 2 to 9 are reserved
+
+    optional uint32 param = 10;
+}

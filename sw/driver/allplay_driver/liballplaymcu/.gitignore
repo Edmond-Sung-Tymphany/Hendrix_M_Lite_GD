@@ -1,0 +1,12 @@
+*.ncb
+*.sln
+*.suo
+*.user
+*.vcproj*
+*.pdb
+.sconsign.dblite
+
+Debug/
+Release/
+ajlite.nvram
+build/

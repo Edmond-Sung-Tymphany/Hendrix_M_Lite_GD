@@ -1,0 +1,9 @@
+_auto_build*
+BnO_fs1_mk2_hw*/*
+Debug/*
+Release/*
+*.dep
+*.ewt
+*.zip
+BnO_fs1_hw*
+

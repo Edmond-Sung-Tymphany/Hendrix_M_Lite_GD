@@ -1,0 +1,17 @@
+How to generate bundle file for firmware upgrade verification
+
+
+1. Install Cygwin with package:
+     - openssl
+     - dos2unix
+
+   Install Python2.7
+
+
+3. Execute \sw\project_files\polk_allplay\make_bundle.bat
+
+
+4. Follow SOP_Verify_FirmwareUpgrade.txt to verify upgrading before release
+
+
+5. Release the "out_PolkAllplay" folder

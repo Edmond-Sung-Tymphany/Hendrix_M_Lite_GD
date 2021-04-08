@@ -1,0 +1,36 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user}
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+ 
+
+#ifndef ${file}APP_H
+#define ${file}APP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "application.h"
+
+SUBCLASS(c${name}App, cApp)
+    /* private data */
+METHODS
+    /* public functions */
+END_CLASS
+
+/* Implement these so the controller can launch the App */
+void ${name}App_StartUp(cPersistantObj *me);
+void ${name}App_ShutDown(cPersistantObj *me);
+
+/* Single instance object. Must be defined in controller */
+extern c${name}App ${name}App;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${file}APP_H */

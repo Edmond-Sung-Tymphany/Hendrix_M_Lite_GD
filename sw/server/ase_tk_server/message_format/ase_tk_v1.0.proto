@@ -1,0 +1,39 @@
+/**
+ *  @file      ase_tk.proto
+ *  @brief     This file define the structure that ASE_TK and MCU uses in communication
+ *  @author    Johnny
+ *  @date      8-2015
+ *  @version   1.0
+ *  @copyright Tymphany Ltd.
+ */
+
+/* package type */
+enum eType
+{
+	CONFIRMATION = 0;		// the message needs ACK resp
+	NON_CONFIMATION = 1;	// the message does NOT need ACK
+	ACK = 2;				// ACK package
+	RESET = 3;				// indicate the package is not supported
+}
+
+/* This is the header for error handler */
+message tHeader
+{
+	required int32 version = 1;     // version number
+	required eType type = 2;			// package type
+	required int32 message_id = 3;  // transaction id
+	repeated int32 reserve = 4;     // reserve data, for extension
+}
+
+/* This is the message for command set */
+message tPayload
+{
+	required int32 command = 1;		// the command set
+	required int32 data = 2;		// the data that the command carrys
+}
+
+/* This is the message for the whole message */
+message tAseTkMessage {
+    required tHeader header = 1;		// message header, for error handling
+	required tPayload payload = 2;   // payload data, contain the command and data.
+}

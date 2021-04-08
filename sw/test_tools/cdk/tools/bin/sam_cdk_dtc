@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# A script to invoke dtc on the customized DTS file, which
+# will create a DTB that can be flashed on the SAM.
+#
+
+BASE_DIR=$(dirname $0)
+
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+usage() {
+	cat << EOF
+$0 [--help] [-in <dts file>]
+
+	Parameters:
+		--help
+			show usage menu
+		-in <DTS file>
+			specify the device-tree source file to pass to DTC
+
+If "-in" is not specified a default file will be used.
+
+EOF
+}
+
+checkParams() {
+	# Input DTS existence
+	if [ ! -f "${DTS}" ]; then
+		echo "Invalid argument for -in. \"${DTS}\" does not exist."
+		usage
+		exit 1
+	fi
+}
+
+# Parameter defaults
+DTC=${BASE_DIR}/dtc
+DTS=${TOP_DIR}/files/device-tree/cus227.dts
+DTB=${BUILD_DIR}/dtc/cus227-oem-custom.dtb
+STAGING_LOC=${STAGING_DIR}/openwrt/qsdk/bin/ar71xx
+
+mkdir -p $(dirname ${DTB}) ${STAGING_LOC}
+
+# Parameter input loop
+while [ -n "$1" ]; do
+	case "$1" in
+	-in)	DTS="$2"; shift;;
+	--help)	usage; exit 1;;
+	*)	echo "Unknown or duplicate parameter "\""$1"\"
+		usage
+		exit 1;;
+	esac
+	shift
+done
+
+# Verify params
+checkParams
+
+# OK, run DTC
+./${BASE_DIR}/dtc -O dtb -o "${DTB}" -I dts "${DTS}"
+
+# No further step required, stage output file
+cp ${DTB} ${STAGING_LOC}/
+
+# Copy output file to bin directory as well
+cp ${DTB} ${OUTPUT_DIR}/
+

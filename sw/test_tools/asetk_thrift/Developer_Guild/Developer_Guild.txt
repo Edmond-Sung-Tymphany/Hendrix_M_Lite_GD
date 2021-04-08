@@ -1,0 +1,32 @@
+[How to build asetk_finder.exe and prepare release]
+
+1. Install tools for thrift2
+      VS Express 2015 Community Free
+      https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409
+      Open thrift2.sln, and built it
+
+
+2. Install tools for asetk_finder
+      [python-2.7.msi]
+      https://www.python.org/ftp/python/2.7/python-2.7.msi
+
+      [py2exe-0.6.9.win32-py2.7.exe]
+      http://prdownloads.sourceforge.net/py2exe/py2exe-0.6.9.win32-py2.7.exe
+
+      [pybonjour]
+      wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pybonjour/pybonjour-1.1.1.zip
+      unzip pybonjour-1.1.1.zip
+      cd pybonjour-1.1.1
+      python setup.py install
+
+
+3. Execute
+     \Developer_Guild\01_prepare_develop_env.bat to release source code
+
+     \Developer_Guild\02_make_build.bat to release binary
+
+     \Developer_Guild\03_make_clean.bat to clean
+
+
+
+

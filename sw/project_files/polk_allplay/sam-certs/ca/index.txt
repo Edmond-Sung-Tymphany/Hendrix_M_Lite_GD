@@ -1,0 +1,3 @@
+V	491231235959Z		E36D09114ECA8BBF	unknown	/C=US/ST=California/O=Qualcomm Connected Experiences, Inc./CN=AllPlay CA
+V	491231235959Z		E36D09114ECA8BC0	unknown	/C=US/ST=California/O=Qualcomm Connected Experiences, Inc./CN=AllPlay firmware oem
+V	491231235959Z		E36D09114ECA8BC1	unknown	/C=US/ST=California/O=Qualcomm Connected Experiences, Inc./CN=AllPlay firmware sam

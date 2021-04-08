@@ -1,0 +1,33 @@
+/**
+\anchor page
+\page class_creator Class Creator script
+
+\image html logo.png
+
+<h1>Generate a new class</h1>
+
+<p>We have a tool to generate classes that may be run in Tymphany platform. Currently it can create shells for App&#39;s, Driver&#39;s, Server&#39;s and Delegate&#39;s.</p>
+
+<h2>Prerequisite</h2>
+
+<ul>
+	<li>You must have Python 2.7 installed and in your PATH.</li>
+	<li>An up-to-date clone of the platform repo.</li>
+</ul>
+
+<h2>Steps</h2>
+
+<ul>
+	<li>Open a shell and go to the sw/scripts/ dir</li>
+	<li>Run ./newclass.py</li>
+	<li>Follow the instructions.</li>
+</ul>
+
+<p>You should now have 3 files generated for you based on the options you provided. Move them to their correct location and fill them in. Simples!</p>
+
+\image html newclass.png 
+
+<HR>
+\image html logo.png
+*/
+

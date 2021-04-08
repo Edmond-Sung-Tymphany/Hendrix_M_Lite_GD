@@ -1,0 +1,16 @@
+
+This is a breif instruction of integrating the "liballplaymcu" into allplay driver on Tymphany platform.
+
+There are some code changes in below files made by Tymphany. So please be careful when doing the integration.
+You can also search the key words "Tymphany modified" to find out the changes.
+
+    1. aj_config.h
+    2. aj_serial.h
+    3. aj_connect.c
+    4. aj_crypto.c
+    5. aj_serial_tx.c
+    6. aj_serial_rx.c
+    7. aj_nvram.c
+    8. allplay_common.h
+    9. allplay_util.c
+    10.allplaymcu.c

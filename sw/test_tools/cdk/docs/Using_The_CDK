@@ -1,0 +1,67 @@
+Using the Customer Development Kit (CDK)
+========================================
+
+Modifying the Device-Tree
+-------------------------
+- Modify cus227.dts file located under files/device-tree
+- To generate the corresponding binary file, run sam_cdk_dtc (under tools/bin)
+- The outputed file can be found in the bin directory to be used for testing
+
+Creating CA and Signing Certificates
+------------------------------------
+- Use make_certificates from the certs directory to create certificates.
+- Run "./make_certificates -help" for the command line syntax.
+- See the "AllPlay Firmware Upgrade" documentation for more details.
+- Backup the generated "ca" and "sam" directories. If you lose it, devices with
+the old certificates/keys will not accept firmwares signed or encrypted with
+the new one.
+- The "ca/ca.crt" and "sam/sam.key" files need to be copied in
+staging_dir/openwrt/qsdk/tools/qcom-gen-firmware/files/certs for firmware
+integration
+- If the firmware integrator is responsible for signing the firmware, also
+copy "oem/oem.crt" and "oem/oem.key" in
+staging_dir/openwrt/qsdk/tools/qcom-gen-firmware/files/certs
+- If the firmware integrator does encryption, copy sam/sam.crt in
+staging_dir/openwrt/qsdk/tools/qcom-gen-firmware/files/certs
+
+Modifying the SAM Theme
+-----------------------
+- All files pertaining to the SAM theme are in files/sam-theme-custom
+- Modify these files directly, then run sam_cdk_theme to stage files
+
+Testing Changes Directly on the SAM Board
+-----------------------------------------
+- SAM theme files and certificates can be copied to the board for testing.
+- Run sam_cdk_theme to stage the theme.
+- Copy the ca/ca.crt and sam/sam.key to staging_dir/sam/etc/ssl/certs_fw
+- Bundle up the changes by running sam_cdk_upload. This script will output a
+file, oem-custom-upload.tgz, under bin directory.
+- Copy this bundle to your TFTP root folder.
+- With the board connected, locate and run /sbin/oem-apply on the board to
+apply bundle changes on SAM.
+
+Integrating Your Spotify Application Key
+----------------------------------------
+- This step is only required for firmware with Spotify support enabled.
+- Spotify requires every OEM to have their own Spotify application key in the firmware.
+- Spotify application keys must be obtained directly from Spotify.
+- Run sam_cdk_spotify_key with the path to your key file to stage the key
+for inclusion in the firmware build.
+
+Changing the Spotify device type
+--------------------------------
+- The spotify device type can be modified by editing staging_dir/host/oem.config
+- Run sam_cdk_oem_config with the edited file to copy it into the CDK
+- Use sam_cdk_upload to bundle up the changes as mentioned above.
+
+Enabling Bluetooth auto-connections
+-----------------------------------
+- Bluetooth auto-connections can be enabled by editing staging_dir/host/oem.config
+- Run sam_cdk_oem_config with the edited file to copy it into the CDK
+- Use sam_cdk_upload to bundle up the changes as mentioned above.
+
+Package All Changes for Firmware Integration
+--------------------------------------------
+- Once all changes have been made, run sam_cdk_deploy to create the bundle
+that will be used in integration of the build.
+- Output file: bin/oem-custom-deploy.tgz

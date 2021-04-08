@@ -1,0 +1,109 @@
+syntax = "proto2";
+package Proto.Hdmi;
+
+/// Input parameter for to AseFep.ReqResp(HDMI_INPUT_SELECT)
+message HdmiInput {
+	required uint32 number = 1;
+}
+
+/// Input parameter for to AseFep.ReqResp(HDMI_CEC_SEND_STANDBY)
+message StandbyCmd {
+	enum Type {
+		/// Send CEC standby command to connected TV
+		HDMI_CEC_STANDBY_TV = 0;
+		/// Send CEC standby command to all connected HDMI devices
+		HDMI_CEC_STANDBY_ALL = 1;
+	}
+	optional Type type = 1;
+}
+
+
+/// Response from AseFep.Req(HDMI_ARC_STATUS)
+message Arc {
+	enum Status {
+		HDMI_ARC_NOT_STARTED = 0;
+		/// HDMI-ARC is started, next step is wait audio mode ON from TV
+		HDMI_ARC_STARTED = 1;
+		/// HDMI-ARC start is initiated by TV, not started yet
+		HDMI_ARC_START_BY_TV = 2;
+		/// HDMI-ARC start is initiated by ASE, not started yet
+		HDMI_ARC_START_BY_US = 3;
+		/// HDMI-ARC end is initiated by TV, not ended yet
+		HDMI_ARC_END_BY_TV = 4;
+		/// HDMI-ARC end is initiated by ASE, not ended yet
+		HDMI_ARC_END_BY_US = 5;
+		HDMI_ARC_ENDED = 6;
+		/// HDMI-ARC is started and audio mode is set to ON (sound from TV) 
+		HDMI_ARC_AUDIO_MODE_ON = 7;
+		HDMI_ARC_AUDIO_MODE_OFF = 8;
+	}
+	optional Status status = 1;
+}
+
+message AudioFormat {
+	enum AudioMode {
+		CHANNELS_2 = 0;
+		CHANNELS_8 = 1;
+		HBRA = 2;
+		DSD = 3;
+	}
+
+	// Audio Info-Frame data. Refer to CEA861 specification for details
+	optional bytes audioInfoFrameData = 1;
+	// Channel Status data. Refer to IEC 60958-3 specification for details
+	optional bytes channelStatusData = 2;
+	// Audio mode
+	optional AudioMode audioMode = 3;
+}
+
+/// Response from AseFep.Req(GET_HDMI_UHD_DEEP_COLOUR_STATUS)
+/// UHD Deep colour ON/OFF for all inputs
+message UhdDeepColour {
+	message UhdDCState {
+		required bool uhddcEnabled = 1;
+		required uint32 hdmiPort = 2; /// 1-4
+	}
+	repeated UhdDCState uhddcStatus = 1;
+}
+
+///Sent as an event or could be asked as a request AseFep.Req(GET_HDMI_INPUT_SELECTED)
+///Main reason for having this is HDMI-CEC 'One touch play' feature 
+message InputSelected {
+	enum AudioSelected {
+		ARC = 0;
+		HDMI = 1;
+	}
+	required AudioSelected audio = 1;
+	///If audio from HDMI then HDMI input number
+	optional uint32 inputNumber = 2;
+}
+
+/// Response from AseFep.Req(GET_HDMI_SENSE_STATUS)
+/// HDMI sense ON/OFF for all inputs
+message InputsSense {
+	message SenseState {
+		required bool senseOn = 1;
+		required uint32 hdmiPort = 2; /// 1-4
+	}
+	repeated SenseState senseStatus = 1;
+}
+
+/// Event from Fep (HDMI_INPUT_SENSE_CHANGED)
+/// HDMI sense ON/OFF for individual input
+message InputSense {
+	required bool senseOn = 1;
+	required uint32 hdmiPort = 2; /// 1-4
+}
+
+/// Input parameter for to AseFep.ReqResp(HDMI_AUDIO_MODE_SELECT)
+message AudioModeSelect {
+	enum Type {
+		/// Default case. HDMI input audio is taken directly from inputs and audio from TV via ARC
+		/// Needs to be set only when ARC_ONLY has been set previously
+		AUTOMATIC = 0;
+		/// Request HDMI input audio to be directed to TV and played back using ARC. Used when 'Audio guidance' is enabled
+		ARC_ONLY = 1;
+	}
+	optional Type type = 1;
+}
+

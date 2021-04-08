@@ -1,0 +1,137 @@
+# Points to the root of QP
+QP_DIR := $(TP_SW_TOP)/common/qp
+QEP_DIR = $(QP_DIR)/qep/source
+QF_DIR = $(QP_DIR)/qf/source
+QS_DIR = $(QP_DIR)/qs/source
+LIBDIR = $(QP_DIR)/..
+
+.PHONY: all 
+.PHONY: clean 
+QP_TARG = libqp_$(TP_FAMILY)_$(TP_MCU).a
+
+# Flags passed to the C compiler.
+LIBFLAGS=rs
+CCFLAGS= -omf=elf -msmart-io=1 -Wall -Os 
+
+ifeq ($(TP_DEBUG),NO)
+CCFLAGS+=-DNDEBUG
+endif
+
+ifeq ($(TP_TARGET),WIN)
+CC=gcc
+ASM=as
+LIB=ar
+else
+ifeq ($(TP_FAMILY),PIC32)
+ifneq ($(TP_MCU),)
+CCFLAGS += -mprocessor=$(TP_MCU)
+endif
+endif
+CC="$(XC32_HOME)/bin/xc32-gcc.exe"
+ASM="$(XC32_HOME)/bin/xc32-as.exe"
+LIB="$(XC32_HOME)/bin/xc32-ar.exe"
+endif
+
+QP_H_DIR = $(QP_DIR)/include
+
+QP_PORT_H_DIR = $(QP_DIR)/ports/pic32/vanilla/xc32
+
+QEP_SRCS = $(wildcard $(QEP_DIR)/*.c)
+QF_SRCS = $(wildcard $(QF_DIR)/*.c)
+QS_SRCS  = $(wildcard $(QS_DIR)/*.c)
+
+# QEP_SRCS =	$(QEP_DIR)/qep.c \
+			# $(QEP_DIR)/qfsm_ini.c \
+			# $(QEP_DIR)/qfsm_dis.c \
+			# $(QEP_DIR)/qhsm_ini.c \
+			# $(QEP_DIR)/qhsm_dis.c \
+			# $(QEP_DIR)/qhsm_top.c \
+			# $(QEP_DIR)/qhsm_in.c
+
+# QF_SRCS =	$(QF_DIR)/qa_defer.c	\
+			# $(QF_DIR)/qa_fifo.c		\
+			# $(QF_DIR)/qa_lifo.c		\
+			# $(QF_DIR)/qa_get_.c		\
+			# $(QF_DIR)/qa_sub.c		\
+			# $(QF_DIR)/qa_usub.c		\
+			# $(QF_DIR)/qa_usuba.c	\
+			# $(QF_DIR)/qeq_fifo.c	\
+			# $(QF_DIR)/qeq_get.c		\
+			# $(QF_DIR)/qeq_init.c	\
+			# $(QF_DIR)/qeq_lifo.c	\
+			# $(QF_DIR)/qf_act.c		\
+			# $(QF_DIR)/qf_gc.c		\
+			# $(QF_DIR)/qf_log2.c		\
+			# $(QF_DIR)/qf_new.c		\
+			# $(QF_DIR)/qf_pool.c		\
+			# $(QF_DIR)/qf_psini.c	\
+			# $(QF_DIR)/qf_pspub.c	\
+			# $(QF_DIR)/qf_pwr2.c		\
+			# $(QF_DIR)/qf_tick.c		\
+			# $(QF_DIR)/qmp_get.c		\
+			# $(QF_DIR)/qmp_init.c	\
+			# $(QF_DIR)/qmp_put.c		\
+			# $(QF_DIR)/qte_ctor.c	\
+			# $(QF_DIR)/qte_arm.c		\
+			# $(QF_DIR)/qte_darm.c	\
+			# $(QF_DIR)/qte_rarm.c	\
+			# $(QF_DIR)/qte_ctr.c		\
+			# $(QF_DIR)/qvanilla.c
+			
+# QS_SRCS =	$(QS_DIR)/qs.c			\
+			# $(QS_DIR)/qs_.c			\
+			# $(QS_DIR)/qs_blk.c		\
+			# $(QS_DIR)/qs_byte.c		\
+			# $(QS_DIR)/qs_f32.c		\
+			# $(QS_DIR)/qs_f64.c		\
+			# $(QS_DIR)/qs_mem.c		\
+			# $(QS_DIR)/qs_str.c
+
+# Extract object file names from source file names
+QEP_OBJS = $(QEP_SRCS:%.c=%.o)
+QF_OBJS = $(QF_SRCS:%.c=%.o)
+ifdef Q_SPY
+QS_OBJS = $(QS_SRCS:%.c=%.o)
+endif
+
+CCINC=-I"$(shell $(CYG_HOME)/cygpath "$(QP_PORT_H_DIR)" -w)" -I"$(shell $(CYG_HOME)/cygpath $(QP_H_DIR) -w)"
+
+$(LIBDIR)/$(QP_TARG): $(QEP_OBJS) $(QF_OBJS) $(QS_OBJS)
+	$(LIB) $(LIBFLAGS) "$(shell $(CYG_HOME)/cygpath $(LIBDIR)/ -w)$(QP_TARG)" $(foreach i, $^, "$(shell $(CYG_HOME)/cygpath $(i) -w)")
+
+$(QEP_OBJS): %.o:%.c
+	$(CC) $(CCFLAGS) $(CCINC) -I"$(shell $(CYG_HOME)/cygpath $(QEP_DIR))" -o"$(shell $(CYG_HOME)/cygpath $@ -w)" -c "$(shell $(CYG_HOME)/cygpath "$<" -w)"
+
+$(QF_OBJS): %.o:%.c
+	$(CC) $(CCFLAGS) $(CCINC) -I"$(shell $(CYG_HOME)/cygpath $(QF_DIR))" -o"$(shell $(CYG_HOME)/cygpath $@ -w)" -c "$(shell $(CYG_HOME)/cygpath "$<" -w)"
+
+$(QS_OBJS): %.o:%.c
+	$(CC) $(CCFLAGS) -DQ_SPY -g $(CCINC) -I"$(shell $(CYG_HOME)/cygpath $(QS_DIR))" -o"$(shell $(CYG_HOME)/cygpath $@ -w)" -c "$(shell $(CYG_HOME)/cygpath "$<" -w)"
+
+
+#
+#
+# Clean Rule
+clean :
+	rm -rf $(LIBDIR)/$(QP_TARG) $(QEP_OBJS) $(QF_OBJS) $(QS_OBJS)
+
+#
+#
+# build rule
+ifeq ($(TP_TARGET),)
+all :
+	$(error TP_TARGET not defined)
+ifeq ($(TP_FAMILY),)
+all :
+	$(error TP_FAMILY not defined)
+endif
+ifeq ($(TP_MCU),)
+all :
+	$(error TP_MCU not defined)
+endif
+else
+
+all: $(LIBDIR)/$(QP_TARG)
+
+endif
+

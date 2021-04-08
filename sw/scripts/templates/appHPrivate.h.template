@@ -1,0 +1,29 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user} 
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+ 
+
+#ifndef ${file}APP_PRIV_H
+#define ${file}APP_PRIV_H
+ 
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include "application.h"
+#include "${name}App.h"
+
+/* State function definitions */
+static QState ${name}App_Initial(QActive * const me);
+static QState ${name}App_PreActive(QActive * const me, QEvt const * const e);
+static QState ${name}App_Active(QActive * const me, QEvt const * const e);
+ 
+#ifdef __cplusplus
+}
+#endif
+ 
+#endif /* ${file}APP_PRIV_H */

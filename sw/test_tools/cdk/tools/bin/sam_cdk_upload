@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# Bundle up the customized files and place them in a folder
+# TO be used by a tftp server so that they can be uploaded 
+# to the SAM board for testing
+
+BASE_DIR=$(dirname $0)
+
+. ./${BASE_DIR}/sam_cdk_config.sh
+
+usage() {
+	cat << EOF
+Usage: $0
+
+	Bundle up customized files to applied on SAM for testing
+EOF
+}
+
+if [ "$1" = "--help" ] || [ -n "$1" ]; then
+	usage
+	exit 1
+fi
+
+UPLOAD_PKG_NAME=${OUTPUT_DIR}/oem-custom-upload.tgz
+
+# Add version number
+date +"%Y%m%d-%H%M%S" > ${STAGING_DIR}/sam/custom-version
+
+# Create certificate hashes
+for i in "${STAGING_DIR}/sam/etc/ssl/certs_fw/*.crt"; do
+	ln -sfn "$(basename $i)" "${STAGING_DIR}/sam/etc/ssl/certs_fw/$(openssl x509 -noout -hash -in $i).0"
+done
+
+# bundle up files
+tar cvzf "${UPLOAD_PKG_NAME}" -C "${STAGING_DIR}/sam" .

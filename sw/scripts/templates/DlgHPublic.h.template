@@ -1,0 +1,32 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user}
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+ 
+#ifndef ${file}DLG_H
+#define ${file}DLG_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "delegate.h"
+
+SUBCLASS(c${name}Dlg, cDlg)
+    /* private data */
+METHODS
+    /* public functions */
+END_CLASS
+
+/* Basic ctor xtor functions. Must call super class Ctor / Xtor. \sa delegate.c */
+void ${name}Dlg_Ctor(c${name}Dlg *me, tDlgCtorData * ctorData);
+void ${name}Dlg_Xtor(c${name}Dlg *me);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${file}DLG_H */

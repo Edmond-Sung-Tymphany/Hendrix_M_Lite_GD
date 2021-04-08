@@ -1,0 +1,93 @@
+syntax = "proto2";
+package Proto.FirmwareUpdate;
+
+/// Message that contains one chunk of firmware update file
+/// into request data
+message Chunk {
+	required uint32 totalSize = 1;
+	required uint32 offset = 2;
+
+	/// size of data is encoded as a part of data field - avoid duplicit information
+	required bytes data = 3;
+	optional uint32 crc = 4;
+
+	enum ModuleType {
+		FEP = 0;
+
+		/// in case of WPL maximum 128 bytes should be sent
+		WPL = 1;
+
+		// To avoid buffering in FEP PLD firmware chunks must be multiples of 16.
+		PLD = 2;
+	}
+
+	/// type of a module being updated
+	optional ModuleType moduleType = 5;
+
+	oneof options {
+		WplOption wplOption = 6;
+	}
+}
+
+/// Response to Chunk
+message ChunkResponse {
+	enum Status {
+		OK = 0;
+		ERROR_CRC = 1; /// when CRC supplied is invalid for provided chunk
+		ERROR_WRITE = 2; /// when an error occurs during the write of the image to the flash
+	}
+	optional Status status = 1;
+	required uint32 offset = 2; /// offset for which this status applies
+}
+
+/// Response from AseFepReq(VERSION_INFO)
+message VersionInfo {
+	message Module {
+		required string name = 1;
+		required string version = 2;
+		optional string metadata = 3;
+	}
+	/// Contains version information about the connected hardware, it may consist of multiple modules.
+	repeated Module module = 1;
+}
+
+message WplOption {
+
+	/// ID of speaker that is being updated.
+	/// In case of master wpl module update
+	/// MASTER should be set
+	enum ID {
+		SPEAKER_0 = 0;
+		SPEAKER_1 = 1;
+		SPEAKER_2 = 2;
+		SPEAKER_3 = 3;
+		SPEAKER_4 = 4;
+		SPEAKER_5 = 5;
+		SPEAKER_6 = 6;
+		SPEAKER_7 = 7;
+		SPEAKER_8 = 8;
+		SPEAKER_9 = 9;
+		SPEAKER_10 = 10;
+		SPEAKER_11 = 11;
+
+		MASTER = 0xFE;
+	}
+	optional ID id = 1;
+
+	/// Module that is being updated
+	enum ModuleID {
+		FEP = 0;
+		Summit = 1;
+		DSP = 2;
+	}
+	optional ModuleID moduleID = 2;
+
+	/// ID of firmware part sent
+	enum PartID {
+		APP = 0;
+		MFG = 1;
+		DFS = 2;
+		SYSTEM_DATA = 3;
+	}
+	optional PartID partID = 3;
+}

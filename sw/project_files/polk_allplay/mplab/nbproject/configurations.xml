@@ -1,0 +1,1624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="LinkerScript"
+                   displayName="Linker Files"
+                   projectFiles="true">
+      <itemPath>../app_32MX450F256H.ld</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f2" displayName="bsp" projectFiles="true">
+        <itemPath>../../../bsp/PIC32/bsp.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="common" displayName="common" projectFiles="true">
+        <logicalFolder name="controller" displayName="controller" projectFiles="true">
+          <itemPath>../../../common/controller/controller.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="crc16_lib" displayName="crc16_lib" projectFiles="true">
+          <itemPath>../../../common/crc16_lib/crc16.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="datatype" displayName="datatype" projectFiles="true">
+          <logicalFolder name="ringbuf" displayName="ringbuf" projectFiles="true">
+            <itemPath>../../../common/datatype/ringbuf/ringbuf.c</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+        <logicalFolder name="pt_lib" displayName="pt_lib" projectFiles="true">
+          <itemPath>../../../common/pt_lib/pt.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f1" displayName="sortLib" projectFiles="true">
+          <itemPath>../../../common/sort_lib/sortLib.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="tym_qp_lib" displayName="tym_qp_lib" projectFiles="true">
+          <itemPath>../../../common/tym_qp_lib/tym_qp_lib.c</itemPath>
+          <itemPath>../../../common/tym_qp_lib/tym_qp_lib.h</itemPath>
+          <itemPath>../../../common/tym_qp_lib/tym_qp_lib_prev.h</itemPath>
+        </logicalFolder>
+        <itemPath>../../../common/persistantObj.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="driver" displayName="driver" projectFiles="true">
+        <logicalFolder name="adc_driver" displayName="adc_driver" projectFiles="true">
+          <itemPath>../../../driver/adc_driver/pic32/AdcDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="allplay_driver"
+                       displayName="allplay_driver"
+                       projectFiles="true">
+          <logicalFolder name="ajtcl" displayName="ajtcl" projectFiles="true">
+            <logicalFolder name="crypto" displayName="crypto" projectFiles="true">
+              <itemPath>../../../driver/allplay_driver/ajtcl/crypto/aj_sw_crypto.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="inc" displayName="inc" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="java" displayName="java" projectFiles="true">
+              <logicalFolder name="ecompass" displayName="ecompass" projectFiles="true">
+                <logicalFolder name="src" displayName="src" projectFiles="true">
+                  <logicalFolder name="org" displayName="org" projectFiles="true">
+                    <logicalFolder name="alljoyn" displayName="alljoyn" projectFiles="true">
+                      <logicalFolder name="bus" displayName="bus" projectFiles="true">
+                        <logicalFolder name="samples" displayName="samples" projectFiles="true">
+                        </logicalFolder>
+                      </logicalFolder>
+                    </logicalFolder>
+                  </logicalFolder>
+                </logicalFolder>
+              </logicalFolder>
+            </logicalFolder>
+            <logicalFolder name="malloc" displayName="malloc" projectFiles="true">
+              <itemPath>../../../driver/allplay_driver/ajtcl/malloc/aj_malloc.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_auth.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_bufio.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_bus.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_connect.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_crc16.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_creds.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_crypto.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_debug.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_disco.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_guid.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_helper.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_introspect.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_link_timeout.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_msg.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_nvram.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_peer.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_sasl.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_serial.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_serial_rx.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_serial_tx.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_std.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/ajtcl/src/aj_util.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="target" displayName="target" projectFiles="true">
+              <logicalFolder name="pic32" displayName="pic32" projectFiles="true">
+                <logicalFolder name="inc" displayName="inc" projectFiles="true">
+                </logicalFolder>
+                <logicalFolder name="src" displayName="src" projectFiles="true">
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_init.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_net.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_crypto.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_nvram.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_semaphore.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_serial.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_timer.c</itemPath>
+                  <itemPath>../../../driver/allplay_driver/ajtcl/target/pic32/src/aj_target_util.c</itemPath>
+                </logicalFolder>
+              </logicalFolder>
+            </logicalFolder>
+            <logicalFolder name="tools" displayName="tools" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="unit_test" displayName="unit_test" projectFiles="true">
+              <logicalFolder name="test_report" displayName="test_report" projectFiles="true">
+              </logicalFolder>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="liballplaymcu"
+                         displayName="liballplaymcu"
+                         projectFiles="true">
+            <logicalFolder name="include" displayName="include" projectFiles="true">
+            </logicalFolder>
+            <logicalFolder name="src" displayName="src" projectFiles="true">
+              <itemPath>../../../driver/allplay_driver/liballplaymcu/src/allplaymcu.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/liballplaymcu/src/allplay_player.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/liballplaymcu/src/allplay_system.c</itemPath>
+              <itemPath>../../../driver/allplay_driver/liballplaymcu/src/allplay_util.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <itemPath>../../../driver/allplay_driver/AllPlayDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="amp_driver" displayName="audio_driver" projectFiles="true">
+          <itemPath>../../../driver/audio_driver/pic32/AudioDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f3" displayName="dma_driver" projectFiles="true">
+          <itemPath>../../../driver/dma_driver/pic32/DmaDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="DSP_Driver" displayName="DSP_Driver" projectFiles="true">
+          <itemPath>../../../driver/DSP_Driver/TLV320AIC3254_drv/DspDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f2" displayName="gpio_driver" projectFiles="true">
+          <itemPath>../../../driver/gpio_driver/pic32/GpioDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="i2c_driver" displayName="i2c_driver" projectFiles="true">
+          <itemPath>../../../driver/i2c_driver/pic32/I2CDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="key_driver" displayName="key_driver" projectFiles="true">
+          <itemPath>../../../driver/key_driver/KeyDrv.c</itemPath>
+          <itemPath>../../../driver/key_driver/AdcKeyDrv.c</itemPath>
+          <itemPath>../../../driver/key_driver/GpioKeyDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="led_driver" displayName="led_driver" projectFiles="true">
+          <itemPath>../../../driver/led_driver/LedDrv.c</itemPath>
+          <itemPath>../../../driver/led_driver/pic32/PwmLedDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f1" displayName="power_driver" projectFiles="true">
+          <itemPath>../../../driver/power_driver/pic32/PowerDrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="storage_driver"
+                       displayName="storage_driver"
+                       projectFiles="true">
+          <itemPath>../../../driver/storage_driver/EepromDrv.c</itemPath>
+          <itemPath>../../../driver/storage_driver/EepromDrv_priv.h</itemPath>
+          <itemPath>../../../driver/storage_driver/pic32/NvmDrv.c</itemPath>
+          <itemPath>../../../driver/storage_driver/pic32/NvmDrv_priv.h</itemPath>
+          <itemPath>../../../driver/storage_driver/StorageDrv.c</itemPath>
+          <itemPath>../../../driver/storage_driver/StorageDrv_priv.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="uart_driver" displayName="uart_driver" projectFiles="true">
+          <itemPath>../../../driver/uart_driver/pic32/UartDrv.c</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="hardware_management" projectFiles="true">
+        <itemPath>../../../hardware_management/deviceTypes.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="polk_allplay"
+                     displayName="polk_allplay"
+                     projectFiles="true">
+        <logicalFolder name="pic32" displayName="pic32" projectFiles="true">
+          <itemPath>../pic32/attachedDevices.c</itemPath>
+          <itemPath>../pic32/projBsp.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="polk_allplay"
+                       displayName="polk_allplay"
+                       projectFiles="true">
+          <logicalFolder name="DSP" displayName="DSP" projectFiles="true">
+            <itemPath>../DSP/DspInitTable.h</itemPath>
+            <itemPath>../DSP/dsp_TLV320AIC3254_driver_config.h</itemPath>
+            <itemPath>../DSP/dsp_TLV320AIC3254_driver_config.inc</itemPath>
+          </logicalFolder>
+          <logicalFolder name="pic32" displayName="pic32" projectFiles="true">
+            <logicalFolder name="include" displayName="include" projectFiles="true">
+              <itemPath>../pic32/include/attachedDevices.h</itemPath>
+              <itemPath>../pic32/include/attachedDevicesMcu.h</itemPath>
+              <itemPath>../pic32/include/NvmDrv_common.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <itemPath>../MainApp_priv.h</itemPath>
+          <itemPath>../product.config</itemPath>
+        </logicalFolder>
+        <itemPath>../main.c</itemPath>
+        <itemPath>../MainApp.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="server" displayName="server" projectFiles="true">
+        <logicalFolder name="allplay_server"
+                       displayName="allplay_server"
+                       projectFiles="true">
+          <itemPath>../../../server/allplay_server/AllPlaySrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f1" displayName="audio_server" projectFiles="true">
+          <itemPath>../../../server/audio_server/AudioSrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="debug_server"
+                       displayName="debug_server"
+                       projectFiles="true">
+          <itemPath>../../../server/debug_server/cli.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_adc_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_allplay_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_gpio_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_version_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/DebugSrv.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_auxin_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_pt_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_dsp_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_led_cmd.c</itemPath>
+          <itemPath>../../../server/debug_server/cli_allplayWifiConnect_cmd.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="include" displayName="include" projectFiles="true">
+          <itemPath>../../../server/include/AllPlaySrv.h</itemPath>
+          <itemPath>../../../server/include/AudioSrv.h</itemPath>
+          <itemPath>../../../server/include/BluetoothSrv.h</itemPath>
+          <itemPath>../../../server/include/DebugSrv.h</itemPath>
+          <itemPath>../../../server/include/DisplaySrv.h</itemPath>
+          <itemPath>../../../server/include/KeySrv.h</itemPath>
+          <itemPath>../../../server/include/LedSrv.h</itemPath>
+          <itemPath>../../../server/include/PowerSrv.h</itemPath>
+          <itemPath>../../../server/include/server.h</itemPath>
+          <itemPath>../../../server/include/SettingSrv.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="key_server" displayName="key_server" projectFiles="true">
+          <itemPath>../../../server/key_server/KeySrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="led_server" displayName="led_server" projectFiles="true">
+          <itemPath>../../../server/led_server/LedSrv.c</itemPath>
+          <itemPath>../../../server/led_server/LedSrv_priv.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="power_server"
+                       displayName="power_server"
+                       projectFiles="true">
+          <itemPath>../../../server/power_server/PowerSrv.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f2" displayName="setting_server" projectFiles="true">
+          <itemPath>../../../server/setting_server/SettingSrv.c</itemPath>
+          <itemPath>../../../server/setting_server/SettingSrv.config</itemPath>
+          <itemPath>../../../server/setting_server/SettingSrv_priv.h</itemPath>
+        </logicalFolder>
+        <itemPath>../../../server/server.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="ui_layer" displayName="ui_layer" projectFiles="true">
+        <logicalFolder name="application" displayName="application" projectFiles="true">
+          <itemPath>../../../ui_layer/application/application.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="f1" displayName="delegate" projectFiles="true">
+          <itemPath>../../../ui_layer/delegate/delegate.c</itemPath>
+          <itemPath>../../../ui_layer/delegate/idle_dlg/IdleDlg.c</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../../../driver</Elem>
+    <Elem>../../../server</Elem>
+    <Elem>../../../common</Elem>
+    <Elem>../../../include</Elem>
+    <Elem>..</Elem>
+    <Elem>../../../hardware_management</Elem>
+    <Elem>../../../ui_layer</Elem>
+    <Elem>../../../bsp/PIC32</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="debug" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC32MX450F256H</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>ICD3PlatformTool</platformTool>
+        <languageToolchain>XC32</languageToolchain>
+        <languageToolchainVersion>1.31</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            CT="3"
+                            CN="debug"
+                            AC="true"
+                            BL="true"
+                            WD="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            BC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=debug"
+                            DBC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=debug TYPE_IMAGE=DEBUG_RUN"
+                            CC="rm -rf &quot;build/debug&quot; &quot;dist/debug&quot;"
+                            OP="dist/debug/production/MX450F256L.a"
+                            DOP="dist/debug/debug/MX450F256L.a"
+                            FL="dist/debug/production/MX450F256L.a"
+                            PD="dist/debug/production/MX450F256L."
+                            DD="dist/debug/debug/MX450F256L.">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <makeArtifact PL="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        CT="1"
+                        CN="debug"
+                        AC="true"
+                        BL="true"
+                        WD="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        BC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=debug"
+                        DBC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=debug TYPE_IMAGE=DEBUG_RUN"
+                        CC="rm -rf &quot;build/debug&quot; &quot;dist/debug&quot;"
+                        OP="dist/debug/production/bl_PolkAllplay.production.hex"
+                        DOP="dist/debug/debug/bl_PolkAllplay.debug.elf"
+                        FL="dist/debug/production/bl_PolkAllplay.production.hex"
+                        PD="dist/debug/production/bl_PolkAllplay.production.elf"
+                        DD="dist/debug/debug/bl_PolkAllplay.debug.elf">
+          </makeArtifact>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep>post_build_actions.bat ${IMAGE_TYPE} ${ConfName}</makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <item path="../../../bsp/PIC32/bsp.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;HAS_BATTERY"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../pic32/attachedDevices.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\..\..\common\include;..\..\..\common\qp\include;..\;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\include;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\pic32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;HAS_BATTERY"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="fill-flash-options-addr" value=""/>
+          <property key="fill-flash-options-const" value=""/>
+          <property key="fill-flash-options-how" value="0"/>
+          <property key="fill-flash-options-inc-const" value="1"/>
+          <property key="fill-flash-options-increment" value=""/>
+          <property key="fill-flash-options-seq" value=""/>
+          <property key="fill-flash-options-what" value="0"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../pic32/projBsp.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;HAS_BATTERY"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <C32>
+        <property key="additional-warnings" value="false"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exclude-floating-point" value="true"/>
+        <property key="extra-include-directories"
+                  value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include;..\conf;..\..\..\include"/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros"
+                  value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32>
+      <C32-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C32-AR>
+      <C32-AS>
+        <property key="assembler-symbols" value=""/>
+        <property key="enable-symbols" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="expand-macros" value="false"/>
+        <property key="extra-include-directories-for-assembler" value=""/>
+        <property key="extra-include-directories-for-preprocessor" value=""/>
+        <property key="false-conditionals" value="false"/>
+        <property key="keep-locals" value="false"/>
+        <property key="list-assembly" value="false"/>
+        <property key="list-source" value="false"/>
+        <property key="list-symbols" value="false"/>
+        <property key="oXC32asm-list-to-file" value="false"/>
+        <property key="omit-debug-dirs" value="false"/>
+        <property key="omit-forms" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="warning-level" value=""/>
+      </C32-AS>
+      <C32-LD>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="enable-check-sections" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories" value=""/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-cross-reference-file" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="heap-size" value="20000"/>
+        <property key="input-libraries" value=""/>
+        <property key="linker-symbols" value=""/>
+        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="oXC32ld-extra-opts" value=""/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="remove-unused-sections" value="true"/>
+        <property key="report-memory-usage" value="false"/>
+        <property key="stack-size" value="1000"/>
+        <property key="symbol-stripping" value=""/>
+        <property key="trace-symbols" value=""/>
+        <property key="warn-section-align" value="false"/>
+      </C32-LD>
+      <C32CPP>
+        <property key="additional-warnings" value="false"/>
+        <property key="check-new" value="false"/>
+        <property key="eh-specs" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exceptions" value="true"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="rtti" value="true"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32CPP>
+      <C32Global>
+        <property key="legacy-libc" value="false"/>
+        <property key="save-temps" value="false"/>
+        <property key="wpo-lto" value="false"/>
+      </C32Global>
+      <ICD3PlatformTool>
+      </ICD3PlatformTool>
+    </conf>
+    <conf name="release" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC32MX450F256H</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>Simulator</platformTool>
+        <languageToolchain>XC32</languageToolchain>
+        <languageToolchainVersion>1.31</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            CT="3"
+                            CN="release"
+                            AC="false"
+                            BL="true"
+                            WD="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            BC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=release"
+                            DBC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=release TYPE_IMAGE=DEBUG_RUN"
+                            CC="rm -rf &quot;build/release&quot; &quot;dist/release&quot;"
+                            OP="dist/release/production/MX450F256L.a"
+                            DOP="dist/release/debug/MX450F256L.a"
+                            FL="dist/release/production/MX450F256L.a"
+                            PD="dist/release/production/MX450F256L."
+                            DD="dist/release/debug/MX450F256L.">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <makeArtifact PL="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        CT="1"
+                        CN="release"
+                        AC="true"
+                        BL="true"
+                        WD="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        BC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=release"
+                        DBC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=release TYPE_IMAGE=DEBUG_RUN"
+                        CC="rm -rf &quot;build/release&quot; &quot;dist/release&quot;"
+                        OP="dist/release/production/bl_PolkAllplay.production.hex"
+                        DOP="dist/release/debug/bl_PolkAllplay.debug.elf"
+                        FL="dist/release/production/bl_PolkAllplay.production.hex"
+                        PD="dist/release/production/bl_PolkAllplay.production.elf"
+                        DD="dist/release/debug/bl_PolkAllplay.debug.elf">
+          </makeArtifact>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep>post_build_actions.bat ${IMAGE_TYPE} ${ConfName}</makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <item path="../../../bsp/PIC32/bsp.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;NDEBUG;HAS_BATTERY;MCU_FAMILY=PIC32;MCU_ID=PIC32MX450F256L"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+          <appendMe value="-minterlink-compressed"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli.c" ex="false" overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_adc_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_allplay_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_auxin_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_dsp_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_gpio_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_led_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../../../server/debug_server/cli_version_cmd.c"
+            ex="true"
+            overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
+      </item>
+      <item path="../pic32/attachedDevices.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\..\..\common\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\include;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\pic32\include;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\server\allplay_server\allplayHelper"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;NDEBUG;HAS_BATTERY"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="false"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="fill-flash-options-addr" value=""/>
+          <property key="fill-flash-options-const" value=""/>
+          <property key="fill-flash-options-how" value="0"/>
+          <property key="fill-flash-options-inc-const" value="1"/>
+          <property key="fill-flash-options-increment" value=""/>
+          <property key="fill-flash-options-seq" value=""/>
+          <property key="fill-flash-options-what" value="0"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value=""/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../pic32/projBsp.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;NDEBUG;HAS_BATTERY;MCU_FAMILY=PIC32;MCU_ID=PIC32MX450F256L"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+          <appendMe value="-minterlink-compressed"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <C32>
+        <property key="additional-warnings" value="false"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exclude-floating-point" value="true"/>
+        <property key="extra-include-directories"
+                  value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include;..\conf"/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros"
+                  value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;NDEBUG;MCU_FAMILY=PIC32;MCU_ID=PIC32MX450F256L"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32>
+      <C32-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C32-AR>
+      <C32-AS>
+        <property key="assembler-symbols" value=""/>
+        <property key="enable-symbols" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="expand-macros" value="false"/>
+        <property key="extra-include-directories-for-assembler" value=""/>
+        <property key="extra-include-directories-for-preprocessor" value=""/>
+        <property key="false-conditionals" value="false"/>
+        <property key="keep-locals" value="false"/>
+        <property key="list-assembly" value="false"/>
+        <property key="list-source" value="false"/>
+        <property key="list-symbols" value="false"/>
+        <property key="oXC32asm-list-to-file" value="false"/>
+        <property key="omit-debug-dirs" value="false"/>
+        <property key="omit-forms" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="warning-level" value=""/>
+      </C32-AS>
+      <C32-LD>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="enable-check-sections" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories" value=""/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-cross-reference-file" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="heap-size" value="20000"/>
+        <property key="input-libraries" value=""/>
+        <property key="linker-symbols" value=""/>
+        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="oXC32ld-extra-opts" value=""/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="remove-unused-sections" value="true"/>
+        <property key="report-memory-usage" value="false"/>
+        <property key="stack-size" value="1000"/>
+        <property key="symbol-stripping" value=""/>
+        <property key="trace-symbols" value=""/>
+        <property key="warn-section-align" value="false"/>
+      </C32-LD>
+      <C32CPP>
+        <property key="additional-warnings" value="false"/>
+        <property key="check-new" value="false"/>
+        <property key="eh-specs" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exceptions" value="true"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="rtti" value="true"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32CPP>
+      <C32Global>
+        <property key="legacy-libc" value="false"/>
+        <property key="save-temps" value="false"/>
+        <property key="wpo-lto" value="false"/>
+      </C32Global>
+      <Simulator>
+      </Simulator>
+    </conf>
+    <conf name="debug_qspy" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC32MX450F256H</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>Simulator</platformTool>
+        <languageToolchain>XC32</languageToolchain>
+        <languageToolchainVersion>1.31</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            CT="3"
+                            CN="debug_qspy"
+                            AC="true"
+                            BL="true"
+                            WD="../../../common/qp/ports/pic32/vanilla/xc32/MX450F256L"
+                            BC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=debug_qspy"
+                            DBC="${MAKE} MAKE_OPTIONS=&quot;&quot; -f Makefile CONF=debug_qspy TYPE_IMAGE=DEBUG_RUN"
+                            CC="rm -rf &quot;build/debug_qspy&quot; &quot;dist/debug_qspy&quot;"
+                            OP="dist/debug_qspy/production/MX450F256L.a"
+                            DOP="dist/debug_qspy/debug/MX450F256L.a"
+                            FL="dist/debug_qspy/production/MX450F256L.a"
+                            PD="dist/debug_qspy/production/MX450F256L."
+                            DD="dist/debug_qspy/debug/MX450F256L.">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <makeArtifact PL="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        CT="1"
+                        CN="release"
+                        AC="true"
+                        BL="true"
+                        WD="../../../bootloaders/bl_pic32/mplab/bl_PolkAllplay"
+                        BC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=release"
+                        DBC="${MAKE} MAKE_OPTIONS=&quot; -j 8&quot; -f Makefile CONF=release TYPE_IMAGE=DEBUG_RUN"
+                        CC="rm -rf &quot;build/release&quot; &quot;dist/release&quot;"
+                        OP="dist/release/production/bl_PolkAllplay.production.hex"
+                        DOP="dist/release/debug/bl_PolkAllplay.debug.elf"
+                        FL="dist/release/production/bl_PolkAllplay.production.hex"
+                        PD="dist/release/production/bl_PolkAllplay.production.elf"
+                        DD="dist/release/debug/bl_PolkAllplay.debug.elf">
+          </makeArtifact>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep>post_build_actions.bat ${IMAGE_TYPE} ${ConfName}</makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <item path="../../../bsp/PIC32/bsp.c" ex="false" overriding="false">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;Q_SPY;HAS_BATTERY;NDEBUG"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <item path="../pic32/projBsp.c" ex="false" overriding="true">
+        <C32>
+          <property key="additional-warnings" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories"
+                    value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include"/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="true"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros"
+                    value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;Q_SPY;HAS_BATTERY;NDEBUG"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="support-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-LD>
+          <property key="additional-options-use-response-files" value="false"/>
+          <property key="enable-check-sections" value="false"/>
+          <property key="exclude-floating-point-library" value="true"/>
+          <property key="exclude-standard-libraries" value="false"/>
+          <property key="extra-lib-directories" value=""/>
+          <property key="generate-16-bit-code" value="true"/>
+          <property key="generate-cross-reference-file" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="heap-size" value="20000"/>
+          <property key="input-libraries" value=""/>
+          <property key="linker-symbols" value=""/>
+          <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+          <property key="no-startup-files" value="false"/>
+          <property key="oXC32ld-extra-opts" value=""/>
+          <property key="optimization-level" value="-Os"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="remove-unused-sections" value="true"/>
+          <property key="report-memory-usage" value="false"/>
+          <property key="stack-size" value="1000"/>
+          <property key="symbol-stripping" value=""/>
+          <property key="trace-symbols" value=""/>
+          <property key="warn-section-align" value="false"/>
+        </C32-LD>
+        <C32CPP>
+          <property key="additional-warnings" value="false"/>
+          <property key="check-new" value="false"/>
+          <property key="eh-specs" value="true"/>
+          <property key="enable-app-io" value="false"/>
+          <property key="enable-omit-frame-pointer" value="false"/>
+          <property key="enable-symbols" value="true"/>
+          <property key="enable-unroll-loops" value="false"/>
+          <property key="exceptions" value="true"/>
+          <property key="exclude-floating-point" value="false"/>
+          <property key="extra-include-directories" value=""/>
+          <property key="generate-16-bit-code" value="false"/>
+          <property key="generate-micro-compressed-code" value="false"/>
+          <property key="isolate-each-function" value="false"/>
+          <property key="make-warnings-into-errors" value="false"/>
+          <property key="optimization-level" value=""/>
+          <property key="place-data-into-section" value="false"/>
+          <property key="post-instruction-scheduling" value="default"/>
+          <property key="pre-instruction-scheduling" value="default"/>
+          <property key="preprocessor-macros" value=""/>
+          <property key="rtti" value="true"/>
+          <property key="strict-ansi" value="false"/>
+          <property key="use-cci" value="false"/>
+          <property key="use-iar" value="false"/>
+          <property key="use-indirect-calls" value="false"/>
+        </C32CPP>
+        <C32Global>
+          <property key="legacy-libc" value="false"/>
+          <property key="save-temps" value="false"/>
+          <property key="wpo-lto" value="false"/>
+        </C32Global>
+      </item>
+      <C32>
+        <property key="additional-warnings" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exclude-floating-point" value="true"/>
+        <property key="extra-include-directories"
+                  value="..\;..\pic32\include;..\..\..\include;..\..\..\common\qp\include;..\..\..\common\qp\ports\pic32\vanilla\xc32;..\..\..\server\include;..\..\..\driver\include;..\..\..\hardware_management\include;..\..\..\ui_layer\include;..\..\..\driver\allplay_driver\ajtcl\inc;..\..\..\driver\allplay_driver\ajtcl\target\pic32\inc;..\..\..\driver\allplay_driver\liballplaymcu\include;..\..\..\server\allplay_server\allplayHelper;..\DSP;..\..\..\common\tym_qp_lib;..\..\..\bsp\PIC32\include;..\conf"/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros"
+                  value="MICROCHIP_PIC_32;AJ_SERIAL_CONNECTION;AJ_DEBUG_SERIAL_RECV;AJ_DEBUG_SERIAL_SEND;Q_SPY;HAS_BATTERY;NDEBUG"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="support-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32>
+      <C32-AR>
+        <property key="additional-options-chop-files" value="false"/>
+      </C32-AR>
+      <C32-AS>
+        <property key="assembler-symbols" value=""/>
+        <property key="enable-symbols" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="expand-macros" value="false"/>
+        <property key="extra-include-directories-for-assembler" value=""/>
+        <property key="extra-include-directories-for-preprocessor" value=""/>
+        <property key="false-conditionals" value="false"/>
+        <property key="keep-locals" value="false"/>
+        <property key="list-assembly" value="false"/>
+        <property key="list-source" value="false"/>
+        <property key="list-symbols" value="false"/>
+        <property key="oXC32asm-list-to-file" value="false"/>
+        <property key="omit-debug-dirs" value="false"/>
+        <property key="omit-forms" value="false"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="warning-level" value=""/>
+      </C32-AS>
+      <C32-LD>
+        <property key="additional-options-use-response-files" value="false"/>
+        <property key="enable-check-sections" value="false"/>
+        <property key="exclude-floating-point-library" value="true"/>
+        <property key="exclude-standard-libraries" value="false"/>
+        <property key="extra-lib-directories" value=""/>
+        <property key="generate-16-bit-code" value="true"/>
+        <property key="generate-cross-reference-file" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="heap-size" value="20000"/>
+        <property key="input-libraries" value=""/>
+        <property key="linker-symbols" value=""/>
+        <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+        <property key="no-startup-files" value="false"/>
+        <property key="oXC32ld-extra-opts" value=""/>
+        <property key="optimization-level" value="-Os"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="remove-unused-sections" value="true"/>
+        <property key="report-memory-usage" value="false"/>
+        <property key="stack-size" value="1000"/>
+        <property key="symbol-stripping" value=""/>
+        <property key="trace-symbols" value=""/>
+        <property key="warn-section-align" value="false"/>
+      </C32-LD>
+      <C32CPP>
+        <property key="additional-warnings" value="false"/>
+        <property key="check-new" value="false"/>
+        <property key="eh-specs" value="true"/>
+        <property key="enable-app-io" value="false"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
+        <property key="enable-symbols" value="true"/>
+        <property key="enable-unroll-loops" value="false"/>
+        <property key="exceptions" value="true"/>
+        <property key="exclude-floating-point" value="false"/>
+        <property key="extra-include-directories" value=""/>
+        <property key="generate-16-bit-code" value="false"/>
+        <property key="generate-micro-compressed-code" value="false"/>
+        <property key="isolate-each-function" value="false"/>
+        <property key="make-warnings-into-errors" value="false"/>
+        <property key="optimization-level" value=""/>
+        <property key="place-data-into-section" value="false"/>
+        <property key="post-instruction-scheduling" value="default"/>
+        <property key="pre-instruction-scheduling" value="default"/>
+        <property key="preprocessor-macros" value=""/>
+        <property key="rtti" value="true"/>
+        <property key="strict-ansi" value="false"/>
+        <property key="use-cci" value="false"/>
+        <property key="use-iar" value="false"/>
+        <property key="use-indirect-calls" value="false"/>
+      </C32CPP>
+      <C32Global>
+        <property key="legacy-libc" value="false"/>
+        <property key="save-temps" value="false"/>
+        <property key="wpo-lto" value="false"/>
+      </C32Global>
+      <Simulator>
+      </Simulator>
+    </conf>
+  </confs>
+</configurationDescriptor>

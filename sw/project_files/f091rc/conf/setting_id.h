@@ -1,0 +1,21 @@
+#ifndef SETTING_ID_H
+#define SETTING_ID_H
+
+typedef enum
+{
+    SETID_START = 0,
+    SETID_BATT_INFO = SETID_START,
+    SETID_VOLUME,        // 1
+    SETID_AC_STATUS,     // 2
+    SETID_DSP_INIT_DATA,
+    SETID_DSP_TUNABLE_PART,
+    SETID_CHANNEL,
+    SETID_IS_AUXIN_PLUG_IN,
+    SETID_MAX_VOLUME, 
+    SETID_MUSIC_DET,
+    SETID_MAX
+}eSettingId;
+
+
+
+#endif

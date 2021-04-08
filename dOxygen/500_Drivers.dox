@@ -1,0 +1,37 @@
+/**
+\anchor page
+\page Drivers Drivers
+
+\image html logo.png
+
+Drivers <a href=" http://en.wikipedia.org/wiki/Hardware_drivers"> as described on wikipedia.</a> 
+Tymphany drivers are designed to offer a simple interface to a specific piece of HW attached to the MCU. Each driver should work for all MCU's in the family range of that MCU. For example a pic32 i2c driver should be compatible with all pic32 MCU's. As we expand our range of supported HW then we shall need to duplicate the internal driver logic to handle this. However the interface would stay the same. Though drivers are not based on Active object they may still post message back to their owner (using the QP event handler) which must be an active object.
+
+An example of how drivers form a part of Tymphany Platform:
+\image html Drivers.png
+
+All drivers <b>MUST</b>:
+<ol>
+<li> Provide a wholly abstract interface to HW operation</li>
+<li> Support a common interface shared by all drivers of that type </li>
+<li> Support all the MCU's in the MCU family range </li>
+<li> Be owned, initiated and destroy by a suitable middle-ware object (e.g a server)</li>
+<li> Be available when and in the correct states as dictated by the needs of the application</li> 
+</ol> 
+
+All drivers <b>MUST NOT</b>:
+<ol>
+<li> Cause blocking behaviour </li>
+<li> Own dynamic memory blocks which should belong to clients </li>
+<li> Have complex state machines which alter the response to clients in such a way that the clients cannot foresee</li>
+</ol> 
+    
+Drivers <b>CAN</b>:
+<ol>
+<li> Make request from other drivers </li>
+<li> Allocate memory block for client consumption </li>
+<li> Make use of callback on the owner object </li>
+<li> Deny/block/busy access to resources </li>
+</ol>
+
+*/

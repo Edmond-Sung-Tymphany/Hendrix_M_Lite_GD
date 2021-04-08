@@ -1,0 +1,8 @@
+_auto_build*
+BnO_a9_mk3_hw*/*
+Debug/*
+Release/*
+*.dep
+*.ewt
+*.zip
+ca17_hw*

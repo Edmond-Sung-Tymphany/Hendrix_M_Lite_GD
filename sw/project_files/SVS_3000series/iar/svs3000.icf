@@ -1,0 +1,80 @@
+/*###ICF### Section handled by ICF editor, don't touch! ****/
+/*-Editor annotation file-*/
+/* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
+/*-Specials-*/
+define symbol __ICFEDIT_intvec_start__ = 0x08003000;
+/*-Memory Regions-*/
+define symbol __ICFEDIT_region_ROM_start__ = 0x08003000;
+define symbol __ICFEDIT_region_ROM_end__   = 0x0801BBFF;
+define symbol __ICFEDIT_region_RAM_start__ = 0x20000000;
+define symbol __ICFEDIT_region_RAM_end__   = 0x20003FFF;
+
+/*-ROM region to store settings-*/
+define symbol __USEREDIT_region_ROM2_start__ = 0x0801BC00;
+
+define symbol __USEREDIT_region_MenuSettings_start__	= 0x0801BC64;
+define symbol __USEREDIT_region_MenuSettings_end__ 	= 0x0801BCC7;
+define symbol __USEREDIT_region_Preset1_start__ 	= 0x0801BCC8;
+define symbol __USEREDIT_region_Preset1_end__   	= 0x0801BD2B;
+define symbol __USEREDIT_region_Preset2_start__ 	= 0x0801BD2C;
+define symbol __USEREDIT_region_Preset2_end__    	= 0x0801BD8F;
+define symbol __USEREDIT_region_Preset3_start__ 	= 0x0801BD90;
+define symbol __USEREDIT_region_Preset3_end__   	= 0x0801BDF3;
+
+define symbol __USEREDIT_region_preset1Name_start__ = 0x0801BDF4;
+define symbol __USEREDIT_region_preset1Name_end__   = 0x0801BE03;
+
+define symbol __USEREDIT_region_preset2Name_start__ = 0x0801BE04;
+define symbol __USEREDIT_region_preset2Name_end__   = 0x0801BE13;
+
+define symbol __USEREDIT_region_preset3Name_start__ = 0x0801BE14;
+define symbol __USEREDIT_region_preset3Name_end__   = 0x0801BE23;
+
+define symbol __USEREDIT_region_bootloader_start__ = 0x0801BE30;
+define symbol __USEREDIT_region_bootloader_end__   = 0x0801BE3F;
+/*-Sizes-*/
+define symbol __ICFEDIT_size_cstack__ = 0x400;
+define symbol __ICFEDIT_size_heap__   = 0x200;
+/**** End of ICF editor section. ###ICF###*/
+
+
+define memory mem with size = 4G;
+define region ROM_region   = mem:[from __ICFEDIT_region_ROM_start__   to __ICFEDIT_region_ROM_end__];
+define region RAM_region   = mem:[from __ICFEDIT_region_RAM_start__   to __ICFEDIT_region_RAM_end__];
+
+/*-ROM region to store Settings-*/
+define region Menu_Settings_region  = mem:[from __USEREDIT_region_MenuSettings_start__ to __USEREDIT_region_MenuSettings_end__];
+define region Preset1_region  = mem:[from __USEREDIT_region_Preset1_start__ to __USEREDIT_region_Preset1_end__];
+define region Preset2_region  = mem:[from __USEREDIT_region_Preset2_start__ to __USEREDIT_region_Preset2_end__];
+define region Preset3_region  = mem:[from __USEREDIT_region_Preset3_start__ to __USEREDIT_region_Preset3_end__];
+define region Preset1Name_region  = mem:[from __USEREDIT_region_preset1Name_start__ to __USEREDIT_region_preset1Name_end__];
+define region Preset2Name_region  = mem:[from __USEREDIT_region_preset2Name_start__ to __USEREDIT_region_preset2Name_end__];
+define region Preset3Name_region  = mem:[from __USEREDIT_region_preset3Name_start__ to __USEREDIT_region_preset3Name_end__];
+
+define region bootloader_region  = mem:[from __USEREDIT_region_bootloader_start__ to __USEREDIT_region_bootloader_end__];
+//define region FwVersion_region  = mem:[from __USEREDIT_region_FW_VERSION_start__ to __USEREDIT_region_FW_VERSION_end__];
+
+define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+
+initialize by copy { readwrite };
+do not initialize  { section .noinit };
+
+place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
+
+place in ROM_region   { readonly };
+place in RAM_region   { readwrite,
+                        block CSTACK, block HEAP };
+
+/*-place Settings in ROM-*/
+place in Menu_Settings_region  { readonly section MENU_SETTINGS };
+place in Preset1_region  { readonly section MENU_PRESET_1 };
+place in Preset2_region  { readonly section MENU_PRESET_2 };
+place in Preset3_region  { readonly section MENU_PRESET_3 };
+place in Preset1Name_region  { readonly section MENU_PRESET_1_NAME };
+place in Preset2Name_region  { readonly section MENU_PRESET_2_NAME };
+place in Preset3Name_region  { readonly section MENU_PRESET_3_NAME };
+place in bootloader_region   { readonly section BOOT_MODE };
+
+export symbol __ICFEDIT_region_RAM_start__;
+export symbol __ICFEDIT_region_RAM_end__;

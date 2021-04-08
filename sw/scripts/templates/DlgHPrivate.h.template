@@ -1,0 +1,30 @@
+/**
+ * @file        ${nameAndExt}
+ * @brief       ${brief}
+ * @author      ${user} 
+ * @date        ${date}
+ * @copyright   Tymphany Ltd.
+ */
+ 
+#ifndef ${file}DLG_PRIV_H
+#define ${file}DLG_PRIV_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "delegate.h"
+#include "${name}Dlg.h"
+
+/* State function definitions */
+static QState ${name}Dlg_Initial(QActive * const me);
+static QState ${name}Dlg_PreActive(QActive * const me, QEvt const * const e);
+static QState ${name}Dlg_Active(QActive * const me, QEvt const * const e);
+
+/* Add some private data here if needed */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${file}DLG_PRIV_H */

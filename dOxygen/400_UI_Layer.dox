@@ -1,0 +1,112 @@
+/**
+\anchor page
+\page UI UI Layer
+
+\image html logo.png
+
+An Application (or App), as most commonly understood, is a piece of software running on a computer that provides one or more input methods (keys/touch panels), 
+a user interface (GUI/LED's/Tones) and performs tasks based on user input.
+
+Apps are user facing software which often make use of other, unseen, SW to complete it's tasks. "Here is what wikipedia has to say about applications":http://en.wikipedia.org/wiki/Application_software
+As you can see due to the sheer nature of having to fulfil many user request Applications, beyond a basic definition, are hard to describe.
+
+In Tymphany Platform this is not a problem because we know exactly the role applications need to fulfil. General rules for Applications:
+<ol>
+<li> Provide <b>highly responsive, state-driven, control flow logic</b>.</li>
+<li> Must remain decoupled from low layer HW and yet still be able to communicate with HW. </li>
+<li> Any and all interactions a user has with the product is handled through the application layer.</li>
+<li> Give context & meaning to user input.</li> 
+</ol> 
+
+For example: A button pressed in <b>"PLAY"</b> state means <i>"skip track"</i> and in <b>"IDLE"</b> state that button press could mean <i>"switch source"</i>. 
+The application(s) orchestrate and communicate with lower-level SW to take action based on user input.
+
+<h2> Splitting the UI into Applications and Delegates - Why and what? </h2>
+
+Because these use cases can become highly complex whilst still presenting common use cases across different products the UI layer is broken down two.
+<a href="#applications">Applications (Apps)</a>, which provide a persitant start point and overall control and <a href="#delegates">Delegates (Dlgs)</a> which offer a subset of reusable UI which applications may use to fulfil their own UI.
+An example of the use case we may implement:
+
+	\msc
+		KeySrv, MainApp, "OptionDlg", "SubOptionDlg";
+		---  [label = "Product with options. App can use an option delegate to show multiple settings" ];
+		KeySrv->MainApp [label="Key Pressed == Options"];
+		MainApp->"OptionDlg" [label="Options_Ctor(pOptlistData)"];
+		KeySrv->MainApp [label="Key Pressed == SubOptions"];
+		---  [label = "App can now instantiate another option list" ];
+		MainApp->"SubOptionDlg" [label="Options_Ctor(pSubOptlistData)"];
+		KeySrv->"SubOptionDlg" [label="Options_Xtor()"];
+		---  [label = "2nd list is dead but the first is still available." ];
+	\endmsc
+
+
+These are discussed in detail below:
+
+\subsection applications Applications
+
+<h2> Component blueprint - Applications </h2>
+
+Below are a list of musts, must not, can's. *ALL* applications follow these conventions.
+
+All Apps <b>MUST</b>:
+<ol>
+<li> Provide a start-up point for the Control/UI.</li>
+<li> Subscribe/React to Servers, create Dlgs based on signals (if needed) to further handle control. </li>
+<li> Drive overall system co-ordination using a state machine. Apps/Dlgs decide what to do with data.</li>
+<li> Own and use/manage any and all delegates it uses to fulfil its requirements.</li> 
+<li> Be persistent singletons which are globally accessible and provide a unique application.</li> 
+<li> Be available from start-up.</li> 
+</ol> 
+
+All Apps <b>MUST NOT</b>:
+<ol>
+<li> Cause blocking behaviour</li>
+<li> Expect Server's to do control-like behaviour. </li>
+<li> Have in-depth knowledge of HW specifics.</li>
+</ol> 
+
+Apps <b>CAN</b>:
+<ol>
+<li> Allocate memory block for server consumption.</li>
+</ol> 
+
+<h2> The "Main" App </h2> 
+All projects must implement a "Main App" as defined in MainApp.h. This is the kick off point for all control logic within the product. 
+Since all products rely on different start-up and shut down procedures this will most likely be a unique Application which is why its left to the product creation process to assemble this. 
+This Main App must be added to the controller and so is started on power up. 
+From there the product control can continue executing in the Main App or continue in another App or a delegate the main app launches.
+The new product creation process is discussed in further detail here::::
+
+\sa MainApp.h
+
+\subsection delegates Delegates
+
+<h2> Component blueprint - Delegates </h2> 
+
+Below are a list of musts, must not, can's. <b>ALL</b> delegates follow these conventions.
+
+All Delegates <b>MUST</b>:
+<ol>
+<li> Provide state based control that handles all signals required to fulfil the task.</li>
+<li> Be only active when needed by the owning app. <b>Non-persistent.</b></li>
+<li> Provide a robust constructor allowing the app to tailor it's start up. </li>
+<li> Be multi-instance. </li>
+<li> Be able to be stopped/started numerous times. No memory leaks. </li>
+</ol> 
+
+All Delegates <b>MUST NOT</b>:
+
+<ol>
+<li> Cause blocking behaviour</li>
+<li> Own dynamic memory blocks which should belong to others</li>
+<li> Make requests on App's which assume which App "owns" it. </li>
+<li> Have in-depth knowledge of HW specifics </li>
+</ol> 
+    
+Delegates <b>CAN</b>:
+<ol>
+<li> Request services from servers </li>
+<li> Allocate memory block for server consumption</li>
+</ol>
+
+*/

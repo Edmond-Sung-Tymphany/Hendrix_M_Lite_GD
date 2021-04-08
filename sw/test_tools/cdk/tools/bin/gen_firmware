@@ -1,0 +1,267 @@
+#!/bin/bash
+
+# Usage: gen_firmware [--oem <basename>] [--sam <basename>] [--cipher <algorithm>] [--manufacturer <manufacturer>] [--id <deviceId>] [--bundle-version <version>] [--url <url base>] [--out <bundle filename>] [<firmware id> <firmware version> <firmware file>]...
+#
+# <signer> is the directory where the signer.{key,crt} files are (defaults to the current directory)
+#
+# Firmware format:
+#   Header:
+#       Field    Size    Value    Description
+#         1         5    SamFW    Magic token
+#         2         4    2/3/4    Bundle format version
+#         3         4        *    Size of compressed certificate
+#         4         *        *    Compressed certificate
+#         5         4        *    Size of signed SHA1 hash of payload
+#         6         *        *    Signed SHA1 hash of payload
+#   Payload:
+#       Field    Size    Value    Description
+#         1         4        *    Manufacturer string length (format 3)
+#         2         *        *    Manufacturer string (format 3)
+#         3         4        *    Device ID string length
+#         4         *        *    Device ID string
+#         5         4        *    Bundle version length (format 3)
+#         6         *        *    Bundle version (format 3)
+#         7         4        *    Extra data length (format 3, 0 if none)
+#         8         *        *    Extra data (format 3)
+#         [ key/values
+#         1         4        *    Key (see below)
+#         2         4        *    Value size
+#         3         *        *    Value
+#         ]
+#         9         4      0/1    0-Unencrypted/1-encrypted (format 4)
+#        10         4        *    Symmetric key size (format 4, encryption enabled)
+#        11         *        *    Encrypted symmetric key (format 4, encryption enabled)
+#        12         4        *    Cipher size (format 4, encryption enabled)
+#        13         *        *    Encrypted cipher (format 4, encryption enabled)
+#        -- if encryption is enabled, the rest is encrypted with the symmetric key
+#        14         4        *    Number of firmwares
+#         [ Firmware:
+#         1         4        *    Size of firmware image name
+#         2         *        *    Firmware image name (sam, mcu, ...)
+#         3         4        *    Size of firmware image version
+#         4         *        *    Firmware image version
+#         5         4        *    Size of firmware image
+#         6         *        *    Firmware image
+#         ]
+#         repeat for each firmware
+#
+# Possible keys:
+#   0: Firmware summary
+#      value:
+#         1         4        *    Number of firmware
+#         [ Firmware summary:
+#         1         4        *    Size of the firmware image name
+#         2         *        *    Firmware image name
+#         3         4        *    Size of firmware image version
+#         4         *        *    Firmware image version
+#         5         4        *    Size of the firmware image
+#         ]
+
+set -e
+
+KEY_SUMMARY=0
+
+printInt() {
+	local val=`printf %08x $1`;
+	printf "\x${val:6:2}\x${val:4:2}\x${val:2:2}\x${val:0:2}"
+}
+
+processImageHeader() {
+	local name="$1"
+	local version="$2"
+	local file="$3"
+
+	printInt ${#name} # 1. Firmware name size
+	echo -n "$name" # 2. Firmware name
+
+	printInt ${#version} # 3. Firmware version size
+	echo -n "$version" # 4. Firmware version
+
+	[ -r "$file" ] || { echo "File $file does not exist or is not readable" >&2; exit 1; }
+	local size=$(stat -L -c %s "$file")
+	printInt $size # 5. Firmware image size
+}
+
+processImage() {
+	local name="$1"
+	local version="$2"
+	local file="$3"
+
+	processImageHeader "$@"
+	/bin/cat "$file" # 6. Firmware image
+
+	echo "" >> "$MANIFEST"
+	echo "config firmware '$name'" >> "$MANIFEST"
+	echo "	option version '$version'" >> "$MANIFEST"
+}
+
+processImages() {
+	printInt ${FIRMWARE_COUNT} # 14. Number of firmwares
+	while [ ! -z "$1" ]; do
+		processImage "$1" "$2" "$3"
+		shift; shift; shift
+	done
+}
+
+processImagesSummary() {
+	printInt ${FIRMWARE_COUNT} # 1. Number of firmware
+	while [ ! -z "$1" ]; do
+		processImageHeader "$1" "$2" "$3"
+		shift; shift; shift
+	done
+}
+
+processExtraData() {
+	local SUMMARY="$NAME.summary"
+
+	processImagesSummary "$@" > "$SUMMARY"
+
+	printInt $KEY_SUMMARY # Firmware summary key
+	printInt $(stat -L -c %s "$SUMMARY") # Firmware summary size
+	/bin/cat "$SUMMARY" # Firmware summary value
+	#rm -f "$SUMMARY"
+}
+
+
+FORMAT=4
+CIPHER="aes-256-cbc"
+URL_BASE="<url>"
+while : ; do
+	case "$1" in
+		--format) FORMAT="$2"; shift;;
+		--oem) OEM_BASE="$2"; shift;;
+		--sam) SAM_BASE="$2"; shift;;
+		--cipher) CIPHER="$2"; shift;;
+		--manufacturer) MANUFACTURER="$2"; shift;;
+		--id) DEVICE_ID="$2"; shift;;
+		--bundle-version) BUNDLE_VERSION="$2"; shift;;
+		--url) URL_BASE="$2"; shift;;
+		--out) NAME="$2"; shift;;
+		-*) echo "Unknown parameter $1" >&2; exit 1;;
+		*) break;;
+	esac
+	shift
+done
+MANIFEST="$NAME.mft"
+
+[ -n "$DEVICE_ID" ] || { echo "Missing device ID" >&2; exit 1; }
+[ -n "$NAME" ] || { echo "Missing bundle filename" >&2; exit 1; }
+[ -n "$MANUFACTURER" ] ||  { echo "Missing manufacturer" >&2; exit 1; }
+[ -n "$BUNDLE_VERSION" ] ||  { echo "Missing bundle version" >&2; exit 1; }
+[ "$#" -gt "0" ] || { echo "Not enough parameters, need at least one firmware"; exit 1; }
+FIRMWARE_COUNT=$#
+FIRMWARE_COUNT=$((FIRMWARE_COUNT / 3))
+[ $((FIRMWARE_COUNT * 3)) -eq $# ] || { echo "Not enough parameters, missing parameter(s) for one of the firmware: $@"; exit 1; }
+
+OEM_BASE="${OEM_BASE:-./oem}"
+OEM_CRT="$OEM_BASE.crt"
+OEM_KEY="$OEM_BASE.key"
+
+SAM_CRT="$SAM_BASE.crt"
+
+[ -r "$OEM_CRT" ] || { echo "OEM certificate doesn't exists: $OEM_CRT"; exit 1; }
+[ -r "$OEM_KEY" ] || { echo "OEM key doesn't exists: $OEM_KEY"; exit 1; }
+
+[ -z "$SAM_BASE" ] || [ -r "$SAM_CRT" ] || { echo "SAM certificate doesn't exists: $SAM_CRT"; exit 1; }
+
+NAME_TMP="$NAME.tmp"
+
+#
+# Create payload
+#
+rm -f "$NAME.tmp"
+rm -f "$MANIFEST"
+
+echo "config bundle 'bundle'" >> "$MANIFEST"
+
+if [ "$FORMAT" -ge 3 ]; then
+	printInt ${#MANUFACTURER} >> "$NAME_TMP" # 1. Size of manufacturer
+	echo -n "$MANUFACTURER" >> "$NAME_TMP" # 2. Manufacturer
+fi
+echo "	option manufacturer '$MANUFACTURER'" >> "$MANIFEST"
+
+printInt ${#DEVICE_ID} >> "$NAME_TMP" # 3. Size of device ID
+echo -n "$DEVICE_ID" >> "$NAME_TMP" # 4. Device ID
+echo "	option device '$DEVICE_ID'" >> "$MANIFEST"
+
+if [ "$FORMAT" -ge 3 ]; then
+	printInt ${#BUNDLE_VERSION} >> "$NAME_TMP" # 5. Size of device ID
+	echo -n "$BUNDLE_VERSION" >> "$NAME_TMP" # 6. Device ID
+fi
+echo "	option version '$BUNDLE_VERSION'" >> "$MANIFEST"
+
+echo "	option url '$URL_BASE/$(basename "$NAME")'" >> "$MANIFEST"
+
+if [ "$FORMAT" -ge 3 ]; then
+	EXTRA_DATA="$NAME.extra"
+
+	processExtraData "$@" > "$EXTRA_DATA"
+
+	printInt $(stat -L -c %s "$EXTRA_DATA") >> "$NAME_TMP" # 7. Extra data length
+	/bin/cat "$EXTRA_DATA" >> "$NAME_TMP" # 8. Extra data
+	rm -f "$EXTRA_DATA"
+fi
+
+# Encryption
+if [ "$FORMAT" -lt 4 ]; then
+	processImages "$@" >> "$NAME_TMP"
+else
+	if [ -z "$SAM_BASE" ]; then
+		# Encryption disabled
+
+		printInt '0' >> "$NAME_TMP" # 9. Encryption flag
+
+		processImages "$@" >> "$NAME_TMP"
+
+	else
+		# Encryption enabled
+
+		printInt '1' >> "$NAME_TMP" # 9. Encryption flag
+
+		# Symmetric key
+		openssl rand 128 > sym.key
+		openssl rsautl -encrypt -inkey "$SAM_CRT" -certin -in sym.key -out sym.enc
+		printInt "$(stat -L -c %s "sym.enc")" >> "$NAME_TMP" # 10. Symmetric key length
+		cat "sym.enc" >> "$NAME_TMP" # 11. Symmetric key
+		rm -f sym.enc
+
+		# Cipher
+		echo -n "$CIPHER" | openssl rsautl -encrypt -inkey "$SAM_CRT" -certin -out cipher.enc
+		printInt "$(stat -L -c %s "cipher.enc")" >> "$NAME_TMP" # 12. Cipher name length
+		cat "cipher.enc" >> "$NAME_TMP" # 13. Cipher name
+		rm -f cipher.enc
+
+		processImages "$@" | openssl "$CIPHER" -pass file:sym.key -nosalt >> "$NAME_TMP"
+
+		rm -f sym.key
+	fi
+fi
+
+#
+# Create bundle's header
+#
+rm -f "$NAME"
+echo -n "SamFW" >> "$NAME" # 1. Magic token
+printInt "$FORMAT" >> "$NAME" # 2. Bundle format
+
+sed -ne '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' < "$OEM_CRT" | gzip -9 > cert.pem.gz
+printInt `stat -L -c %s "cert.pem.gz"` >> "$NAME" # 3. Size of compressed certificate
+cat "cert.pem.gz" >> "$NAME" # 4. Compressed certificate
+rm -f cert.pem.gz
+
+while true; do
+	openssl dgst -sha1 -sign "$OEM_KEY" -out "$NAME_TMP.sha1" "$NAME_TMP"
+	[ $(stat --printf="%s" "$NAME_TMP.sha1") -ne 0 ] && break
+	echo -n "Try again (y/N) ? "
+	read -r tryAgain
+	[ "$tryAgain" == "y" -o "$tryAgain" == "Y"  ] || exit 1
+done
+printInt `stat -L -c %s "$NAME_TMP.sha1"` >> "$NAME" # 5. Size of signature
+cat "$NAME_TMP.sha1" >> "$NAME" # 6. Signature
+rm -f "$NAME_TMP.sha1"
+
+#
+# Attach payload to header
+#
+cat "$NAME_TMP" >> "$NAME"
+rm -f "$NAME_TMP"

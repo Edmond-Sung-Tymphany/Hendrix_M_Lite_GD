@@ -1,0 +1,7 @@
+//  Microchip MPLAB C32 C, -si4 -sp4, 
+//  Standard lint options
+
+%WORKSPACE%/lint/%MCU_FAMILY%/pic32.lnt
+%WORKSPACE%/lint/%MCU_FAMILY%/co-pic32.lnt
+%WORKSPACE%/lint/%MCU_FAMILY%/options.lnt  -si4 -sp4
+

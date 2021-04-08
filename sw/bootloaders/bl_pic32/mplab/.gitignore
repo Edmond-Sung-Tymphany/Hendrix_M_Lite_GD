@@ -1,0 +1,11 @@
+# ignore files for pic32 build
+*.o
+*.hex
+*.map
+*.asm
+*.sam
+*.same
+*.mft
+*.elf
+bl_PolkCamdenSquare/nbproject/private/*.*
+bl_PolkCamdenSquare/nbproject/*.properties

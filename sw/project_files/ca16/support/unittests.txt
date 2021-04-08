@@ -1,0 +1,2 @@
+../server/debug_snky_server/debugsrv_ut.mk
+../common/datatype/ringbuf/ringbuf_ut.mk

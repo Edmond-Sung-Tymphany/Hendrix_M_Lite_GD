@@ -1,0 +1,4 @@
+# ignore the generated files
+*Makefile*
+Package-*.bash
+private/*

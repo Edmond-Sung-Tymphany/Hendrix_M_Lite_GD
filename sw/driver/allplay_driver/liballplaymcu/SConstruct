@@ -1,0 +1,139 @@
+import os
+
+def _newEnvironment():
+	if ARGUMENTS.get('TARG') == 'win32':
+		ARGUMENTS['TARGET_ARCH']='x86'
+	e = Environment(CPPPATH=[], LIBPATH=[], LIBS=[], SHLIBSUFFIX='.so', SHLINKFLAGS=[ '$LINKFLAGS', '-shared' ], ENV=os.environ, **ARGUMENTS)
+	e.SetDefault(VARIANT='debug')
+	e.AppendUnique(CFLAGS=os.environ.get('CFLAGS', '').split())
+	e.AppendUnique(CXXFLAGS=os.environ.get('CXXFLAGS', '').split())
+	for l in os.environ.get('LDFLAGS', '').split():
+		if l.startswith('-L'):
+			e.AppendUnique(LIBPATH=l[2:])
+	if ARGUMENTS.get('TARG') == 'win32':
+		e['LINKCOM'] = [e['LINKCOM'], 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;1']
+		e['SHLINKCOM'] = [e['SHLINKCOM'], 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2']
+	e.createEnvironment = _newEnvironment
+	return e
+
+DefaultEnvironment(VARIANT='debug')
+
+env = _newEnvironment()
+
+if env['TARG'] == 'win32':
+	env.Append(CFLAGS=['/J', '/W3'])
+	env.Append(CPPDEFINES=['_CRT_SECURE_NO_WARNINGS', 'ALLPLAY_WIN32'])
+	if env['VARIANT'] == 'debug':
+		env.Append(CFLAGS=['/MD', '/Zi', '/Od'])
+		env.Append(LINKFLAGS=['/debug'])
+	else:
+		env.Append(CPPDEFINES = ['NDEBUG'])
+		env.Append(CFLAGS=['/MD', '/Gy', '/O1', '/GF'])
+		env.Append(LINKFLAGS=['/opt:ref'])
+		env.Append(LFLAGS=['/NODEFAULTLIB:libcmt.lib'])
+		env.Append(LINKFLAGS=['/NODEFAULTLIB:libcmt.lib'])
+elif env['TARG'] in [ 'linux', 'linux-uart', 'openwrt' ]:
+	env.Append(CFLAGS=['-Wall'])
+	env.Append(CPPDEFINES=['ALLPLAY_LINUX'])
+	if env['VARIANT'] == 'debug':
+		env.Append(CFLAGS=['-g'])
+	else:
+		env.Append(CPPDEFINES = ['NDEBUG'])
+elif env['TARG'] == 'darwin':
+	env.Append(CFLAGS=['-Wall'])
+	env.Append(CPPDEFINES=['ALLPLAY_LINUX'])
+	if env['VARIANT'] == 'debug':
+		env.Append(CFLAGS=['-g'])
+
+# Variants
+if env['VARIANT'] == 'debug':
+	VARIANT_DIR='build/debug'
+elif env['VARIANT'] == 'release':
+	VARIANT_DIR='build/release'
+else:
+	print "Unknown variant " + env['VARIANT']
+	Return()
+OBJ_DIR=VARIANT_DIR + '/obj'
+VariantDir(OBJ_DIR, 'src', duplicate=0)
+
+# Dependencies
+AJTCL_DIR='../ajtcl'
+if env['TARG'] == 'linux-uart':
+	AJTCL_OBJ_DIR=OBJ_DIR + '/ajtcl'
+	TARG_OBJ_DIR=OBJ_DIR + '/target'
+
+	VariantDir(AJTCL_OBJ_DIR, AJTCL_DIR, duplicate=0)
+	VariantDir(TARG_OBJ_DIR, '/src/target/linux-uart', duplicate=0)
+
+	env_ajtcl = {}
+	env_ajtcl['includes'] = [AJTCL_DIR + '/inc', AJTCL_DIR + '/crypto/ecc', AJTCL_DIR + '/external/sha2', AJTCL_DIR + '/target/linux']
+	env_ajtcl['libs'] = ['pthread', 'crypto']
+	env_ajtcl['aj_obj'] = Glob(AJTCL_OBJ_DIR + '/src/*.c') + Glob(AJTCL_OBJ_DIR + '/crypto/ecc/*.c') + Glob(AJTCL_OBJ_DIR + '/external/sha2/*.c')
+	env_ajtcl['aj_obj'] += [
+		AJTCL_OBJ_DIR + '/target/linux/aj_target_crypto.c',
+		AJTCL_OBJ_DIR + '/target/linux/aj_target_nvram.c',
+		AJTCL_OBJ_DIR + '/target/linux/aj_target_util.c'
+		]
+	env_ajtcl['aj_headers'] = Glob(AJTCL_DIR + '/inc/*.h') + Glob(AJTCL_DIR + '/external/sha2/*.h') + Glob(AJTCL_OBJ_DIR + '/target/linux/*.h')
+
+	env_ajtcl['includes'] += ['src/target/linux-uart']
+	env_ajtcl['aj_obj'] += Glob(OBJ_DIR + '/target/linux-uart/*.c')
+	env_ajtcl['aj_headers'] += Glob(OBJ_DIR + '/target/linux-uart/*.h')
+
+	env.Append(CPPDEFINES=['AJ_SERIAL_CONNECTION', '_GNU_SOURCE'])
+	env.Append(CPPDEFINES=['AJ_DEBUG_RESTRICT=5'])
+elif env['TARG'] == 'openwrt':
+	env_ajtcl = {}
+	env_ajtcl['includes'] = []
+	env_ajtcl['libs'] = ['ajtcl', 'pthread', 'crypto']
+	env_ajtcl['aj_obj'] = []
+else:
+	env_ajtcl = SConscript(AJTCL_DIR + '/SConscript', exports='env')
+
+# Source
+env.Prepend(CPPPATH=['src', 'include'] + env_ajtcl['includes'])
+
+# Compile
+sources = Glob(OBJ_DIR + '/*.c')
+headers = Glob(OBJ_DIR + '/*.h') + Glob('include/*.h')
+env.PrependUnique(LIBS = [env_ajtcl['libs']])
+
+
+# Always generate a .pdb file
+env['CCPDBFLAGS'] = '/Zi /Fd${TARGET}.pdb'
+#env['PDB'] = '${TARGET.base}.pdb'
+#print "TARGET: " + str(TARGET)
+#print "PDB: " + str(env['PDB'])
+
+if env['VARIANT'] == 'debug':
+	msvcVariant = 'Debug'
+elif env['VARIANT'] == 'release':
+	msvcVariant = 'Release'
+
+prog = env.StaticLibrary(VARIANT_DIR + '/liballplaymcu', sources + env_ajtcl['aj_obj'])
+if env['PLATFORM'] == 'win32':
+	lib_proj = env.MSVSProject(
+		auto_build_solution=0,
+		MSVSSCONSFLAGS=' '.join(['%s=%s' % (key, value) for (key, value) in ARGUMENTS.items()]),
+		target = 'liballplaymcu' + env['MSVSPROJECTSUFFIX'],
+		srcs = map(lambda x:str(x), sources),
+		incs = map(lambda x:str(x), headers + env_ajtcl['aj_headers']),
+		buildtarget = [ prog[0]	],
+		variant = [msvcVariant])
+
+cli_sources = Glob(OBJ_DIR + '/cli/*.c')
+cli_headers = Glob(OBJ_DIR + '/cli/*.h')
+cli_prog = env.Program(VARIANT_DIR + '/allplay-cli', cli_sources + prog)
+if env['PLATFORM'] == 'win32':
+	exe_proj = env.MSVSProject(
+		auto_build_solution=0,
+		MSVSSCONSFLAGS=' '.join(['%s=%s' % (key, value) for (key, value) in ARGUMENTS.items()]),
+		target = 'liballplaymcu_test' + env['MSVSPROJECTSUFFIX'],
+		srcs = map(lambda x:str(x), cli_sources),
+		incs = map(lambda x:str(x), cli_headers),
+		buildtarget = [ cli_prog[0]	],
+		variant = [msvcVariant])
+	env.MSVSSolution(
+		target = 'liballplaymcu' + env['MSVSSOLUTIONSUFFIX'],
+		projects = [lib_proj, exe_proj],
+		variant = [msvcVariant])

@@ -1,0 +1,50 @@
+/**
+\anchor page
+\page Servers Servers
+
+\image html logo.png
+
+
+As a <a href="http://en.wikipedia.org/wiki/Client_server">computing paradigm, servers are providers of a service.</a> The service is requested by a client.
+The most common example is that found in computer networking as shown in \ref FA3 "Figure 3":
+
+\anchor FA3 \image html 220px-Client-server-model.svg.png "Figure 3 Standard server concept"
+
+In Tymphany platform a server could encapsulate a simple service such as a serial communication to an external module or even a higher abstraction such as a audio source control.
+What is important is that however that service is composed the interface to it is the same.
+This enables the service to be requested and used by multiple clients without knowledge of the underlying HW/SW that drives that service.
+
+Tymphany servers may make use of other servers to provide a service. So for example; to make use of a LCD screen, a UI client may make a request to render information on the LCD display server. 
+The LCD server may in turn talk to a timer server to kick off a timer for back light time-out before rendering. They are based on QP Active Objects.
+
+<h2> Component blueprint </h2>
+
+Below are a list of musts, must not, can's. <b>ALL</b> servers follow these conventions.
+
+All servers <b>MUST</b>:
+<ol>
+<li> Provide an abstract, robust & simple set of methods to clients.</li>
+<li> Be persistent singletons which are globally accessible and provide a unique service. </li>
+<li> Handle service request from many clients (1 to many relationship).</li>
+<li> Be available from start-up.</li> 
+</ol> 
+
+All servers <b>MUST NOT</b>:
+<ol>
+<li> Cause blocking behaviour.</li>
+<li> Own dynamic memory blocks which should belong to clients. </li>
+<li> Make requests on clients.</li>
+<li> Have complex state machines which alter the response to clients in such a way that the clients cannot foresee.</li> 
+<li> Have in-depth knowledge of HW specifics. </li> 
+</ol> 
+
+Servers <b>CAN</b>:
+<ol>
+<li> Request services from other servers.</li>
+<li> Allocate memory block for client consumption. </li>
+<li> Deny access to resources.</li>
+</ol> 
+
+<HR>
+\image html logo.png
+*/

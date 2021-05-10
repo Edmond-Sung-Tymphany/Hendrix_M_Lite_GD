@@ -67,7 +67,7 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
     ASSERT(me && pConfig && ((pConfig->ADCEnabledPinNum) <= ADC_PIN_MAX));
     //ADC_InitTypeDef     ADC_InitStructure;
     //GPIO_InitTypeDef    GPIO_InitStructure;
-    //NVIC_InitTypeDef    NVIC_InitStructure;
+    NVIC_InitTypeDef    NVIC_InitStructure;
     if(me->isCreated)
     {
         return;
@@ -83,8 +83,7 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
     /* Before any operation, stop ADC Interrupt first 
      * Otherwise interrupt will change variable, and cause race condition
      */
-
-    //ADC_StopOfConversion(ADC1);  
+ 
     ADC_SoftwareStartConvCmd(ADC1, DISABLE); 
 	
     numOfRegisteredAdcObj++;
@@ -122,14 +121,13 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
   RCC_ADCCLKConfig(RCC_PCLK2_Div2); 
 #else
   /* ADCCLK = PCLK2/4 */
-  RCC_ADCCLKConfig(RCC_ADCCLK_PCLK2_Div2/*RCC_PCLK2_Div4*/); 
+  RCC_ADCCLKConfig(RCC_ADCCLK_PCLK2_Div6); 
 #endif
-
-
-   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+  
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
   /* Enable ADC1 and GPIOC clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1/*| RCC_APB2Periph_GPIOC*/, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 
     for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
     {
@@ -145,80 +143,46 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
       RCC_AHBPeriphClockCmd(stmIOInfo[(me->ADCConfig->pAdcPinIoAttr[i].ioPort)].rccAhbPeriph, ENABLE);
       GPIO_InitStructure.GPIO_Pin = (1 << (me->ADCConfig->pAdcPinIoAttr[i].gpioBit));
       GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
-      //GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
-      
       GPIO_Init(stmIOInfo[(me->ADCConfig->pAdcPinIoAttr[i].ioPort)].gpioPort, &GPIO_InitStructure);
-      //ADC_ChannelConfig(ADC1,1<<(me->ADCConfig->pAdcPinIoAttr[i].adcChannel), ADC_SampleTime_239_5Cycles);
-      //ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), i+1, ADC_SampleTime_55Cycles5);
+      
+      ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), currRegisteredCh+1, ADC_SampleTime_239Cycles5);
 
       currRegisteredCh ++;
       ASSERT(currRegisteredCh <= NUM_OF_ALL_ENABLED_ADC_PIN);
     }
 
-    /* DMA1 channel1 configuration ----------------------------------------------*/
-  DMA_DeInit(DMA1_Channel1);
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)ADC1_DR_Address;
-  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&adcAllPinBuf;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-  DMA_InitStructure.DMA_BufferSize = currRegisteredCh;//me->ADCConfig->ADCEnabledPinNum;//1;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-  DMA_Init(DMA1_Channel1, &DMA_InitStructure);
-  
-    /* Enable DMA1 channel1 */
+    DMA_DeInit(DMA1_Channel1);
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)ADC1_DR_Address;
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&adcAllPinBuf;
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    DMA_InitStructure.DMA_BufferSize = currRegisteredCh;//me->ADCConfig->ADCEnabledPinNum;//1;
+    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+    DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+    DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
+    
+    
     /* Initialize ADC structure */
     ADC_StructInit(&ADC_InitStructure);
-    /* Configure the ADC1 in continous mode withe a resolutuion equal to 12 bits  */
     ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
     ADC_InitStructure.ADC_ScanConvMode = ENABLE;
     ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
     ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    ADC_InitStructure.ADC_NbrOfChannel = currRegisteredCh;//me->ADCConfig->ADCEnabledPinNum;//1;
-    ADC_Init(ADC1, &ADC_InitStructure);
-
-     if(me->ADCConfig->ADCEnabledPinNum == 4)
-    {
-    	    for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
-	    {
-	      ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), i+1, ADC_SampleTime_55Cycles5);
-	    }
-    }
-    else if(me->ADCConfig->ADCEnabledPinNum == 3)
-    {
-    	    for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
-	    {
-	      ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), i+5, ADC_SampleTime_55Cycles5);
-	    }	    
-     }
-     
-     /* Enable ADC1 DMA */
-    ADC_DMACmd(ADC1, ENABLE);
+    ADC_InitStructure.ADC_NbrOfChannel = currRegisteredCh;
+    ADC_Init(ADC1, &ADC_InitStructure);   
    
-    /* Enable ADCperipheral[PerIdx] */
-    ADC_Cmd(ADC1, ENABLE);     
+    ADC_Cmd(ADC1, ENABLE); 
+    ADC_ResetCalibration(ADC1);
+    while(ADC_GetResetCalibrationStatus(ADC1));
+    ADC_StartCalibration(ADC1);
+    while(ADC_GetCalibrationStatus(ADC1));
 
-		/* Wait for Calibration done */
-		//while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADEN));
-		/* Enable ADC1 reset calibration register */   
-		ADC_ResetCalibration(ADC1);
-		/* Check the end of ADC1 reset calibration register */
-		while(ADC_GetResetCalibrationStatus(ADC1));
-
-	/* Start ADC1 calibration */
-	ADC_StartCalibration(ADC1);
-	/* Check the end of ADC1 calibration */
-	while(ADC_GetCalibrationStatus(ADC1));
-	 
-	/* Start ADC1 Software Conversion */ 
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-	
     /* put the pins to the allADCPins[] array, for resort purpose */
     for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
     {
@@ -236,15 +200,11 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
             }
         }
     }
-
-    #if 0
-    /* init adc buffer with default value every time we create a new object */
-    for( j = 0; j < NUM_OF_ALL_ENABLED_ADC_PIN; j++)
-    {
-        adcAllPinBuf[j] = ADC_INITIAL_VALUE;
-    }
-    #endif
-
+    
+    
+    ADC_DMACmd(ADC1, ENABLE);
+     
+    
     /**
      * sort the pin array, this actually maped the pin to channel
      */
@@ -298,9 +258,8 @@ void ADCDrv_StartScanning(cADCDrv * me)
     {
         ASSERT(channelCounter==0);
         conversionDone = FALSE;
-        //ADC_StartOfConversion(ADC1);
         /* Start ADC1 Software Conversion */ 
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	//ADC_SoftwareStartConvCmd(ADC1, ENABLE);
     }
     return;
 }
@@ -315,7 +274,7 @@ void ADCDrv_ResetAdcConversionStatus()
 {
     //ADC_StopOfConversion(ADC1);
     /* Start ADC1 Software Conversion */ 
-	ADC_SoftwareStartConvCmd(ADC1, DISABLE);
+	//ADC_SoftwareStartConvCmd(ADC1, DISABLE);
     channelCounter = 0;
     conversionDone = TRUE;
 }
@@ -424,4 +383,37 @@ int32 ADCDrv_GetAdcRawDataByPortBit(eIoPort ioPort, eIoBit ioBit)
 }
 #endif
 
+void ADC1_COMP_IRQHandler(void)
+{
+    if(ADC_GetITStatus(ADC1,ADC_IT_EOC))
+    {
+        ADC_ClearITPendingBit(ADC1,ADC_IT_EOC);
+        ASSERT(conversionDone == FALSE);
+        if(channelCounter >= currRegisteredCh)
+        {
+            ASSERT(0);//we should never come to here
+            ADCDrv_ResetAdcConversionStatus();
+        }
+        else
+        {
+            adcAllPinBuf[channelCounter] = ADC_GetConversionValue(ADC1);//This reading also clean the EOC interrupt flag
+            channelCounter++;
+           
+        }
+    }
+    
+//    if(ADC_GetITStatus(ADC1,ADC_IT_EOSEQ))
+//    {
+//        ADC_ClearITPendingBit(ADC1,ADC_IT_EOSEQ);
+//        /* 
+//        * The sequence convertion is done, Here we reset all value again make sure that
+//        * everything goes to default
+//        */
+//        ASSERT(channelCounter == currRegisteredCh);
+//        ASSERT(conversionDone == FALSE);
+//        channelCounter = 0;
+//        conversionDone = TRUE;
+//    }
+    
+}
 

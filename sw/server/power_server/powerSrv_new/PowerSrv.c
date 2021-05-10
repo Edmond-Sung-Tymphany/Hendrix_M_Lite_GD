@@ -195,7 +195,7 @@ QState PowerSrv_Active(cPowerSrv * const me, QEvt const * const e)
         }
         case POWER_MCU_SLEEP_SIG:
         {
-            PowerDrv_EnterSleepMode(me);
+            PowerDrv_EnterSleepMode(me);		//temporary dont goto sleep.
             return Q_HANDLED();
         }
         case Q_EXIT_SIG:
@@ -231,8 +231,8 @@ QState PowerSrv_DeActive(cPowerSrv * const me, QEvt const * const e)
             return Q_HANDLED();
         }
         case POWER_MCU_SLEEP_SIG:
-        {
-            PowerDrv_EnterSleepMode(me);
+        {        
+            PowerDrv_EnterSleepMode(me);		//temporary dont goto sleep.
             return Q_HANDLED();
         }
         case SYSTEM_ACTIVE_REQ_SIG:

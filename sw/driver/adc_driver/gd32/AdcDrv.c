@@ -24,7 +24,6 @@ volatile static bool conversionDone = TRUE;
 static eAdcPin allADCPins[NUM_OF_ALL_ENABLED_ADC_PIN] = {ADC_PIN_MAX};
 static BOOL allADCPinsInitiated = FALSE;
 static int16 adcAllPinBuf[NUM_OF_ALL_ENABLED_ADC_PIN] = {ADC_INITIAL_VALUE};
-__IO uint16_t ADCConvertedValue[2];
 volatile static uint8 channelCounter = 0;
 static uint8 currRegisteredCh = 0; /* Current registerred adc channel */
 static uint8 numOfRegisteredAdcObj = 0;
@@ -64,7 +63,7 @@ void ADCDrv_Ctor(cADCDrv * me, const tADCDevice * pConfig)
 uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
     int8 j; /* j is the index of all enabled adc pin set*/
 
-    
+
     ASSERT(me && pConfig && ((pConfig->ADCEnabledPinNum) <= ADC_PIN_MAX));
     //ADC_InitTypeDef     ADC_InitStructure;
     //GPIO_InitTypeDef    GPIO_InitStructure;
@@ -86,8 +85,8 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
      */
 
     //ADC_StopOfConversion(ADC1);  
-    ADC_SoftwareStartConvCmd(ADC1, DISABLE);
-
+    ADC_SoftwareStartConvCmd(ADC1, DISABLE); 
+	
     numOfRegisteredAdcObj++;
     if(!allADCPinsInitiated)
     {
@@ -106,10 +105,10 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
             allADCPins[i] = ADC_PIN_MAX;
         }
     }
-    
+
+   
     /* Copy the config to object */
     me->ADCConfig = pConfig;
-
 
     /* Make sure the adc is disabled */
     ADC_Cmd(ADC1, DISABLE);
@@ -125,7 +124,8 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
   /* ADCCLK = PCLK2/4 */
   RCC_ADCCLKConfig(RCC_ADCCLK_PCLK2_Div2/*RCC_PCLK2_Div4*/); 
 #endif
- 
+
+
    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
   /* Enable ADC1 and GPIOC clock */
@@ -183,15 +183,20 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
     ADC_InitStructure.ADC_NbrOfChannel = currRegisteredCh;//me->ADCConfig->ADCEnabledPinNum;//1;
     ADC_Init(ADC1, &ADC_InitStructure);
 
-    if(me->ADCConfig->ADCEnabledPinNum == 2)
+     if(me->ADCConfig->ADCEnabledPinNum == 4)
     {
-    	    for(i = 0; i < currRegisteredCh; i++)
+    	    for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
 	    {
 	      ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), i+1, ADC_SampleTime_55Cycles5);
 	    }
     }
-    else
-	    ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), currRegisteredCh, ADC_SampleTime_55Cycles5);
+    else if(me->ADCConfig->ADCEnabledPinNum == 3)
+    {
+    	    for(i = 0; i < me->ADCConfig->ADCEnabledPinNum; i++)
+	    {
+	      ADC_RegularChannelConfig(ADC1, (me->ADCConfig->pAdcPinIoAttr[i].adcChannel), i+5, ADC_SampleTime_55Cycles5);
+	    }	    
+     }
      
      /* Enable ADC1 DMA */
     ADC_DMACmd(ADC1, ENABLE);
@@ -199,12 +204,12 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
     /* Enable ADCperipheral[PerIdx] */
     ADC_Cmd(ADC1, ENABLE);     
 
-    /* Wait for Calibration done */
-    //while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADEN));
-	/* Enable ADC1 reset calibration register */   
-	ADC_ResetCalibration(ADC1);
-	/* Check the end of ADC1 reset calibration register */
-	while(ADC_GetResetCalibrationStatus(ADC1));
+		/* Wait for Calibration done */
+		//while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADEN));
+		/* Enable ADC1 reset calibration register */   
+		ADC_ResetCalibration(ADC1);
+		/* Check the end of ADC1 reset calibration register */
+		while(ADC_GetResetCalibrationStatus(ADC1));
 
 	/* Start ADC1 calibration */
 	ADC_StartCalibration(ADC1);
@@ -239,10 +244,11 @@ uint8 i; /* i is the index of the adc pin set which owns by this adc object*/
         adcAllPinBuf[j] = ADC_INITIAL_VALUE;
     }
     #endif
+
     /**
      * sort the pin array, this actually maped the pin to channel
      */
-    tpQsort((int32*)(&(allADCPins)), 0, (ArraySize(allADCPins)-1));
+    //tpQsort((int32*)(&(allADCPins)), 0, (ArraySize(allADCPins)-1));
     
     me->isCreated = TRUE;
     //ADCDrv_StartScanning(me);

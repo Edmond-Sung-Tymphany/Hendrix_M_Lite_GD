@@ -73,6 +73,8 @@ void IoExpanderLedDrv_Ctor(cIoExpanderLedDrv *me, const tDevice* pConfig, cIoExp
     {
         ASSERT(0);
     }
+
+    IoExpanderDrv_SetGpio_aw9523(me->pIoExpander, 0, 3);	// enable V3.3 for ioexpander
 }
 
 /* @brief       IO Expander Led driver destructor

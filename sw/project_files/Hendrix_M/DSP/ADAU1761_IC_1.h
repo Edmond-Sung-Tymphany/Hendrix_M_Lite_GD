@@ -1,8 +1,8 @@
 /*
- * File:           D:\source_ben\t_p\sw\project_files\Hendrix_M\model_config\Hendrix_M_DSP\ADAU1761_IC_1.h
+ * File:           D:\zorroTYMPHANY_20190422_Hendrix_lite\tymphany_platform\sw\project_files\Hendrix_M\model_config\Hendrix_Lite_DSP\新建文件夹\HendrixM_DSPver0.6_EQ3.10_20190425_IC_1.h
  *
- * Created:        Wednesday, May 16, 2018 5:42:46 PM
- * Description:    HendrixM_DSPver0 5_EQ3 04_20180515 (Zound Pa7 with TW polarity invert off) (3):IC 1 program data.
+ * Created:        Thursday, April 25, 2019 1:35:09 PM
+ * Description:    HendrixM_DSPver0.6_EQ3.10_20190425 :IC 1 program data.
  *
  * This software is distributed in the hope that it will be useful,
  * but is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -14,10 +14,10 @@
  * are intended for resale to audio product end users. This software
  * may not be distributed whole or in any part to third parties.
  *
- * Copyright ©2018 Analog Devices, Inc. All rights reserved.
+ * Copyright ©2019 Analog Devices, Inc. All rights reserved.
  */
-#ifndef __ADAU1761_IC_1_H__
-#define __ADAU1761_IC_1_H__
+#ifndef __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_H__
+#define __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_H__
 
 #include "SigmaStudioFW.h"
 #include "ADAU1761_IC_1_REG.h"
@@ -959,10 +959,10 @@ ADI_REG_TYPE Program_Data_IC_1[PROGRAM_SIZE_IC_1] = {
 0x0B, 0xE8, 0x00, 0xE2, 0x00, 
 0x0B, 0xB9, 0x87, 0x20, 0x00, 
 0x0B, 0xF0, 0x00, 0xE2, 0x00, 
-0x0B, 0x8D, 0x08, 0x20, 0x00, 
-0xFD, 0xB8, 0x00, 0xE2, 0x00, 
 0x0B, 0x95, 0x08, 0x20, 0x00, 
 0xFD, 0xB0, 0x00, 0xE2, 0x00, 
+0x0B, 0x8D, 0x08, 0x20, 0x00, 
+0xFD, 0xB8, 0x00, 0xE2, 0x00, 
 0x0B, 0xED, 0x08, 0x20, 0x00, 
 0xFD, 0x68, 0x00, 0xE2, 0x00, 
 0x0B, 0xF5, 0x08, 0x20, 0x00, 
@@ -987,7 +987,7 @@ ADI_REG_TYPE Param_Data_IC_1[PARAM_SIZE_IC_1] = {
 0x00, 0x00, 0x00, 0x00, 
 0x00, 0x00, 0x00, 0x00, 
 0x00, 0x00, 0x00, 0x00, 
-0x01, 0x85, 0x1E, 0xB8, 
+0x01, 0x8C, 0xCC, 0xCD, 
 0x00, 0x00, 0x4E, 0xB0, 
 0x00, 0x00, 0x01, 0xE0, 
 0x00, 0x00, 0x07, 0x1C, 
@@ -1472,7 +1472,7 @@ ADI_REG_TYPE R21_DSP_ENABLE_REGISTER_IC_1_Default[REG_DSP_ENABLE_REGISTER_IC_1_B
 /* Register Default - IC 1.CRC Registers */
 #define R22_CRC_REGISTERS_IC_1_SIZE 5
 ADI_REG_TYPE R22_CRC_REGISTERS_IC_1_Default[R22_CRC_REGISTERS_IC_1_SIZE] = {
-0x7F, 0x7F, 0x7F, 0x7F, 0x01
+0x7F, 0x33, 0x7F, 0x0D, 0x01
 };
 
 /* Register Default - IC 1.GPIO Registers */

@@ -241,7 +241,7 @@ QState MainApp_Off(cMainApp * const me, QEvt const * const e)
                     TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)MAINAPP_TIMEOUT_SIG,LOW_BATT", e->sig);
                     return Q_TRAN(&MainApp_Sleep);
                 }
-                else
+                else 
                 {
                     TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)MAINAPP_TIMEOUT_SIG,SWH ON", e->sig);
                     return Q_TRAN(&MainApp_PoweringUp);
@@ -758,7 +758,9 @@ QState MainApp_Sleep(cMainApp * const me, QEvt const * const e)
             MainApp_SwitchMode(me, SLEEP_MODE);
 
             QTimeEvt_disarm(TIME_EVT_OF(me));
+#ifdef HAS_IWDG
             IWDG_ReloadCounter();
+#endif
             return Q_HANDLED();
         }
         case SYSTEM_MODE_RESP_SIG:

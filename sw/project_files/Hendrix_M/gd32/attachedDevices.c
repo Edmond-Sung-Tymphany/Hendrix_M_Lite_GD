@@ -101,7 +101,7 @@ static /*const */tI2CDevice  ioeMbI2cDeviceConf =
     .pvSlaveCallback    = NULL,
     .regAddrLen         = REG_LEN_8BITS,
     .baudRate           = I2C2_CLK_KHZ,
-    .devAddress         = 0xB4,
+    .devAddress         = 0xB6,//0xB4,
 };
 
 //port A bit: 0:boost 1:AMPon 2:WFMUTE 3:TWMUTE 4:CHGcurrent 567:x
@@ -337,9 +337,9 @@ static tIoExpanderConfig ioeLedConfig =
 static tIoExpanderConfig ioeLedConfig =
 {
     .swResetValue = 0x00,
-    .ledModePortA = 0x00,
+    .ledModePortA = 0x08,
     .ledModePortB = 0x00,
-    .outPutPortA  = 0x00,
+    .outPutPortA  = 0x08,
     .outPutPortB  = 0x00,
     .controlValue = (0x10 | 0x03),
 };
@@ -509,15 +509,20 @@ static const tStorageDevice nvmConfig =
 
 const tDevice * const devices[] =
 {
+ 
     (tDevice*)&gpioKeyConfig,
+  
     (tDevice*)&linearKnobKeyConfig,
     (tDevice*)&GPIOConfigForPower,
+
     (tDevice*)&GPIOConfigForAudio,
     (tDevice*)&adau1761Config,
     (tDevice*)&ADCConfigForPower,
+
     (tDevice*)&GPIOConfigForBT,
     (tDevice*)&UartDebugConfig,
     (tDevice*)&nvmConfig,
+ 
     (tDevice*)&ledConfig,
     (tDevice*)&ioeGpioMbConfig,
 #ifdef HAS_PWR_IO_EXPANDER
@@ -536,6 +541,7 @@ const tDevice * const devices[] =
 #ifdef HAS_TAS5760_AMP
     (tDevice*)&i2cTAS5760Config,
 #endif
+  
 };
 
 const uint8 NUM_OF_ATTACHED_DEVICES = ArraySize(devices);
@@ -565,21 +571,23 @@ void UartDrv_Init(eTpUartDevice id)
         break;
         case TP_UART_DEV_2:
         {
+	      #if 1		//Use debug TX first as RX has conflict with Jlink
             GPIO_InitTypeDef GPIO_InitStructure;
 
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
 
-            GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_1);
-            GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_1);
+            //GPIO_PinAFConfig(GPIOA, GPIO_PinSource14, GPIO_AF_1);
+            GPIO_PinAFConfig(GPIOA, GPIO_PinSource15, GPIO_AF_1);
 
             /* Configure USART2(BLE) pins:  Rx and Tx */
-            GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_2 | GPIO_Pin_3;
+            GPIO_InitStructure.GPIO_Pin     = /*GPIO_Pin_14 |*/ GPIO_Pin_15;
             GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
             GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AF;
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
             GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
+	     #endif
         }
         break;
         default:
@@ -622,9 +630,9 @@ void I2C1_LowLevel_Init()
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     /*!< Configure sEE_I2C pins: SDA */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+    /*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);*/
 }
 
 void I2C2_LowLevel_Init(void)
@@ -656,45 +664,59 @@ void I2C2_LowLevel_Init(void)
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     /*!< Configure sEE_I2C pins: SDA */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+    /*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);*/
 #endif
 }
 
 void I2C1_GPIO_Deinit(void)
 {
-    GPIO_InitTypeDef    GPIO_InitStructure;
+  GPIO_InitTypeDef  GPIO_InitStructure;
 
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+  /*!< sEE_I2C_SCL_GPIO_CLK and sEE_I2C_SDA_GPIO_CLK Periph clock enable */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+  /*!< sEE_I2C Periph clock enable */
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, DISABLE);
+
+ // I2C_DeInit(I2C1);
+  /*!< GPIO configuration */
+  /*!< Configure sEE_I2C pins: SCL */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
 }
 
 void I2C1_GPIO_ReInit(void)
 {
-    GPIO_InitTypeDef    GPIO_InitStructure;
+  GPIO_InitTypeDef  GPIO_InitStructure;
 
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
+  /*!< sEE_I2C_SCL_GPIO_CLK and sEE_I2C_SDA_GPIO_CLK Periph clock enable */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+  /*!< sEE_I2C Periph clock enable */
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, DISABLE);
+
+  //I2C_DeInit(I2C1);
+  /*!< GPIO configuration */
+  /*!< Configure sEE_I2C pins: SCL */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
 }
 
-#ifdef HAS_MCO
-void MCO_Init(void)
+//#ifdef HAS_MCO
+void MCO_init(void)
 {
-
-#if defined(EXTERNAL_AND_INTERNAL_HIGH_SPEED_CLOCK)
-    RCC->CR |= ((uint32_t)RCC_CR_HSION | (uint32_t)RCC_CR_HSEON);
-#endif
-
-
     GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -708,8 +730,11 @@ void MCO_Init(void)
     GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    RCC->CFGR &= (uint32_t)(~RCC_CFGR_MCO);
-    RCC->CFGR |= (uint32_t)(RCC_CFGR_MCO_1 | RCC_CFGR_MCO_HSE);
+    //RCC->CFGR &= (uint32_t)(~RCC_CFGR_MCO);
+    //RCC->CFGR |= (uint32_t)(/*RCC_CFGR_PLLNODIV |*/ RCC_CFGR_MCO_1 | RCC_CFGR_MCO_HSE);
+    RCC->CFGR &= ~((0x07 << 24) | (0x07 << 28) | (0x01 << 31));
+    RCC->CFGR |= (0x04 << 24) | (0x0 << 28);
 }
-#endif
+
+//#endif
 

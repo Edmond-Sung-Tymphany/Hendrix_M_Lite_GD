@@ -141,15 +141,19 @@ void PowerDrv_Ctor(cPowerDrv *me)
         {
             case GPIO_DEV_TYPE:
             {
+		  
                 tGPIODevice *pPowerGPIOConf = (tGPIODevice*)pPowerDev;
                 GpioDrv_Ctor(&powerGpioDrv,pPowerGPIOConf);
+		 
                 break;
             }
             case ADC_DEV_TYPE:
             {
+		   #if 1	//richard
                 tADCDevice *pPowerAdcConf = (tADCDevice*)pPowerDev;
                 ADCDrv_Ctor(&adcDrv, pPowerAdcConf);
                 ADCDrv_StartScanning(&adcDrv);
+		   #endif
                 break;
             }
 #ifdef HAS_PWR_IO_EXPANDER
@@ -320,7 +324,7 @@ void PowerDrv_EnterSleepMode(cPowerDrv *me)
     ResetEXTIWakeUpFlag();
 #endif
     //sleep
-    PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+    PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);     //edmond_20210509 no sleep for debug
 
 #ifdef HAS_IWDG
     if(TRUE == IsEXTIWakeUp())
@@ -576,6 +580,7 @@ void PowerDrv_Set(cPowerDrv *me, ePowerSetId setId, bool enable)
             {
                 BAT_CHG_DISABLE(powerGpioDrv);
             }
+
             break;
         }
         case POWER_SET_ID_SLOW_CHARGER:
@@ -786,10 +791,10 @@ static eChargerState PowerDrv_GetChargerStatus()
     chValue |= GET_CHARGER_STAT1(powerGpioDrv);
     switch(chValue)
     {
-        case CHARGE_IN_PROCESS:
+        case CHARGE_IN_PROCESS:         /*0x00*/
             chargeState = CHARGER_STA_CHARGING;
             break;
-        case CHARGE_COMPLETE:
+        case CHARGE_COMPLETE:           /*0x01*/
             chargeState = CHARGER_STA_CHARGING_DONE;
             break;
         default:
@@ -1006,6 +1011,15 @@ static void PowerDrv_UpdateBattADC(cPowerDrv *me)
     {
         uint16 filterResult = PowerDrv_BattSmoothVoltage(battFilter.intBatt.filterResult);
         currBattCapacity = PowerDrv_GetBattRsocUserFromAdcValues(filterResult);
+#if 0		//edmond_20210508
+        //if (!currDCPlugged && IsPowerSwitchTurnOn)
+        //{
+        //    currBattStatus = BatteryStatus_LEVEL_LOW;
+        //}
+        Setting_Set(SETID_DISPLAY_CAPACITY, &currBattCapacity);
+        currBattStatus = PowerDrv_GetBatteryStatus(currBattCapacity);
+        Setting_Set(SETID_BATTERY_STATUS, &currBattStatus);
+#endif
         TYMQP_LOG(NULL,"BattADC: %d cap: %d Capbk:%d :volt :%d",filterResult,currBattCapacity,batt_CapacityResult,ADC_TO_mVOLT(adc_sample));
 
         //save the actual data for debug
@@ -1174,19 +1188,20 @@ static void PowerDrv_UpdateVoltageValues(cPowerDrv *me)
 
     //transfer adc to voltage
     adc_sample = ADC_TO_mVOLT(adc_sample);
+    //If AC power cord plugged in
     if( TRUE ==  *(bool*)Setting_Get(SETID_IS_DC_PLUG_IN))
     {
         if(!isAllowChgPowerUp_bk &&
-           (adc_sample >= ENABLE_CHGPOWERINGUP_FROM_CRITICAL))
+           (adc_sample >= ENABLE_CHGPOWERINGUP_FROM_CRITICAL/*2725*/))
         {
             isAllowChgPowerUp_bk = TRUE;
             Setting_Set(SETID_ALLOW_CHG_PWRUP,&isAllowChgPowerUp_bk);
             TYMQP_LOG(NULL,"SETID_ALLOW_CHG_PWRUP=%d,%d", isAllowChgPowerUp_bk,adc_sample);
         }
     }
-    else
+    else //When AC power cord is not plugged
     {
-        if(isAllowChgPowerUp_bk)
+        if(isAllowChgPowerUp_bk)//If DC is not plugged, of cos it is not charging power up
         {
             isAllowChgPowerUp_bk = FALSE;
             Setting_Set(SETID_ALLOW_CHG_PWRUP,&isAllowChgPowerUp_bk);
@@ -1245,7 +1260,7 @@ static void PowerDrv_UpdateTempADC(cPowerDrv *me)
     }
 
     bool value;
-    (tempAdc < NO_BATTERY_NTC_THERSHOLD)?(value = FALSE):(value = TRUE);
+    (tempAdc < NO_BATTERY_NTC_THERSHOLD/*3180*/)?(value = FALSE):(value = TRUE);
     Setting_Set(SETID_IS_BATT_NTC_REMOVED, &value);
 
     uint16 mVolt = ADC_TO_mVOLT(tempAdc);
@@ -1258,11 +1273,12 @@ static void PowerDrv_UpdateTempADC(cPowerDrv *me)
     else
         count++;
 
-
+#if 1
     if(PowerDrv_GetNtcTempLevel(mVolt))
     {
         PowerDrv_ReportBatteryStateChange(me);
     }
+#endif
 }
 
 static bool PowerDrv_IsNtcTempLevelRise(uint16 currValue, uint16 threshold, uint8* sampleCount)

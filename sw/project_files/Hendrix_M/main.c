@@ -68,7 +68,8 @@ int main(int argc, char** argv)
     (void) argc;
     (void) argv;
 
-    //stackMagicNumberFill();
+
+    stackMagicNumberFill();
     
     /* initialize the Board Support Package */
     BSP_init();
@@ -82,7 +83,7 @@ int main(int argc, char** argv)
     }
 #endif
 
-    
     /* let 'er rip */
     return Controller_Ctor(NORMAL_MODE);
+
 }

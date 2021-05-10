@@ -273,7 +273,7 @@ static QState MainApp_VolumeKnobHander(cMainApp * const me, KeyStateEvt const * 
     e->index = MAX_VOLUME_STEPS - 1 - e->index;
 #endif
     me->absoluteVol = e->index;         /* backup current volume whenever changed volume knob */
-    TYMQP_DUMP_QUEUE_WITH_LOG(me,"%d,%d",e->index,e->adcRawValue);
+    //TYMQP_DUMP_QUEUE_WITH_LOG(me,"%d,%d",e->index,e->adcRawValue);
     if (FALSE == me->isCuePlaying)
     {
         // we should postpone volume adjust after cue playing.

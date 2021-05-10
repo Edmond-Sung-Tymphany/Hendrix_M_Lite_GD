@@ -120,9 +120,26 @@ void SetSender(QActive* sender)
 
 void ProjBsp_SysClkUpdate()
 {
-#ifdef HAS_MCO
-    MCO_Init();
-#endif
+GPIO_InitTypeDef GPIO_InitStructure;
+
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_0);
+
+    /* Configure PA8 as MCO output */
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    //RCC->CFGR &= (uint32_t)(~RCC_CFGR_MCO);
+    //RCC->CFGR |= (uint32_t)(/*RCC_CFGR_PLLNODIV |*/ RCC_CFGR_MCO_1 | RCC_CFGR_MCO_HSE);
+    RCC->CFGR &= ~((0x07 << 24) | (0x07 << 28) | (0x01 << 31));
+    RCC->CFGR |= (0x04 << 24) | (0x0 << 28);
+//#ifdef HAS_MCO
+    //MCO_Init();
+//#endif
 }
 
 

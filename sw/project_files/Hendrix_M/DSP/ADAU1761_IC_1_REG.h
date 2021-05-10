@@ -1,8 +1,8 @@
 /*
- * File:           D:\source_ben\t_p\sw\project_files\Hendrix_M\model_config\Hendrix_M_DSP\ADAU1761_IC_1_REG.h
+ * File:           D:\zorroTYMPHANY_20190422_Hendrix_lite\tymphany_platform\sw\project_files\Hendrix_M\model_config\Hendrix_Lite_DSP\新建文件夹\HendrixM_DSPver0.6_EQ3.10_20190425_IC_1_REG.h
  *
- * Created:        Wednesday, May 16, 2018 5:42:46 PM
- * Description:    HendrixM_DSPver0 5_EQ3 04_20180515 (Zound Pa7 with TW polarity invert off) (3):IC 1 control register definitions.
+ * Created:        Thursday, April 25, 2019 1:35:09 PM
+ * Description:    HendrixM_DSPver0.6_EQ3.10_20190425 :IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
  * but is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -14,10 +14,10 @@
  * are intended for resale to audio product end users. This software
  * may not be distributed whole or in any part to third parties.
  *
- * Copyright ©2018 Analog Devices, Inc. All rights reserved.
+ * Copyright ©2019 Analog Devices, Inc. All rights reserved.
  */
-#ifndef __ADAU1761_IC_1_REG_H__
-#define __ADAU1761_IC_1_REG_H__
+#ifndef __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_REG_H__
+#define __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_REG_H__
 
 
 /* ClkCtrlRegister  - Registers (IC 1) */
@@ -253,7 +253,7 @@
 /* CRC Ideal_2  - Registers (IC 1) */
 #define REG_CRC_IDEAL_2_IC_1_ADDR                 0x40C1
 #define REG_CRC_IDEAL_2_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_2_IC_1_VALUE                0x7F
+#define REG_CRC_IDEAL_2_IC_1_VALUE                0x33
 
 /* CRC Ideal_3  - Registers (IC 1) */
 #define REG_CRC_IDEAL_3_IC_1_ADDR                 0x40C2
@@ -263,7 +263,7 @@
 /* CRC Ideal_4  - Registers (IC 1) */
 #define REG_CRC_IDEAL_4_IC_1_ADDR                 0x40C3
 #define REG_CRC_IDEAL_4_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_4_IC_1_VALUE                0x7F
+#define REG_CRC_IDEAL_4_IC_1_VALUE                0xD
 
 /* CRC Enable  - Registers (IC 1) */
 #define REG_CRC_ENABLE_IC_1_ADDR                  0x40C4
@@ -880,7 +880,7 @@
 #define R45_CRC_IDEAL_1_IC_1_SHIFT                0
 
 /* CRC Ideal_2 (IC 1) */
-#define R46_CRC_IDEAL_2_IC_1                      0x7F   /* 01111111b	[7:0] */
+#define R46_CRC_IDEAL_2_IC_1                      0x33   /* 00110011b	[7:0] */
 #define R46_CRC_IDEAL_2_IC_1_MASK                 0xFF
 #define R46_CRC_IDEAL_2_IC_1_SHIFT                0
 
@@ -890,7 +890,7 @@
 #define R47_CRC_IDEAL_3_IC_1_SHIFT                0
 
 /* CRC Ideal_4 (IC 1) */
-#define R48_CRC_IDEAL_4_IC_1                      0x7F   /* 01111111b	[7:0] */
+#define R48_CRC_IDEAL_4_IC_1                      0x0D   /* 00001101b	[7:0] */
 #define R48_CRC_IDEAL_4_IC_1_MASK                 0xFF
 #define R48_CRC_IDEAL_4_IC_1_SHIFT                0
 

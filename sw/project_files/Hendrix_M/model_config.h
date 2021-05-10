@@ -4,7 +4,7 @@
 #ifndef MODEL_CONFIG_H
 #define MODEL_CONFIG_H
 
-#define HENDRIX_M
+#define HENDRIX_Lite
 
 /**************************************************/
 /************ Firmware Version Control  *****************/
@@ -19,10 +19,10 @@
 #define BT_VERSION_LENGTH    (4)
 
 
-#define SW_MAJOR_VERSION      5
+#define SW_MAJOR_VERSION      4
 #define SW_MINOR_VERSION1    0
-#define SW_MINOR_VERSION2    1
-#define SW_MINOR_VERSION3    1
+#define SW_MINOR_VERSION2    2
+#define SW_MINOR_VERSION3    0
 #define PRODUCT_VERSION_MCU       STRINGIFY(SW_MAJOR_VERSION.SW_MINOR_VERSION1.SW_MINOR_VERSION2.SW_MINOR_VERSION3)
 #define HAS_ADAU1761_DSP_VERSION
 
@@ -33,7 +33,7 @@
 /******************************** audio **************************/
 #define HAS_TWO_CH_WF
 /******************************** audio **************************/
-
+#define DSP_BT_CHANNEL_DETECTION
 #define HAS_AUTO_BOOST_CONTROL
 #define PRINT_LOGx
 #endif

@@ -835,7 +835,7 @@ extern void __set_MSP(uint32_t topOfMainStack);
  *
  * Reverse byte order in unsigned short value
  */
-extern uint32_t __REV16(uint16_t value);
+extern unsigned int __REV16(unsigned int value);
 
 /**
  * @brief  Reverse byte order in signed short value with sign extension to integer
@@ -1081,7 +1081,7 @@ static __INLINE  void __CLREX()                   { __ASM ("clrex"); }
  *
  * Return the actual process stack pointer
  */
-extern unsigned long __get_PSP(void);
+extern uint32_t __get_PSP(void);
 
 /**
  * @brief  Set the Process Stack Pointer
@@ -1091,7 +1091,7 @@ extern unsigned long __get_PSP(void);
  * Assign the value ProcessStackPointer to the MSP 
  * (process stack pointer) Cortex processor register
  */
-extern void __set_PSP(unsigned long topOfProcStack);
+extern void __set_PSP(uint32_t topOfProcStack);
 
 /**
  * @brief  Return the Main Stack Pointer
@@ -1101,7 +1101,7 @@ extern void __set_PSP(unsigned long topOfProcStack);
  * Return the current value of the MSP (main stack pointer)
  * Cortex processor register
  */
-extern unsigned long __get_MSP(void);
+extern uint32_t __get_MSP(void);
 
 /**
  * @brief  Set the Main Stack Pointer
@@ -1111,7 +1111,7 @@ extern unsigned long __get_MSP(void);
  * Assign the value mainStackPointer to the MSP 
  * (main stack pointer) Cortex processor register
  */
-extern void __set_MSP(unsigned long topOfMainStack);
+extern void __set_MSP(uint32_t topOfMainStack);
 
 /**
  * @brief  Reverse byte order in unsigned short value
@@ -1121,7 +1121,7 @@ extern void __set_MSP(unsigned long topOfMainStack);
  *
  * Reverse byte order in unsigned short value
  */
-extern unsigned long __REV16(unsigned long value);
+extern unsigned int __REV16(unsigned int value);
 
 /**
  * @brief  Reverse bit order of value
@@ -1131,7 +1131,7 @@ extern unsigned long __REV16(unsigned long value);
  *
  * Reverse bit order of value
  */
-extern unsigned long __RBIT(unsigned long value);
+extern uint32_t __RBIT(uint32_t value);
 
 /**
  * @brief  LDR Exclusive (8 bit)
@@ -1141,7 +1141,7 @@ extern unsigned long __RBIT(unsigned long value);
  *
  * Exclusive LDR command for 8 bit values)
  */
-extern unsigned char __LDREXB(volatile unsigned char const * addr);
+extern unsigned char __LDREXB(volatile unsigned char const *);
 
 /**
  * @brief  LDR Exclusive (16 bit)
@@ -1151,7 +1151,7 @@ extern unsigned char __LDREXB(volatile unsigned char const * addr);
  *
  * Exclusive LDR command for 16 bit values
  */
-extern unsigned short __LDREXH(volatile unsigned short const * addr);
+extern unsigned short __LDREXH(volatile unsigned short const *);
 
 /**
  * @brief  LDR Exclusive (32 bit)
@@ -1172,7 +1172,7 @@ extern uint32_t __LDREXW(uint32_t *addr);
  *
  * Exclusive STR command for 8 bit values
  */
-extern unsigned long __STREXB(unsigned char value, volatile unsigned char *addr);
+extern unsigned int __STREXB(unsigned char, volatile unsigned char *);
 
 /**
  * @brief  STR Exclusive (16 bit)
@@ -1183,7 +1183,7 @@ extern unsigned long __STREXB(unsigned char value, volatile unsigned char *addr)
  *
  * Exclusive STR command for 16 bit values
  */
-extern unsigned long __STREXH(unsigned short value, volatile unsigned short *addr);
+extern unsigned int __STREXH(unsigned short, volatile unsigned short *);
 
 /**
  * @brief  STR Exclusive (32 bit)

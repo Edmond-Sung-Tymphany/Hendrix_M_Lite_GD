@@ -207,9 +207,9 @@ void I2C2_LowLevel_Init(void);
 
 void I2C1_GPIO_Deinit(void);
 void I2C1_GPIO_ReInit(void);
-#ifdef HAS_MCO
+//#ifdef HAS_MCO
 void MCO_Init(void);
-#endif
+//#endif
 
 
 #ifdef __cplusplus

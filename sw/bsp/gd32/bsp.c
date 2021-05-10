@@ -52,6 +52,8 @@
 #endif
 
 
+#define SYSCLK_FREQ_72MHz_HSI    72000000
+
 #define INTERNAL_CLOCK  0
 #define EXTERNAL_CLOCK 0x04
 #define PLL_CLOCK  0x08
@@ -64,7 +66,7 @@ static void SystemEnableStmReadProtection(void);
 #endif
 
 /* clock frequency 8M (internal clock) */
-uint32_t SystemCoreClock    = 8000000;
+uint32_t SystemCoreClock    = SYSCLK_FREQ_72MHz_HSI;
 __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
 //Q_DEFINE_THIS_FILE
@@ -73,6 +75,8 @@ __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9}
 volatile static uint32 currTime = 0;
 
 void SysTick_Handler(void);
+
+static void SetSysClockTo72HSI(void); 
 
 /* system_sleeping_status*/
 static bool isSystemAwake = TRUE;
@@ -152,7 +156,7 @@ void SysTick_Handler(void) {                       /* system clock tick ISR */
 void BSP_init_clock(void)
 {
     /* update the clock value "SystemCoreClock" */
-   SystemCoreClockUpdate();
+   //SystemCoreClockUpdate();
    if (SysTick_Config(SystemCoreClock / 1000))
    { 
       /* Capture error */ 
@@ -249,7 +253,7 @@ void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line) {
             while(1)
             {      
                 /* Avoid watchdog timeout on debug build, to keep print error message */
-#ifdef HAS_IWDG
+#ifdef HAS_IWDG              
                 IWDG_ReloadCounter();
 #endif
                 UartDrv_Write_Blocking(pConfig->uartId,(uint8 *)buffer,strlen(buffer));//print debug message in blocking mode
@@ -417,9 +421,9 @@ void BSP_FeedWatchdog(void)
   */
 void SystemInit (void)
 {
-  /*need to clean up the magic number below later*/
   /* Set HSION bit */
   RCC->CR |= (uint32_t)0x00000001;
+
   /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE and MCOSEL[2:0] bits */
   RCC->CFGR &= (uint32_t)0xF8FFB80C;
   
@@ -618,23 +622,91 @@ uint32 stackMaxUsage(void)
   */
 static void SetSysClock(void)
 {
-  __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+#ifdef SYSCLK_FREQ_HSE
+  SetSysClockToHSE(); 
+#elif defined SYSCLK_FREQ_72MHz_HSI
+  SetSysClockTo72HSI();
+#endif
+ 
+ /* If none of the define above is enabled, the HSI is used as System clock
+    source (default after reset) */ 
+}
 
-/******************************************************************************/
-/*            PLL (clocked by HSE) used as System clock source                */
-/******************************************************************************/
+
+
+/**
+  * @brief  Configures the System clock frequency, AHB/APBx prescalers and Flash
+  *         settings.
+  * @note   This function should be called only once the RCC clock configuration
+  *         is reset to the default reset state (done in SystemInit() function).
+  * @param  None
+  * @retval None
+  */
+static void SetSysClockTo72HSI(void)
+{
+  __IO uint32_t StartUpCounter = 0, HSIStatus = 0;
   
   /* SYSCLK, HCLK, PCLK configuration ----------------------------------------*/
-  /* Enable HSE */
-#if defined(EXTERNAL_AND_INTERNAL_HIGH_SPEED_CLOCK)
-  RCC->CR |= ((uint32_t)RCC_CR_HSION | (uint32_t)RCC_CR_HSEON);
-#elif defined(INTERNAL_HIGH_SPEED_CLOCK)
+  /* Enable HSE */    
   RCC->CR |= ((uint32_t)RCC_CR_HSION);
-#elif defined(EXTERNAL_HIGH_SPEED_CLOCK)
-  RCC->CR |= ((uint32_t)RCC_CR_HSEON);
-#endif
+ 
+  /* Wait till HSE is ready and if Time out is reached exit */
+  do
+  {
+    HSIStatus = RCC->CR & RCC_CR_HSIRDY;
+    StartUpCounter++;  
+  } while((HSIStatus == 0) && (StartUpCounter != HSI_STARTUP_TIMEOUT));
 
+  if ((RCC->CR & RCC_CR_HSIRDY) != RESET)
+  {
+    HSIStatus = (uint32_t)0x01;
+  }
+  else
+  {
+    HSIStatus = (uint32_t)0x00;
+  }  
+
+  if (HSIStatus == (uint32_t)0x01)
+  {
+ 
+    /* HCLK = SYSCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+      
+    /* PCLK2 = HCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+    
+    /* PCLK1 = HCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+
+
+    /* PLL configuration = HSI/2 * (15+3) = 72 MHz */
+    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC  | RCC_CFGR_PLLMULL));
+    RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSI_Div2 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL3|0x08000000 );
+            
+    /* Enable PLL */
+    RCC->CR |= RCC_CR_PLLON;
+
+    /* Wait till PLL is ready */
+    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    {
+    }
+
+    /* Select PLL as system clock source */
+    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+    RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+
+    /* Wait till PLL is used as system clock source */
+    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
+    {
+    }
+  }
+  else
+  { /* If HSE fails to start-up, the application will have wrong clock 
+         configuration. User can add here some code to deal with this error */
+  }  
 }
+
+
 
 #ifdef ENABLE_STM_READ_PROTECTION
 /**

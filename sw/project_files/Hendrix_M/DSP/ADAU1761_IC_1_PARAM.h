@@ -1,8 +1,8 @@
 /*
- * File:           D:\source_ben\t_p\sw\project_files\Hendrix_M\model_config\Hendrix_M_DSP\ADAU1761_IC_1_PARAM.h
+ * File:           D:\zorroTYMPHANY_20190422_Hendrix_lite\tymphany_platform\sw\project_files\Hendrix_M\model_config\Hendrix_Lite_DSP\新建文件夹\HendrixM_DSPver0.6_EQ3.10_20190425_IC_1_PARAM.h
  *
- * Created:        Wednesday, May 16, 2018 5:42:46 PM
- * Description:    HendrixM_DSPver0 5_EQ3 04_20180515 (Zound Pa7 with TW polarity invert off) (3):IC 1 parameter RAM definitions.
+ * Created:        Thursday, April 25, 2019 1:35:09 PM
+ * Description:    HendrixM_DSPver0.6_EQ3.10_20190425 :IC 1 parameter RAM definitions.
  *
  * This software is distributed in the hope that it will be useful,
  * but is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -14,10 +14,10 @@
  * are intended for resale to audio product end users. This software
  * may not be distributed whole or in any part to third parties.
  *
- * Copyright ©2018 Analog Devices, Inc. All rights reserved.
+ * Copyright ©2019 Analog Devices, Inc. All rights reserved.
  */
-#ifndef __ADAU1761_IC_1_PARAM_H__
-#define __ADAU1761_IC_1_PARAM_H__
+#ifndef __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_PARAM_H__
+#define __HENDRIXM_DSPVER0_6_EQ3_10_20190425_IC_1_PARAM_H__
 
 
 /* Module Modulo Size - Modulo Size*/
@@ -40,8 +40,8 @@
 #define MOD_SWVERSION_COUNT                            1
 #define MOD_SWVERSION_DEVICE                           "IC1"
 #define MOD_SWVERSION_DCINPALG1_ADDR                   9
-#define MOD_SWVERSION_DCINPALG1_FIXPT                  0x01851EB8
-#define MOD_SWVERSION_DCINPALG1_VALUE                  SIGMASTUDIOTYPE_FIXPOINT_CONVERT(3.04)
+#define MOD_SWVERSION_DCINPALG1_FIXPT                  0x018CCCCC
+#define MOD_SWVERSION_DCINPALG1_VALUE                  SIGMASTUDIOTYPE_FIXPOINT_CONVERT(3.1)
 #define MOD_SWVERSION_DCINPALG1_TYPE                   SIGMASTUDIOTYPE_FIXPOINT
 
 /* Module Level1 - Single Level Detector w Numerical Display*/

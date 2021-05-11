@@ -1,7 +1,0 @@
-syntax = "proto2";
-package Proto.BtDevInfo;
-
-/// bt device info data
-message Data {
-	optional bytes btAddr = 1;
-}

@@ -19,9 +19,9 @@
 #define BT_VERSION_LENGTH    (4)
 
 
-#define SW_MAJOR_VERSION      4
+#define SW_MAJOR_VERSION      6
 #define SW_MINOR_VERSION1    0
-#define SW_MINOR_VERSION2    2
+#define SW_MINOR_VERSION2    0
 #define SW_MINOR_VERSION3    0
 #define PRODUCT_VERSION_MCU       STRINGIFY(SW_MAJOR_VERSION.SW_MINOR_VERSION1.SW_MINOR_VERSION2.SW_MINOR_VERSION3)
 #define HAS_ADAU1761_DSP_VERSION
@@ -35,6 +35,6 @@
 /******************************** audio **************************/
 #define DSP_BT_CHANNEL_DETECTION
 #define HAS_AUTO_BOOST_CONTROL
-#define PRINT_LOGx
+#define PRINT_LOG
 #endif
 

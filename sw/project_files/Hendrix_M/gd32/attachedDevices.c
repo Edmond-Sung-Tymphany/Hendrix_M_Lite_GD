@@ -552,6 +552,7 @@ void UartDrv_Init(eTpUartDevice id)
     {
         case TP_UART_DEV_1:
         {
+#if 1
             GPIO_InitTypeDef GPIO_InitStructure;
 
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -567,11 +568,12 @@ void UartDrv_Init(eTpUartDevice id)
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
             GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
+#endif
         }
         break;
         case TP_UART_DEV_2:
         {
-	      #if 1		//Use debug TX first as RX has conflict with Jlink
+#if 1		//Use debug TX first as RX has conflict with Jlink
             GPIO_InitTypeDef GPIO_InitStructure;
 
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -587,7 +589,7 @@ void UartDrv_Init(eTpUartDevice id)
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
             GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
-	     #endif
+#endif
         }
         break;
         default:

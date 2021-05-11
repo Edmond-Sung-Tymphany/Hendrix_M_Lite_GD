@@ -1,8 +1,0 @@
-_auto_build*
-debug/*
-release/*
-settings/*
-*.dep
-*.ewt
-*.hex
-*.bin

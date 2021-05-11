@@ -1,0 +1,15 @@
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armproc.dll" 
+
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armjlink2.dll" 
+
+"D:\Projects\&Zound\Hendrix_M_Lite\New folder\Hendrix_M_Lite_GD\sw\project_files\Hendrix_M\iar\Debug\Exe\Hendrix_M.out" 
+
+--plugin="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\armbat.dll" 
+
+--device_macro="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\config\debugger\GigaDevice\GD32F1x0.dmac" 
+
+--flash_loader="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\config\flashloader\GigaDevice\FlashGD32F1x0x8.board" 
+
+
+
+

@@ -1268,7 +1268,7 @@ static void PowerDrv_UpdateTempADC(cPowerDrv *me)
     if(count > NTC_PRINT_COUNT)
     {
         count = 0;
-        TYMQP_LOG(NULL,"NTCvolt:%d", mVolt);
+        //TYMQP_LOG(NULL,"NTCvolt:%d", mVolt);
     }
     else
         count++;

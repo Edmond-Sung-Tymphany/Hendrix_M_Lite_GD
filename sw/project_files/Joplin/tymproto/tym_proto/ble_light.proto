@@ -1,7 +1,0 @@
-syntax = "proto2";
-package Proto.BleLight;
-
-/// bt device info data
-message Data {
-	required bytes light = 4;
-}

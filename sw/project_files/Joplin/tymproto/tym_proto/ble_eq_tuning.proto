@@ -1,7 +1,0 @@
-syntax = "proto2";
-package Proto.BleEqTuning;
-
-/// bt device info data
-message Data {
-	required bytes eq = 1;
-}

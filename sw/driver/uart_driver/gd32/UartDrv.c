@@ -182,6 +182,7 @@ void UartDrv_Ctor(cUartDrv *me, const tUARTDevice *pConfig , cRingBuf *pTx, cRin
         /* Are we trying to re-int the same uart driver? */
         ASSERT(0);
     }
+	printf("UartDrv_Ctor \n");
 }
 
 void UartDrv_Xtor(cUartDrv *me)

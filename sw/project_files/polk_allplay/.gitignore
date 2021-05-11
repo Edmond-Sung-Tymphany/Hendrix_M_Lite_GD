@@ -1,7 +1,0 @@
-# ignore files for pic32 build
-mplab/build/*.*
-mplab/dist/*.*
-out*/*
-*.tgz
-# ignore files for win build
-win/Debug/*.*

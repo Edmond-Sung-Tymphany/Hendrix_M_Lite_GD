@@ -1,5 +1,0 @@
-* type:FT_IGNORE
-
-Proto.Dsp.RequestAudioInput.input type:FT_DEFAULT
-Proto.Dsp.NTCDataEvent.ntcValues type:FT_DEFAULT
-

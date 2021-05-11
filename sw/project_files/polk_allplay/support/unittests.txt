@@ -1,5 +1,0 @@
-../server/setting_server/settingsrv_ut.mk
-../server/key_srv/keysrv_ut.mk
-../server/audio_server/AudioSrv_ut.mk
-../server/ds_server/DebugSSrv_ut.mk
-../common/datatype/ringbuf/ringbuf_ut.mk

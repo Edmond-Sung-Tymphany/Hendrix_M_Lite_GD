@@ -157,6 +157,7 @@ void BSP_init_clock(void)
 {
     /* update the clock value "SystemCoreClock" */
    //SystemCoreClockUpdate();
+    SetSysClockTo72HSI();
    if (SysTick_Config(SystemCoreClock / 1000))
    { 
       /* Capture error */ 

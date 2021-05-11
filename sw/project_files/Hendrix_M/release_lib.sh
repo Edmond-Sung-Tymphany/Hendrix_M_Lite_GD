@@ -8,7 +8,7 @@
 # Common Environment            *
 #********************************
 #paths
-iar_path="C:/Program Files (x86)/IAR Systems/Embedded Workbench 7.2/common/bin/IarBuild.exe"
+iar_path="C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/common/bin/IarBuild.exe"
 zip_path="../../../../tool/7z.exe"
 
 #auto parameters

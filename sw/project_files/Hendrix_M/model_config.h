@@ -35,6 +35,6 @@
 /******************************** audio **************************/
 #define DSP_BT_CHANNEL_DETECTION
 #define HAS_AUTO_BOOST_CONTROL
-#define PRINT_LOG
+#define PRINT_LOGx
 #endif
 

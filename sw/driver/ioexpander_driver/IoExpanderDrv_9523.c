@@ -161,7 +161,7 @@ void IoExpanderDrv_Ctor_aw9523(cIoExpanderDrv *me, tIoeLedDevice *pIoeLedConfig)
 #ifdef IOEXPANDERDRV_IO_DIRECTION_CTL
         IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_IO_DIRECTION,    sizeof(LED_INIT_IO_DIRECTION));
 #endif
-        IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_OUTPUT_LEVEL,   sizeof(LED_INIT_OUTPUT_LEVEL));
+        //IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_OUTPUT_LEVEL,   sizeof(LED_INIT_OUTPUT_LEVEL));
     }
     me->isReady = TRUE;
 }

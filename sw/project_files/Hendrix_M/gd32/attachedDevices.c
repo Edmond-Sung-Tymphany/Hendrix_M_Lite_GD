@@ -112,8 +112,8 @@ static /*const */tI2CDevice  ioeMbI2cDeviceConf =
 static tIoExpanderConfig ioeMbConfig =
 {
     .swResetValue = 0x00,
-    .ledModePortA = 0xFF,
-    .ledModePortB = 0xFF,
+    .ledModePortA = 0x08,
+    .ledModePortB = 0x00,
     .outPutPortA  = 0x04,
     .outPutPortB  = 0xD0,
     .ioDirectionA  = 0xFF,//bit:0-7 output
@@ -337,9 +337,9 @@ static tIoExpanderConfig ioeLedConfig =
 static tIoExpanderConfig ioeLedConfig =
 {
     .swResetValue = 0x00,
-    .ledModePortA = 0x08,
+    .ledModePortA = 0x00,
     .ledModePortB = 0x00,
-    .outPutPortA  = 0x08,
+    .outPutPortA  = 0x00,
     .outPutPortB  = 0x00,
     .controlValue = (0x10 | 0x03),
 };
@@ -509,20 +509,15 @@ static const tStorageDevice nvmConfig =
 
 const tDevice * const devices[] =
 {
- 
     (tDevice*)&gpioKeyConfig,
-  
     (tDevice*)&linearKnobKeyConfig,
     (tDevice*)&GPIOConfigForPower,
-
     (tDevice*)&GPIOConfigForAudio,
     (tDevice*)&adau1761Config,
     (tDevice*)&ADCConfigForPower,
-
     (tDevice*)&GPIOConfigForBT,
     (tDevice*)&UartDebugConfig,
     (tDevice*)&nvmConfig,
- 
     (tDevice*)&ledConfig,
     (tDevice*)&ioeGpioMbConfig,
 #ifdef HAS_PWR_IO_EXPANDER
@@ -541,7 +536,6 @@ const tDevice * const devices[] =
 #ifdef HAS_TAS5760_AMP
     (tDevice*)&i2cTAS5760Config,
 #endif
-  
 };
 
 const uint8 NUM_OF_ATTACHED_DEVICES = ArraySize(devices);
@@ -552,7 +546,6 @@ void UartDrv_Init(eTpUartDevice id)
     {
         case TP_UART_DEV_1:
         {
-#if 1
             GPIO_InitTypeDef GPIO_InitStructure;
 
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -568,12 +561,10 @@ void UartDrv_Init(eTpUartDevice id)
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
             GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
-#endif
         }
         break;
         case TP_UART_DEV_2:
         {
-#if 1		//Use debug TX first as RX has conflict with Jlink
             GPIO_InitTypeDef GPIO_InitStructure;
 
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -589,7 +580,6 @@ void UartDrv_Init(eTpUartDevice id)
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
             GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
-#endif
         }
         break;
         default:

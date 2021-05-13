@@ -43,8 +43,8 @@ typedef enum
 #endif
 
 // default output level
-#define IO_EXPANDER_DEFAULT_OUTPUT_PORT0    0x00		//initally all off
-#define IO_EXPANDER_DEFAULT_OUTPUT_PORT1    0x00		//initally all off
+#define IO_EXPANDER_DEFAULT_OUTPUT_PORT0    0xff
+#define IO_EXPANDER_DEFAULT_OUTPUT_PORT1    0xff
 
 // default LED Mode
 #define IO_EXPANDER_DEFAULT_LED_MODE_PORT0  0x00    /**< 0-LED, 1-GPIO */
@@ -161,7 +161,7 @@ void IoExpanderDrv_Ctor_aw9523(cIoExpanderDrv *me, tIoeLedDevice *pIoeLedConfig)
 #ifdef IOEXPANDERDRV_IO_DIRECTION_CTL
         IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_IO_DIRECTION,    sizeof(LED_INIT_IO_DIRECTION));
 #endif
-        //IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_OUTPUT_LEVEL,   sizeof(LED_INIT_OUTPUT_LEVEL));
+        IoExpanderDrv_I2cWrite_aw9523(me, (uint8*)LED_INIT_OUTPUT_LEVEL,   sizeof(LED_INIT_OUTPUT_LEVEL));
     }
     me->isReady = TRUE;
 }
@@ -297,7 +297,6 @@ uint8 IoExpanderDrv_ReadGpio_aw9523(cIoExpanderDrv *me, uint8 port, uint8 pin)
  */
 static void IoExpanderDrv_I2cWrite_aw9523(cIoExpanderDrv *me, uint8 *data, uint8 length)
 {
-    uint8 tmp;
     tI2CMsg i2cMsg=
     {
         .devAddr    = (uint8)(me->i2cDrv.pConfig->devAddress),
@@ -308,8 +307,7 @@ static void IoExpanderDrv_I2cWrite_aw9523(cIoExpanderDrv *me, uint8 *data, uint8
 
     if (TRUE == me->i2cDrv.isReady)
     {
-        tmp = (uint8)I2CDrv_MasterWrite(&me->i2cDrv, &i2cMsg);
-        if (TP_SUCCESS != tmp)
+        if (TP_SUCCESS != I2CDrv_MasterWrite(&me->i2cDrv, &i2cMsg))
         {
             me->i2cDrv.isReady = 1;/*FALSE*/;
         }

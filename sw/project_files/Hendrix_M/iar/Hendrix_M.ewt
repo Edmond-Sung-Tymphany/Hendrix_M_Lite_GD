@@ -2968,6 +2968,9 @@
             <name>IoExpander_driver</name>
             <file>
                 <name>$PROJ_DIR$\..\..\..\driver\ioexpander_driver\IoExpanderDrv_9523.c</name>
+                <configuration>
+                    <name>debug</name>
+                </configuration>
             </file>
         </group>
         <group>
@@ -2986,9 +2989,6 @@
             <name>led_driver</name>
             <file>
                 <name>$PROJ_DIR$\..\portingLayer\LedDriver\IoExpanderLedDrv.c</name>
-                <configuration>
-                    <name>debug</name>
-                </configuration>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\portingLayer\LedDriver\LedDrv.c</name>
@@ -3001,9 +3001,6 @@
             <name>power_driver</name>
             <file>
                 <name>$PROJ_DIR$\..\portingLayer\PowerDrv\PowerDrv_light.c</name>
-                <configuration>
-                    <name>debug</name>
-                </configuration>
             </file>
         </group>
         <group>
@@ -3079,9 +3076,6 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\mainApp\MainApp.c</name>
-                <configuration>
-                    <name>debug</name>
-                </configuration>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\mainApp\MainApp.h</name>

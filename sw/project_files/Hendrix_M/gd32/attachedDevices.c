@@ -570,11 +570,11 @@ void UartDrv_Init(eTpUartDevice id)
             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
 
-            //GPIO_PinAFConfig(GPIOA, GPIO_PinSource14, GPIO_AF_1);
+            GPIO_PinAFConfig(GPIOA, GPIO_PinSource14, GPIO_AF_1);
             GPIO_PinAFConfig(GPIOA, GPIO_PinSource15, GPIO_AF_1);
 
             /* Configure USART2(BLE) pins:  Rx and Tx */
-            GPIO_InitStructure.GPIO_Pin     = /*GPIO_Pin_14 |*/ GPIO_Pin_15;
+            GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_14 | GPIO_Pin_15;
             GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
             GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AF;
             GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;

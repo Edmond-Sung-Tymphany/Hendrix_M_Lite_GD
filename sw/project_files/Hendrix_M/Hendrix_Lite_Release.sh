@@ -36,7 +36,7 @@ dsp_ver_param="MOD_SWVERSION_DCINPALG1_VALUE"
 # Project Environment           *
 #********************************
 project=Hendrix
-model=Lite
+model=LiteV2
 hw_ver=PMP
 ewp_target="iar/Hendrix_M.ewp"
 

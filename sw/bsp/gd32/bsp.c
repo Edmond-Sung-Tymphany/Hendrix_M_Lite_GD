@@ -943,7 +943,7 @@ void DynamicAnalysis()
 */
 void IwdgInit(uint8_t prescaler, uint16_t reload)
 {
-#ifdef HAS_IWDG
+#if 1//def HAS_IWDG
     IWDG_Enable();
     IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
     IWDG_SetPrescaler(prescaler);

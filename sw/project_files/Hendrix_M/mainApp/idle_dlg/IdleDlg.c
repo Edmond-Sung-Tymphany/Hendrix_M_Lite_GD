@@ -368,7 +368,7 @@ static QState IdleDlg_IdleMode(cIdleDlg * const me, QEvt const * const e)
             {
                 IdleDlg_RefreshTick(me, IDLEDLG_TIMEOUT_IN_MS);
                 //TP_PRINTF(" idleTimer: %ld seconds", me->idleTimer/1000);
-                printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
+                //printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
             }
             return Q_HANDLED();
         }

@@ -315,7 +315,7 @@ inline static void UART_Handler(const eTpUartDevice me)
 
     if (uartBaseAddr->ISR & USART_FLAG_RXNE)
     {                                       // read interrupt
-        uint8 d;
+        volatile uint8 d;
         uartBaseAddr->ICR &= ~USART_FLAG_RXNE;    // clear interrupt
 
         d = (uartBaseAddr->RDR & 0x1FF);

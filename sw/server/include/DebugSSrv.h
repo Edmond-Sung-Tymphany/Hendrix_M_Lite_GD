@@ -48,7 +48,7 @@ extern "C" {
  */
 typedef enum
 {
-    START_SIGN_IDX,
+    START_SIGN_IDX = 0,
     SIG_IDX,
     SRVID_IDX,
     SIZELSB_IDX,

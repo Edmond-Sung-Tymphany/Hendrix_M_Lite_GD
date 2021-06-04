@@ -52,7 +52,11 @@
 #endif
 
 
-#define SYSCLK_FREQ_72MHz_HSI    72000000
+#define SYSCLK_FREQ_72MHz_HSI		72000000
+#define SYSCLK_FREQ_48MHz_HSI		48000000
+
+#define SYSCLK_FREQ SYSCLK_FREQ_48MHz_HSI
+
 
 #define INTERNAL_CLOCK  0
 #define EXTERNAL_CLOCK 0x04
@@ -66,7 +70,7 @@ static void SystemEnableStmReadProtection(void);
 #endif
 
 /* clock frequency 8M (internal clock) */
-uint32_t SystemCoreClock    = SYSCLK_FREQ_72MHz_HSI;
+uint32_t SystemCoreClock    = SYSCLK_FREQ;
 __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
 //Q_DEFINE_THIS_FILE
@@ -77,6 +81,8 @@ volatile static uint32 currTime = 0;
 void SysTick_Handler(void);
 
 static void SetSysClockTo72HSI(void); 
+static void SetSysClockTo48HSI(void);
+
 
 /* system_sleeping_status*/
 static bool isSystemAwake = TRUE;
@@ -157,7 +163,11 @@ void BSP_init_clock(void)
 {
     /* update the clock value "SystemCoreClock" */
    //SystemCoreClockUpdate();
+#if (SYSCLK_FREQ == SYSCLK_FREQ_72MHz_HSI)
     SetSysClockTo72HSI();
+#elif (SYSCLK_FREQ == SYSCLK_FREQ_48MHz_HSI)
+   SetSysClockTo48HSI();
+#endif
    if (SysTick_Config(SystemCoreClock / 1000))
    { 
       /* Capture error */ 
@@ -625,10 +635,11 @@ static void SetSysClock(void)
 {
 #ifdef SYSCLK_FREQ_HSE
   SetSysClockToHSE(); 
-#elif defined SYSCLK_FREQ_72MHz_HSI
+#elif (SYSCLK_FREQ == SYSCLK_FREQ_72MHz_HSI)
   SetSysClockTo72HSI();
-#endif
- 
+#elif (SYSCLK_FREQ == SYSCLK_FREQ_48MHz_HSI)
+  SetSysClockTo48HSI();
+#endif 
  /* If none of the define above is enabled, the HSI is used as System clock
     source (default after reset) */ 
 }
@@ -707,6 +718,70 @@ static void SetSysClockTo72HSI(void)
   }  
 }
 
+static void SetSysClockTo48HSI(void)
+{
+  __IO uint32_t StartUpCounter = 0, HSIStatus = 0;
+  
+  /* SYSCLK, HCLK, PCLK configuration ----------------------------------------*/
+  /* Enable HSE */    
+  RCC->CR |= ((uint32_t)RCC_CR_HSION);
+ 
+  /* Wait till HSE is ready and if Time out is reached exit */
+  do
+  {
+    HSIStatus = RCC->CR & RCC_CR_HSIRDY;
+    StartUpCounter++;  
+  } while((HSIStatus == 0) && (StartUpCounter != HSI_STARTUP_TIMEOUT));
+
+  if ((RCC->CR & RCC_CR_HSIRDY) != RESET)
+  {
+    HSIStatus = (uint32_t)0x01;
+  }
+  else
+  {
+    HSIStatus = (uint32_t)0x00;
+  }  
+
+  if (HSIStatus == (uint32_t)0x01)
+  {
+    /* HCLK = SYSCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+      
+    /* PCLK2 = HCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV2;
+    
+    /* PCLK1 = HCLK */
+    RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+
+
+    /* PLL configuration = HSI/2 * 12 = 48 MHz */
+    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL));
+    RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSI_Div2 | RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLMULL12);
+            
+
+    /* Enable PLL */
+    RCC->CR |= RCC_CR_PLLON;
+
+    /* Wait till PLL is ready */
+    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    {
+    }
+
+    /* Select PLL as system clock source */
+    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+    RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+
+    /* Wait till PLL is used as system clock source */
+    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
+    {
+    }
+
+  }
+  else
+  { /* If HSE fails to start-up, the application will have wrong clock 
+         configuration. User can add here some code to deal with this error */
+  }  
+}
 
 
 #ifdef ENABLE_STM_READ_PROTECTION

@@ -14,7 +14,7 @@
 # Build Setting                 *
 #********************************
 #build generator
-build_debug_en="1"
+build_debug_en="0"
 build_release_en="1"
 
 #ota generator

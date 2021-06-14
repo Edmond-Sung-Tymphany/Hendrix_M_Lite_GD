@@ -491,7 +491,7 @@ static const tUARTDevice UartDebugConfig =
 {
     .deviceInfo.deviceID    = DEBUG_DEV_ID,
     .deviceInfo.deviceType  = UART_DEV_TYPE,
-    .baudrate   = 115200,
+    .baudrate   = 38400,
     .uartId     = TP_UART_DEV_1,
     .byteSize   = TP_UART_BYTE_SIZE_8_BITS,
     .parity     = TP_UART_PARITY_NONE,

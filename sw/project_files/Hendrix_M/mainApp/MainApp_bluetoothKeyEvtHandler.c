@@ -42,7 +42,7 @@ static QState MainApp_BtConnectableEvtAction(cMainApp * const me, BtStatusEvt co
        me->CurrBTStatus == BT_CONNECTED_STA)
     {
         /* paring fail go into Conectable status & connected to connectable*/
-        MainApp_SendBTCueCmd(me, BT_PAIRING_FAIL_CUE_CMD);
+        MainApp_SendBTCueCmd(me, BT_PAIRING_FAIL_CUE_CMD);      //edmond_20210711
     }
     me->isBTStreaming = FALSE;
 
@@ -87,7 +87,7 @@ static QState MainApp_BtConnectedEvtAction(cMainApp * const me, BtStatusEvt cons
     /* paring success is connected */
     if(me->CurrBTStatus != BT_STREAMING_A2DP_STA)
     {
-        MainApp_SendBTCueCmd(me, BT_PAIRING_SUCCESS_CUE_CMD);
+        MainApp_SendBTCueCmd(me, BT_PAIRING_SUCCESS_CUE_CMD);      //edmond_20210711
         me->tickHandlers[TIMER_ID_BT_BATT_NOTIFY_TIMEOUT].timer = MAINAPP_BT_BATT_NOTIFY_TIMEOUT_IN_MS;
         if(!(me->ConnectedCue))
         {

@@ -86,7 +86,7 @@ static QState MainApp_Initial(cMainApp * const me, QEvt const * const e)
     CAST_ME;
     QS_OBJ_DICTIONARY(MainApp);
     QS_OBJ_DICTIONARY(MainApp_Active);
-
+	
     (void)e; /* suppress the compiler warning about unused parameter */
     /* Subsrcribe to all the SIGS */
     QActive_subscribe((QActive*)me, BT_STATE_SIG);
@@ -106,7 +106,7 @@ static QState MainApp_Initial(cMainApp * const me, QEvt const * const e)
     MainApp_InitStatusVariables(me);
     RingBuf_Ctor(&me->btCueRBufObj, me->btCueBuf, BT_CUE_QUEUE_SIZE);
 
-#if 1//def HAS_IWDG
+#ifdef HAS_IWDG
     IwdgInit(IWDG_Prescaler_256, IWDG_RLR_RL);
     RTC_Initialize();
     RTC_SetUpWakeUpAlarm(IWDG_FEED_PERIOD_SEC);
@@ -168,11 +168,13 @@ QState MainApp_Base(cMainApp * const me, QEvt const * const e)
  */
 QState MainApp_Off(cMainApp * const me, QEvt const * const e)
 {
-    switch (e->sig)
+
+	switch (e->sig)
     {
         case Q_ENTRY_SIG:
         {
             TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
+			TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             MainApp_CleanAllTickHandlerTimer(me);
             MainApp_SwitchMode(me, OFF_MODE);
 
@@ -241,12 +243,14 @@ QState MainApp_Off(cMainApp * const me, QEvt const * const e)
                     TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)MAINAPP_TIMEOUT_SIG,LOW_BATT", e->sig);
                     return Q_TRAN(&MainApp_Sleep);
                 }
-                else 
+                else
                 {
                     TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)MAINAPP_TIMEOUT_SIG,SWH ON", e->sig);
                     return Q_TRAN(&MainApp_PoweringUp);
                 }
             }
+			//BSP_SoftReboot();		//edmond_20210715
+
             return Q_HANDLED();
         }
 #ifdef HAS_IWDG
@@ -696,6 +700,7 @@ QState MainApp_PoweringDown(cMainApp * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+			//printf("MainApp_PoweringDown(Q_ENTRY_SIG)\n");
             TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             MainApp_SwitchMode(me, POWERING_DOWN_MODE);
             me->systemStatus = SYSTEM_STA_POWERING_DOWN;
@@ -727,7 +732,8 @@ QState MainApp_PoweringDown(cMainApp * const me, QEvt const * const e)
         }
         case Q_EXIT_SIG:
         {
-            TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_EXIT_SIG", e->sig);
+			//printf("MainApp_PoweringDown(Q_EXIT_SIG)\n");
+			TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_EXIT_SIG", e->sig);
             me->tickHandlers[TIMER_ID_POWERING_OFF_TIMEOUT].timer = INVALID_VALUE;
             me->tickHandlers[TIMER_ID_SHOW_BATTERY_LED_TIMEOUT].timer = INVALID_VALUE;
             QTimeEvt_disarm(TIME_EVT_OF(me));
@@ -754,13 +760,12 @@ QState MainApp_Sleep(cMainApp * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+			//printf("MainApp_Sleep(Q_ENTRY_SIG)\n");
             TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             MainApp_SwitchMode(me, SLEEP_MODE);
 
             QTimeEvt_disarm(TIME_EVT_OF(me));
-#ifdef HAS_IWDG
             IWDG_ReloadCounter();
-#endif
             return Q_HANDLED();
         }
         case SYSTEM_MODE_RESP_SIG:
@@ -875,6 +880,7 @@ QState MainApp_OffCharging(cMainApp * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+			//printf("MainApp_OffCharging(Q_ENTRY_SIG)\n");
             TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             MainApp_SwitchMode(me, OFF_CHARGING_MODE);
             me->systemStatus = SYSTEM_STA_OFF_CHARGING;

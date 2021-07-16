@@ -116,12 +116,13 @@ static bool isBluetoothVersionGet = FALSE;
 
 #ifdef BT_FASTER_CMD_STATE
 #define BT_STATUS_GAP_MS    30
+
 const static uint16_t BT_status_timing[]=
 {
-    (BT_STATUS_GAP_MS + 50),
-    (BT_STATUS_GAP_MS + 100),
-    (BT_STATUS_GAP_MS + 150),
-    (BT_STATUS_GAP_MS + 200),
+    (BT_STATUS_GAP_MS + 50),	//80 	//DISCOVERABLE	//60
+    (BT_STATUS_GAP_MS + 100),	//130 	//CONNECTABLE(DISCONNECTED)	//230
+    (BT_STATUS_GAP_MS + 150),	//180	//CONNECTED		//375
+    (BT_STATUS_GAP_MS + 200),	//230  	//STREAMING		//550
     (BT_STATUS_GAP_MS + 250),
     (BT_STATUS_GAP_MS + 300),
     (BT_STATUS_GAP_MS + 350),
@@ -492,6 +493,7 @@ static void BluetoothDrv_ReadBtLedStatus(eGPIOId btInputId)
 static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
 {
 #ifdef BT_FASTER_CMD_STATE
+
     uint8_t bt_status=BT_MAX_STA;
     uint16_t i;
 
@@ -500,7 +502,7 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
 
     for(i=0; i<BT_status_timing_size; i++)
     {
-        if( pulseTime < BT_status_timing[i] )
+        if( pulseTime < BT_status_timing[i] )	//edmond_20210712
             break;
     }
 
@@ -518,14 +520,46 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
     return bt_status;
 #else
     uint8 status = BT_MAX_EVT;
-    uint8 i = (pulseTime + BT_STATE_STEP_OFFSET_TIME_MS) / BT_STATE_STEP_TIME_MS;
+#if 1	//GD MCU has different timing
+     uint8 i;
+	const static uint16_t BT_status_timing[]=
+	{
+		(150),	//80	//DISCOVERABLE	//60
+		(320),	//130	//CONNECTABLE(DISCONNECTED) //230
+		(500),	//180	//CONNECTED 	//375
+		(600),	//230	//STREAMING 	//550
+
+	};
+	const static uint16_t BT_status_timing_size = (sizeof(BT_status_timing)/sizeof(BT_status_timing[0]));
+
+    for(i=0; i<BT_status_timing_size; i++)
+    {
+        if( pulseTime < BT_status_timing[i] )	//edmond_20210712
+            break;
+    }
+#else
+    uint8 i = (pulseTime + BT_STATE_STEP_OFFSET_TIME_MS) / 100;
+#endif
+    //uint8 i = (pulseTime + BT_STATE_STEP_OFFSET_TIME_MS) / BT_STATE_STEP_TIME_MS;
     if(ledId == BT_INPUT0)
     {
-
+        //printf("BT_INPUT0: get the status, and pulseTime is %d\r\n", pulseTime);	//edmond_20210712
         TP_PRINTF("BT_INPUT0: get the status, and pulseTime is %d\r\n", pulseTime);
         if(i<BtLed0StaMaxNum)
         {
-            status = tBtLed0StatusMap[i];
+/*
+const eBtStatus tBtLed0StatusMap[]=
+{
+
+    BT_DISCOVERABLE_STA,
+    BT_CONNECTABLE_STA,
+    BT_CONNECTED_STA,
+    BT_STREAMING_A2DP_STA,
+
+};
+
+*/            status = tBtLed0StatusMap[i];
+
         }
         else
         {
@@ -535,10 +569,21 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
     }
     else if(ledId == BT_INPUT1)
     {
-
+        //printf("BT_INPUT1: get the status, and pulseTime is %d\r\n", pulseTime);	//edmond_20210712
         TP_PRINTF("BT_INPUT1: get the status, and pulseTime is %d\r\n", pulseTime);
         if(i<BtLed1StaMaxNum)
         {
+/*
+const eBtStatus tBtLed1StatusMap[]=
+{
+
+	BT_GET_VERION_STA,
+	BT_LINKLOST_STA,
+	BT_LINKLOST_OFF_STA,
+	BT_LINKLOST_OFF_STA, //workaround for [IN:013673]
+};
+
+*/
             status = tBtLed1StatusMap[i];
         }
         else
@@ -546,6 +591,7 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
             status = BT_MAX_EVT;
         }
     }
+
     return status;
 #endif
 }
@@ -614,6 +660,7 @@ static void BluetoothDrv_SendCmdDoneToServer(cBluetoothDrv *me, eBtCmd cmd)
 #ifdef HAS_FIX_VOL_AUDIO_CUE
                 bluetooth_audio_cue_is_pairing = FALSE;
                 BluetoothDrv_AudioCueHold(bt_audio_cue_time[(pEvt->cmd - BT_CUE_MIN_CMD)]);
+				//printf("pEvt->cmd = %d\n",pEvt->cmd);
 #endif
                 break;
 

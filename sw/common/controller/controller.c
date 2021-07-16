@@ -318,7 +318,6 @@ void Controller_StartUp(uint16 mode_id)
             ((cPersistantObj*)serverList[i].obj)->Startup((cPersistantObj*)serverList[i].obj);
         }
     }
-
     for (i = 0; i < Q_DIM(appList); i++)
     {
         /* If it belongs to the group we may activate it */
@@ -327,7 +326,6 @@ void Controller_StartUp(uint16 mode_id)
             ((cPersistantObj*)appList[i].obj)->Startup((cPersistantObj*)appList[i].obj);
         }
     }
-
 }
 
  /*\brief Shuts down all persistent objects (based on their mode settings)

@@ -289,7 +289,13 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
 
 static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 {
-    //after wakeup
+	//edmond_20210717	when wake up from standby just reset it
+    NVIC_SystemReset();		//edmond_20210715
+
+
+#if 0
+	printf("PowerDrv_OperationForWakeUp()\n");    
+	//after wakeup
     SetDisableWakeupSources();
     SetGpioStateForWakeup();
     PowerDrv_EnableSystemTimerInt();
@@ -303,8 +309,8 @@ static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 #ifdef HAS_PWR_IO_EXPANDER
     PowerDrv_SetIoExpanderForWakeup();
 #endif
-	printf("PowerDrv_OperationForWakeUp()\n");
-    BSP_SoftReboot();		//edmond_20210715
+#endif
+
 
 
 }

@@ -607,6 +607,8 @@ void PowerDrv_Set(cPowerDrv *me, ePowerSetId setId, bool enable)
             if(enable == TRUE)
             {
                 SYS_PWR_DISABLE(powerGpioDrv);
+                //BSP_BlockingDelayMs(1000);
+                NVIC_SystemReset();		//edmond_20210715
             }
             else
             {

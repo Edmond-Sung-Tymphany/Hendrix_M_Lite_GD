@@ -106,12 +106,13 @@ static QState MainApp_Initial(cMainApp * const me, QEvt const * const e)
     MainApp_InitStatusVariables(me);
     RingBuf_Ctor(&me->btCueRBufObj, me->btCueBuf, BT_CUE_QUEUE_SIZE);
 
+/*
 #ifdef HAS_IWDG
     IwdgInit(IWDG_Prescaler_256, IWDG_RLR_RL);
     RTC_Initialize();
     RTC_SetUpWakeUpAlarm(IWDG_FEED_PERIOD_SEC);
 #endif
-
+*/
     return Q_TRAN(&MainApp_Off);
 }
 

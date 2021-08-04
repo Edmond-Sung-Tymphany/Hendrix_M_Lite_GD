@@ -430,9 +430,36 @@ void BSP_FeedWatchdog(void)
   * @param  None
   * @retval None
   */
+
 void SystemInit (void)
 {
-  /* Set HSION bit */
+
+#ifdef HAS_MCO
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_0);
+
+    /* Configure PA8 as MCO output */
+    GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Speed   = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_OType   = GPIO_OType_PP;
+    GPIO_InitStructure.GPIO_PuPd    = GPIO_PuPd_UP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    //RCC->CFGR &= (uint32_t)(~RCC_CFGR_MCO);
+    //RCC->CFGR |= (uint32_t)(/*RCC_CFGR_PLLNODIV |*/ RCC_CFGR_MCO_1 | RCC_CFGR_MCO_HSE);
+    RCC->CFGR &= ~((0x07 << 24) | (0x07 << 28) | (0x01 << 31));
+    RCC->CFGR |= (0x04 << 24) | (0x0 << 28);
+#endif  
+  
+  
+#ifdef HAS_IWDG
+    IwdgInit(IWDG_Prescaler_256, IWDG_RLR_RL);
+    RTC_Initialize();
+    RTC_SetUpWakeUpAlarm(IWDG_FEED_PERIOD_SEC);
+#endif    /* Set HSION bit */
   RCC->CR |= (uint32_t)0x00000001;
 
   /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE and MCOSEL[2:0] bits */
@@ -461,6 +488,9 @@ void SystemInit (void)
 
   /* Configure the System clock frequency, AHB/APBx prescalers and Flash settings */
   SetSysClock();
+
+
+
 }
 
 /**

@@ -71,6 +71,8 @@ int main(int argc, char** argv)
 
     stackMagicNumberFill();
     
+ 
+
     /* initialize the Board Support Package */
     BSP_init();
 

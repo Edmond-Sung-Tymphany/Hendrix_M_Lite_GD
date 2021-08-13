@@ -363,12 +363,14 @@ static QState IdleDlg_IdleMode(cIdleDlg * const me, QEvt const * const e)
                 }
                 IdleDlg_ResetIdleTimer(me);
                 TYMQP_DUMP_QUEUE_WITH_LOG(me, "idleTimer is timeout now.");
+                printf("idleTimer is timeout now.\n");
+                
             }
             else
             {
                 IdleDlg_RefreshTick(me, IDLEDLG_TIMEOUT_IN_MS);
                 //TP_PRINTF(" idleTimer: %ld seconds", me->idleTimer/1000);
-                //printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
+                printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
             }
             return Q_HANDLED();
         }

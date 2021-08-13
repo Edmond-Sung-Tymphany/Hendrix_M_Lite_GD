@@ -290,7 +290,7 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
 static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 {
 	//edmond_20210717	when wake up from standby just reset it
-    NVIC_SystemReset();		//edmond_20210715
+    BSP_SoftReboot();		//edmond_20210715
 
 
 #if 0
@@ -608,7 +608,7 @@ void PowerDrv_Set(cPowerDrv *me, ePowerSetId setId, bool enable)
             {
                 SYS_PWR_DISABLE(powerGpioDrv);
                 //BSP_BlockingDelayMs(1000);
-                NVIC_SystemReset();		//edmond_20210715
+                BSP_SoftReboot();		//edmond_20210715
             }
             else
             {

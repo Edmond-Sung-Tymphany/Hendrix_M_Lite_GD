@@ -34,6 +34,7 @@
 #include "UartDrv.h"
 #include "commonTypes.h"
 #include "trace.h"
+//#include "SEGGER_RTT.h"
 
 #if defined(TP_AUDIO_V1) 
 #include "deviceTypes_v1.h" 
@@ -433,7 +434,9 @@ void BSP_FeedWatchdog(void)
 
 void SystemInit (void)
 {
-
+    //SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+    //SEGGER_RTT_printf(0,"SystemInit(); \n");
+    
 #ifdef HAS_MCO
     GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -485,6 +488,8 @@ void SystemInit (void)
 
   /* Disable all interrupts */
   RCC->CIR = 0x00000000;
+
+
 
   /* Configure the System clock frequency, AHB/APBx prescalers and Flash settings */
   SetSysClock();
@@ -728,18 +733,23 @@ static void SetSysClockTo72HSI(void)
     /* Enable PLL */
     RCC->CR |= RCC_CR_PLLON;
 
+    StartUpCounter = 0;
     /* Wait till PLL is ready */
-    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    while(((RCC->CR & RCC_CR_PLLRDY) == 0) && (StartUpCounter<HSI_STARTUP_TIMEOUT))
     {
+        StartUpCounter++;
     }
 
     /* Select PLL as system clock source */
     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
 
+    
+    StartUpCounter = 0;
     /* Wait till PLL is used as system clock source */
-    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
+    while (((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)&& (StartUpCounter<HSI_STARTUP_TIMEOUT) )
     {
+        StartUpCounter++;
     }
   }
   else
@@ -792,9 +802,14 @@ static void SetSysClockTo48HSI(void)
     /* Enable PLL */
     RCC->CR |= RCC_CR_PLLON;
 
+    //while(1); //test only
+
     /* Wait till PLL is ready */
-    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    
+    StartUpCounter = 0;
+    while(((RCC->CR & RCC_CR_PLLRDY) == 0)&&StartUpCounter<HSI_STARTUP_TIMEOUT)
     {
+        StartUpCounter++;
     }
 
     /* Select PLL as system clock source */
@@ -802,14 +817,22 @@ static void SetSysClockTo48HSI(void)
     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
 
     /* Wait till PLL is used as system clock source */
-    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
+    
+    StartUpCounter = 0;
+    while (((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)&&(StartUpCounter<HSI_STARTUP_TIMEOUT))
     {
+        StartUpCounter++;
     }
-
+    if (StartUpCounter >= HSI_STARTUP_TIMEOUT)
+    {
+        BSP_SoftReboot();
+    }
   }
   else
   { /* If HSE fails to start-up, the application will have wrong clock 
          configuration. User can add here some code to deal with this error */
+    BSP_SoftReboot();
+      
   }  
 }
 

@@ -35,9 +35,21 @@ SCO/ERROR  :
 #define CAST_ME cBluetoothSrv * BluetoothSrv = (cBluetoothSrv *) me;
 #endif
 
+
 #ifndef BT_DEBUG_ENABLE
 #undef  TP_PRINTF
 #define TP_PRINTF(...)
+#endif
+
+
+#ifdef BT_DEBUG_ENABLE
+    #define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...) TymQP_DumpQueue_WithLog((QActive *)(me), __func__, __VA_ARGS__)
+    #define AUDIOSRV_DEBUG_MSG TP_PRINTF
+#else
+    #define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...)
+    #define AUDIOSRV_DEBUG_MSG(...)
+    #undef   TP_PRINTF
+    #define  TP_PRINTF(...)
 #endif
 
 
@@ -203,6 +215,7 @@ static QState BluetoothSrv_Active(cBluetoothSrv * const me, QEvt const * const e
         case BT_STATUS_SIG:
         {
             BtDrvStatusEvt* pEvt = (BtDrvStatusEvt*) e;
+            TYMQP_DUMP_QUEUE_WITH_LOG(me, "BluetoothSrv_Active:BT_STATUS_SIG:pEvt->btStatus = %d", pEvt->btStatus);
             /*Don't add filter to ignore same status here. It's better to keep common code for all projects.*/
             if(pEvt->btStatus> BT_MAX_STA)
             {

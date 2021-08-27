@@ -101,7 +101,8 @@ static void UartDrv_EnableIRQ(cUartDrv *me)
 
     ASSERT(NUM_OF_UART > me->pConfig->uartId);
     NVIC_InitStructure.NVIC_IRQChannel          = gUartNvicIrq[me->pConfig->uartId];
-    //NVIC_InitStructure.NVIC_IRQChannelPriority  = me->pConfig->interrupt.priority;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = me->pConfig->interrupt.priority;
+    //NVIC_InitStructure.NVIC_IRQChannelSubPriority  = me->pConfig->interrupt.priority;
     NVIC_InitStructure.NVIC_IRQChannelCmd       = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
     USART_ITConfig(UartDrv_getUartBaseAddr(me), USART_IT_RXNE, ENABLE);
@@ -127,7 +128,6 @@ void UartDrv_Write_Blocking(eTpUartDevice uart, const uint8 *buffer, uint32 size
     while(USART_GetFlagStatus(u, USART_FLAG_TXE) == RESET)
         ;
 }
-
 
 void UartDrv_Ctor(cUartDrv *me, const tUARTDevice *pConfig , cRingBuf *pTx, cRingBuf *pRx)
 {
@@ -182,7 +182,6 @@ void UartDrv_Ctor(cUartDrv *me, const tUARTDevice *pConfig , cRingBuf *pTx, cRin
         /* Are we trying to re-int the same uart driver? */
         ASSERT(0);
     }
-	//printf("UartDrv_Ctor \n");
 }
 
 void UartDrv_Xtor(cUartDrv *me)

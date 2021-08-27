@@ -63,15 +63,15 @@ uint32 GetMcuFwStatus(void)
 }
 #endif
 
+
+
+
 int main(int argc, char** argv)
 {
     (void) argc;
     (void) argv;
 
-
     stackMagicNumberFill();
-    
- 
 
     /* initialize the Board Support Package */
     BSP_init();

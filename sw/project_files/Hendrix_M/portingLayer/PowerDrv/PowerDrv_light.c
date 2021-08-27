@@ -289,12 +289,10 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
 
 static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 {
-	//edmond_20210717	when wake up from standby just reset it
+#ifdef SOFT_REBOOT_WHEN_WAKE_UP_FROM_STANDBY
+	//when wake up from standby just reset it
     BSP_SoftReboot();		//edmond_20210715
-
-
-#if 0
-	printf("PowerDrv_OperationForWakeUp()\n");    
+#else
 	//after wakeup
     SetDisableWakeupSources();
     SetGpioStateForWakeup();
@@ -335,13 +333,21 @@ void PowerDrv_EnterSleepMode(cPowerDrv *me)
     if(TRUE == IsEXTIWakeUp())
 #endif
     {
-    	
+#ifdef SOFT_REBOOT_WHEN_WAKE_UP_FROM_STANDBY
+        BSP_init_clock();
+    	printf("IsEXTIWakeUp(0x%x)\r\n", IsEXTIWakeUp());
+        printf("PowerDrv_OperationForWakeUp\r\n");
+#endif    
+
         PowerDrv_OperationForWakeUp(me);
     }
 }
 
 
-
+bool PowerDrv_power_switch(void)
+{
+    return ((bool)(pwrSwStatus));
+}
 
 
 
@@ -352,6 +358,7 @@ void PowerDrv_PwrSwitchUpdate(cPowerDrv *me)
     ePwrSwSta pwrSwStatus_now;
     if(IS_PWR_SW_KEY_ON(powerGpioDrv) == PWR_SW_ON_LEVEL)
     {
+        
         pwrSwStatus_now = PWR_SW_ON;
     }
     else
@@ -367,7 +374,6 @@ void PowerDrv_PwrSwitchUpdate(cPowerDrv *me)
         if ((getSysTime() - pwr_sw_key_debouncer_ms) >= PWR_SW_DEBOUNCE_TIME_MS)
         {
             TYMQP_LOG(NULL,"pwr_sw=%d", pwrSwStatus_now);
-
             pwrSwStatus = pwrSwStatus_now;
             Setting_Set(SETID_IS_PWR_SWITH_ON, &pwrSwStatus); // PWR SW change
             PowerDrv_ReportPowerState(me);
@@ -606,9 +612,17 @@ void PowerDrv_Set(cPowerDrv *me, ePowerSetId setId, bool enable)
             TYMQP_LOG(NULL,"Set POWEREN %s", (enable?"OFF":"ON"));
             if(enable == TRUE)
             {
+#ifdef SOFT_REBOOT_AFTER_CUT_OFF_POWER
+                //printf("Cut power\n");
+                SYS_PWR_DISABLE(powerGpioDrv);
+                //while(1);
+                //BSP_SoftReboot();		//edmond_20210715
+#else
+                
                 SYS_PWR_DISABLE(powerGpioDrv);
                 //BSP_BlockingDelayMs(1000);
                 BSP_SoftReboot();		//edmond_20210715
+#endif
             }
             else
             {
@@ -1018,7 +1032,7 @@ static void PowerDrv_UpdateBattADC(cPowerDrv *me)
     {
         uint16 filterResult = PowerDrv_BattSmoothVoltage(battFilter.intBatt.filterResult);
         currBattCapacity = PowerDrv_GetBattRsocUserFromAdcValues(filterResult);
-        TYMQP_LOG(NULL,"BattADC: %d cap: %d Capbk:%d :volt :%d",filterResult,currBattCapacity,batt_CapacityResult,ADC_TO_mVOLT(adc_sample));
+        //TYMQP_LOG(NULL,"BattADC: %d cap: %d Capbk:%d :volt :%d",filterResult,currBattCapacity,batt_CapacityResult,ADC_TO_mVOLT(adc_sample));
 
         //save the actual data for debug
         if(currBattCapacity != batt_CapacityResult)
@@ -1265,7 +1279,7 @@ static void PowerDrv_UpdateTempADC(cPowerDrv *me)
     if(count > NTC_PRINT_COUNT)
     {
         count = 0;
-        TYMQP_LOG(NULL,"NTCvolt:%d", mVolt);
+        //TYMQP_LOG(NULL,"NTCvolt:%d", mVolt);
     }
     else
         count++;

@@ -28,9 +28,12 @@ extern "C" {
 /******************************************************************************
   ******************************define*****************************************
   *****************************************************************************/
+#ifdef POWERDRV_DEBUG  
 #define TYMQP_LOG(me, ...) TymQP_DumpQueue_WithLog((QActive *)(me), __func__, __VA_ARGS__)
-
-
+#else
+#define TYMQP_LOG(me, ...)  
+#endif
+  
 //After DC insert, DC input in need 1 seconds to change DC pin
 #define DC_DEBOUNCE_TIME_MS (80)
 

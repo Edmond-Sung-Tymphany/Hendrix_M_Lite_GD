@@ -62,6 +62,13 @@ SCO/ERROR  :
 static QEvt const * PowerSrvQueueSto[POWER_SRV_EVENT_Q_SIZE];
 static cPowerDrv powerDrv;
 
+#ifdef POWERSRV_DEBUG
+#define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...) TymQP_DumpQueue_WithLog((QActive *)(me), __func__, __VA_ARGS__)
+#else
+#define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...) 
+#endif
+
+
 enum
 {
     POW_SRV_TIMEOUT_SIG = MAX_SIG ,
@@ -123,6 +130,7 @@ QState PowerSrv_PreActive(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_PreActive()\n");
             me->timer = PowerDrv_InitialPower(&powerDrv);
             PowerSrv_RefreshTick(me);
             return Q_HANDLED();
@@ -158,6 +166,8 @@ QState PowerSrv_Active(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_Active()\n");
+            //TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             CommonEvtResp((QActive*)me, pRequestor, RET_SUCCESS, SYSTEM_ACTIVE_RESP_SIG);
             PowerSrv_RefreshTick(me);
             return Q_HANDLED();
@@ -195,11 +205,13 @@ QState PowerSrv_Active(cPowerSrv * const me, QEvt const * const e)
         }
         case POWER_MCU_SLEEP_SIG:
         {
+            //printf("go sleep in PowerSrv_Active\n");
             PowerDrv_EnterSleepMode(me);
             return Q_HANDLED();
         }
         case Q_EXIT_SIG:
         {
+            ///TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_EXIT_SIG", e->sig);
             QTimeEvt_disarm(TIME_EVT_OF(me));
             return Q_HANDLED();
         }
@@ -215,6 +227,8 @@ QState PowerSrv_DeActive(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_DeActive()\n");
+            //TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_ENTRY_SIG", e->sig);
             /*active the reset pin, and turn off external power*/
             PowerDrv_DeinitialPower(&powerDrv);
             /* response the sleep request */
@@ -232,6 +246,7 @@ QState PowerSrv_DeActive(cPowerSrv * const me, QEvt const * const e)
         }
         case POWER_MCU_SLEEP_SIG:
         {
+            //printf("go sleep in PowerSrv_DeActive\n");
             PowerDrv_EnterSleepMode(me);
             return Q_HANDLED();
         }
@@ -259,6 +274,7 @@ QState PowerSrv_DeActive(cPowerSrv * const me, QEvt const * const e)
         }
         case Q_EXIT_SIG:
         {
+            //TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)Q_EXIT_SIG", e->sig);
             QTimeEvt_disarm(TIME_EVT_OF(me));
             return Q_HANDLED();
         }

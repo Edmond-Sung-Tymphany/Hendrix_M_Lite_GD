@@ -165,6 +165,7 @@ QState PowerSrv_PreActive(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_PreActive()\n")
             me->timer = PowerDrv_InitialPower(&powerDrv);
             PowerSrv_RefreshTick(me);
             return Q_HANDLED();
@@ -203,6 +204,7 @@ QState PowerSrv_Active(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_Active()\n")
             CommonEvtResp((QActive*)me, pRequestor, RET_SUCCESS, SYSTEM_ACTIVE_RESP_SIG);
             PowerSrv_RefreshTick(me);
             return Q_HANDLED();
@@ -264,6 +266,7 @@ QState PowerSrv_DeActive(cPowerSrv * const me, QEvt const * const e)
     {
         case Q_ENTRY_SIG:
         {
+            //printf("PowerSrv_DeActive()\n")
             /*active the reset pin, and turn off external power*/
             PowerDrv_DeinitialPower(&powerDrv);
             /* response the sleep request */

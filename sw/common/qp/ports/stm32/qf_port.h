@@ -57,8 +57,17 @@
 
 #else                                       /* Cortex-M3/M4/M4F, see NOTE03 */
 
-    #define QF_INT_DISABLE()        __set_BASEPRI(QF_BASEPRI)    
-    #define QF_INT_ENABLE()         __set_BASEPRI(0U)
+//    #define QF_PRIMASK_DISABLE()    __disable_interrupt()
+//    #define QF_PRIMASK_ENABLE()     __enable_interrupt()
+
+//    #define QF_INT_DISABLE()        do {\
+//                                        QF_PRIMASK_DISABLE();\
+//                                        __set_BASEPRI(QF_BASEPRI);\
+//                                        QF_PRIMASK_ENABLE();\
+//                                    } while (0)
+//    #define QF_INT_ENABLE()         __set_BASEPRI(0U)
+    #define QF_INT_DISABLE()        __disable_interrupt()
+    #define QF_INT_ENABLE()         __enable_interrupt()
 
                     /* BASEPRI limit for QF-aware ISR priorities, see NOTE4 */
     #define QF_BASEPRI  (0xFF >> 2)

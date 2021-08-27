@@ -486,7 +486,7 @@ void GpioDrv_EnableExtInterrupt(cGpioDrv *me, eGPIOId gpioId, tExtiIntTrigger ty
             /* Enable and set EXTI Interrupt */
             NVIC_InitTypeDef   NVIC_InitStructure;
             NVIC_InitStructure.NVIC_IRQChannel = irqType;
-            //NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+            NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = QF_AWARE_ISR_CMSIS_PRI + 1;
             NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
             NVIC_Init(&NVIC_InitStructure);
             break;
@@ -538,7 +538,7 @@ void GpioDrv_DisableExtInterrupt(cGpioDrv *me, eGPIOId gpioId)
             /* Enable and set EXTI Interrupt */
             NVIC_InitTypeDef   NVIC_InitStructure;
             NVIC_InitStructure.NVIC_IRQChannel = irqType;
-            //NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+            NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = QF_AWARE_ISR_CMSIS_PRI + 1;
             NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
             NVIC_Init(&NVIC_InitStructure);
             break;

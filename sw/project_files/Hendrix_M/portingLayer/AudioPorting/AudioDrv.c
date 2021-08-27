@@ -114,6 +114,12 @@ void AudioDrv_CheckMusicStreamStatus(void)
         status |= (1<<BLUETOOTH_JACK);
 #endif
     uint8 prev_status;
+#if 0//def JUST_FOR_DEBUG
+    if (isbtStreaming)
+    {
+        printf("B\r\n");
+    }
+#endif
     if(Setting_IsReady(SETID_MUSIC_STATUS))
         prev_status = *(uint8*)Setting_Get(SETID_MUSIC_STATUS);
     else
@@ -126,7 +132,8 @@ void AudioDrv_CheckMusicStreamStatus(void)
         }
         if ((getSysTime() - audio_detection_timeout) >= AUDIO_DETECTION_TIMEOUT_IN_MS)
         {
-
+            //TYMQP_LOG(NULL, "---------------------MUSIC_STATUS changed = 0x%x-------------------------", status);
+            //printf("---------------------MUSIC_STATUS changed = 0x%x-------------------------\r\n", status);
             AudioMusicDetectStateEvt* pAudioMusicStateEvt = Q_NEW(AudioMusicDetectStateEvt, AUDIO_MUSIC_STREAM_STATE_SIG);
             pAudioMusicStateEvt->hasMusicStream = (status!=0)?TRUE:FALSE;
             pAudioMusicStateEvt->jackId = status;

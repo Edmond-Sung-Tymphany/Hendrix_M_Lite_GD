@@ -226,7 +226,7 @@ static QState MainApp_BatteryCapcityEvtHandle(cMainApp * const me, PowerSrvInfoE
                 break;
         }
         me->battStatus = currBattStatus;
-		Setting_Set(SETID_BATTERY_STATUS, &currBattStatus);		//edmond_20210508
+		//Setting_Set(SETID_BATTERY_STATUS, &currBattStatus);		//edmond_20210508
     }
 #ifdef HAS_BT_BATT_CMD
     uint8 BTBattStatus = *(uint8*)Setting_Get(SETID_BT_BATT_STATUS);

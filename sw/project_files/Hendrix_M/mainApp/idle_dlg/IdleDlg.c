@@ -24,10 +24,11 @@
 #define CAST_ME
 #endif
 /* TODO: move the tracing string into trace.c */
-#define IDLEDLG_DEBUG
+//#define IDLEDLG_DEBUG
 #ifdef IDLEDLG_DEBUG
 #define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...) TymQP_DumpQueue_WithLog((QActive *)(me), __func__, __VA_ARGS__)
 #else
+#define TYMQP_DUMP_QUEUE_WITH_LOG(me, ...)
 #define IDLEDLG_DEBUG_MSG(...)
 #define ENTRY_STATE()
 #define EXIT_STATE()
@@ -363,14 +364,13 @@ static QState IdleDlg_IdleMode(cIdleDlg * const me, QEvt const * const e)
                 }
                 IdleDlg_ResetIdleTimer(me);
                 TYMQP_DUMP_QUEUE_WITH_LOG(me, "idleTimer is timeout now.");
-                printf("idleTimer is timeout now.\n");
                 
             }
             else
             {
                 IdleDlg_RefreshTick(me, IDLEDLG_TIMEOUT_IN_MS);
                 //TP_PRINTF(" idleTimer: %ld seconds", me->idleTimer/1000);
-                printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
+                //printf(" idleTimer: %ld seconds\n", me->idleTimer/1000);
             }
             return Q_HANDLED();
         }

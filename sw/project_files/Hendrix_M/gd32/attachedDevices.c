@@ -497,8 +497,8 @@ static const tUARTDevice UartDebugConfig =
     .parity     = TP_UART_PARITY_NONE,
     .stopBits   = TP_UART_STOP_BIT_1,
     .dmaEnable  = FALSE,
-    .interrupt.priority    = 1,     /* priority can be 0..3 from highest to lowest */
-    .interrupt.subPriority = 0,     // not-used, for compatibility with PIC32
+    .interrupt.priority    = QF_AWARE_ISR_CMSIS_PRI + 1,     /* priority can be 0..3 from highest to lowest */
+    //.interrupt.subPriority = QF_AWARE_ISR_CMSIS_PRI + 1,     // not-used, for compatibility with PIC32
 };
 
 static const tStorageDevice nvmConfig =

@@ -174,7 +174,7 @@ const static char *mainApp_debug = "[MainApp_Debug] ";
 #define MAINAPP_SYS_TEMP_CHECK_TIMEOUT_IN_MS     (2000)
 #define MAINAPP_AMP_ERR_CHECK_TIMEOUT_IN_MS      (1000) /* 1s */
 #define MAINAPP_BATT_CUE_PLAY_TIMEOUT_IN_MS      (4000)
-#define MAINAPP_STAY_IN_OFF_TIMEOUT_IN_MS        (7000)
+#define MAINAPP_STAY_IN_OFF_TIMEOUT_IN_MS        (12*1000)
 
 #define MAINAPP_PAIRING_FILTER_TIMEOUT_IN_MS     (3*1000)
 #define MAINAPP_WAITING_FOR_LED_OPER_IN_MS       (800)

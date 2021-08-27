@@ -94,7 +94,6 @@ const static tSeqSection bt_power_off_seq[] =
 
 #endif
 
-#define BT_DEBUG_ENABLE
 #ifndef BT_DEBUG_ENABLE
 #undef  TP_PRINTF
 #define TP_PRINTF(...)
@@ -452,7 +451,7 @@ static void EXTI_Config(bool isTurnOnInterrupt)
 
     /* Enable and set Interrupt */
     NVIC_InitStructure.NVIC_IRQChannel = EXTI4_15_IRQn;
-    //NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = QF_AWARE_ISR_CMSIS_PRI + 1;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
@@ -543,7 +542,7 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
     //uint8 i = (pulseTime + BT_STATE_STEP_OFFSET_TIME_MS) / BT_STATE_STEP_TIME_MS;
     if(ledId == BT_INPUT0)
     {
-        //printf("BT_INPUT0: get the status, and pulseTime is %d\r\n", pulseTime);	//edmond_20210712
+        //printf("P0=%d\r\n", pulseTime);	//edmond_20210712
         TP_PRINTF("BT_INPUT0: get the status, and pulseTime is %d\r\n", pulseTime);
         if(i<BtLed0StaMaxNum)
         {
@@ -569,7 +568,7 @@ const eBtStatus tBtLed0StatusMap[]=
     }
     else if(ledId == BT_INPUT1)
     {
-        //printf("BT_INPUT1: get the status, and pulseTime is %d\r\n", pulseTime);	//edmond_20210712
+        //printf("P1=%d\r\n", pulseTime);	//edmond_20210712
         TP_PRINTF("BT_INPUT1: get the status, and pulseTime is %d\r\n", pulseTime);
         if(i<BtLed1StaMaxNum)
         {

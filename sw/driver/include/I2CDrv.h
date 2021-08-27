@@ -63,7 +63,7 @@ METHODS
  */
 void I2CDrv_Ctor(cI2CDrv * me, tI2CDevice * config);
 
-void i2c_test();
+
 /*
  * get i2c baud rate - value of I2C1BRG register
  * @param cI2CDrv * me - pointer to driver instance

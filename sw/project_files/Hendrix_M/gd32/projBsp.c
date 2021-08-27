@@ -281,7 +281,7 @@ static void SetExtInterrupt(uint8 port, uint8 pin, uint32 extiLine,
     EXTI_Init(&EXTI_InitStructure);
     /* Enable and set EXTI Interrupt */
     NVIC_InitStructure.NVIC_IRQChannel = irq;
-    //NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = QF_AWARE_ISR_CMSIS_PRI + 1;
     NVIC_InitStructure.NVIC_IRQChannelCmd = state;
     NVIC_Init(&NVIC_InitStructure);
 }
@@ -408,7 +408,7 @@ void RTC_Initialize()
     EXTI_Init(&exti);
 
     NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
-    //NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = QF_AWARE_ISR_CMSIS_PRI + 1;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }

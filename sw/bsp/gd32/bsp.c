@@ -26,6 +26,7 @@
 *                          http://www.state-machine.com
 * e-mail:                  info@quantum-leaps.com
 *****************************************************************************/
+//#include "qf_port.h"
 #include "stm32f0xx.h"
 #include "bsp.h"
 #include "projBsp.h"
@@ -174,6 +175,8 @@ void BSP_init_clock(void)
       /* Capture error */ 
       while (1);
    }
+   NVIC_SetPriorityGrouping(NVIC_PriorityGroup_4);
+   NVIC_SetPriority(SysTick_IRQn, QF_AWARE_ISR_CMSIS_PRI+1);
 }
 /*..........................................................................*/
 void BSP_init(void)
@@ -435,8 +438,7 @@ void BSP_FeedWatchdog(void)
 void SystemInit (void)
 {
     //SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
-    //SEGGER_RTT_printf(0,"SystemInit(); \n");
-    
+    //SEGGER_RTT_printf(0,"SystemInit(); \n");   
 #ifdef HAS_MCO
     GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -458,11 +460,7 @@ void SystemInit (void)
 #endif  
   
   
-#ifdef HAS_IWDG
-    IwdgInit(IWDG_Prescaler_256, IWDG_RLR_RL);
-    RTC_Initialize();
-    RTC_SetUpWakeUpAlarm(IWDG_FEED_PERIOD_SEC);
-#endif    /* Set HSION bit */
+
   RCC->CR |= (uint32_t)0x00000001;
 
   /* Reset SW[1:0], HPRE[3:0], PPRE[2:0], ADCPRE and MCOSEL[2:0] bits */
@@ -802,7 +800,6 @@ static void SetSysClockTo48HSI(void)
     /* Enable PLL */
     RCC->CR |= RCC_CR_PLLON;
 
-    //while(1); //test only
 
     /* Wait till PLL is ready */
     
@@ -1071,7 +1068,7 @@ void DynamicAnalysis()
 */
 void IwdgInit(uint8_t prescaler, uint16_t reload)
 {
-#if 1//def HAS_IWDG
+#ifdef HAS_IWDG
     IWDG_Enable();
     IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
     IWDG_SetPrescaler(prescaler);

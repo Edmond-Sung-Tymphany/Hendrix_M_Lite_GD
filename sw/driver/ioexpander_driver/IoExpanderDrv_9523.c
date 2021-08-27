@@ -309,7 +309,7 @@ static void IoExpanderDrv_I2cWrite_aw9523(cIoExpanderDrv *me, uint8 *data, uint8
     {
         if (TP_SUCCESS != I2CDrv_MasterWrite(&me->i2cDrv, &i2cMsg))
         {
-            me->i2cDrv.isReady = 1;/*FALSE*/;
+            me->i2cDrv.isReady = FALSE;
         }
     }
 }

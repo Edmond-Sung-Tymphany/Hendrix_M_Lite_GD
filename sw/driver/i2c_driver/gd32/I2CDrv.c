@@ -31,7 +31,7 @@ purpose.
 /*   TODO: consider I2C speed to design timeout
  */
 #define I2C_TIMEOUT_MS    20
-#define I2C_TIMEOUT                               0xff
+#define I2C_TIMEOUT                               0x1000
 uint32_t I2C_Timeout = I2C_TIMEOUT;
 
 typedef enum
@@ -263,7 +263,7 @@ static void I2CDrv_LowLevelInit(cI2CDrv * me)
     I2C_InitStructure.I2C_OwnAddress1 = 0x30;
     I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
     I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    I2C_InitStructure.I2C_ClockSpeed = 100000;         //100K??
+    I2C_InitStructure.I2C_ClockSpeed = 400000;         //100K??
     #if 0
     uint8 i = 0;
     for(i = 0; i < ArraySize(i2cSpeedMap); i++)
@@ -420,15 +420,13 @@ static void reinit_IIC(I2C_TypeDef* I2Cx)
     I2C_Cmd(I2Cx, ENABLE); 
 }
 
-#define I2C_TIMEOUT     0xfff;
-
 eTpRet I2CDrv_MasterWrite(cI2CDrv * me, tI2CMsg const * const  msg){
 
     uint8_t write_Num;
 
     I2C_TypeDef*    I2Cx;
     uint8*          pMsg = msg->pMsg;
-    uint16  i2c_timeout = I2C_TIMEOUT;
+
 
   
     if (me->pConfig->channel == I2C_CHANNEL_ONE)
@@ -444,8 +442,8 @@ eTpRet I2CDrv_MasterWrite(cI2CDrv * me, tI2CMsg const * const  msg){
         ASSERT(0); /* Support I2C1/I2C2 currently */
         return TP_FAIL;
     }
-   	i2c_timeout = I2C_TIMEOUT;
-   while(IICget_status(I2Cx, I2C_FLAG_BUSY) && (i2c_timeout--))
+   	
+   while(IICget_status(I2Cx, I2C_FLAG_BUSY))
     {
       reinit_IIC(I2Cx);
     }
@@ -453,25 +451,15 @@ eTpRet I2CDrv_MasterWrite(cI2CDrv * me, tI2CMsg const * const  msg){
     /* send a start condition to I2C bus */
     I2C_GenerateSTART(I2Cx, ENABLE);
     /* wait until SBSEND bit is set */
-    
-	i2c_timeout = I2C_TIMEOUT;
-   while(!IICget_status(I2Cx, 0x00000001) && (i2c_timeout--));
-   if (i2c_timeout<=0)
-    {
-        return (TP_FAIL);
-    }
+	
+   while(!IICget_status(I2Cx, 0x00000001));    
      //  while(!((I2Cx->SR1&0x00ff)==0x00000001));
 	
     /* send slave address to I2C bus */
     I2C_Send7bitAddress(I2Cx, msg->devAddr, I2C_Direction_Transmitter); 
     
     /* wait until ADDSEND bit is set */
-	i2c_timeout = I2C_TIMEOUT;
-   while(!IICget_status(I2Cx, 0x00000002) && (i2c_timeout--));
-    if (i2c_timeout<=0)
-     {
-         return (TP_FAIL);
-     }
+    while(!IICget_status(I2Cx, 0x00000002));
     
     /* clear ADDSEND bit */
     if(I2Cx==I2C1){
@@ -484,33 +472,18 @@ eTpRet I2CDrv_MasterWrite(cI2CDrv * me, tI2CMsg const * const  msg){
     }
     
     /* wait until the transmit data buffer is empty */
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000080)&&(i2c_timeout--));
-    if (i2c_timeout<=0)
-     {
-         return (TP_FAIL);
-     }
+    while(!IICget_status(I2Cx, 0x00000080));
 
     for(write_Num = 0; write_Num < msg->length; write_Num++){
         /* data transmission */
         I2C_SendData(I2Cx, pMsg[write_Num]);
         /* wait until the TBE bit is set */
-        i2c_timeout = I2C_TIMEOUT;
-        while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
-        if (i2c_timeout<=0)
-         {
-             return (TP_FAIL);
-         }
+        while(!IICget_status(I2Cx, 0x00000080));
     }
     /* send a stop condition to I2C bus */
-    I2C_GenerateSTOP(I2Cx, ENABLE);
-    i2c_timeout = I2C_TIMEOUT;
-    while((I2Cx->CR1)&0x0200 && (i2c_timeout--));
-    if (i2c_timeout<=0)
-     {
-         return (TP_FAIL);
-     }
-
+    I2C_GenerateSTOP(I2Cx, ENABLE);	
+    while((I2Cx->CR1)&0x0200);
+    
   return (TP_SUCCESS);
 }
 
@@ -529,7 +502,6 @@ eTpRet I2CDrv_MasterWriteWith2ByteRegAddress(cI2CDrv * me, tI2CMsg * const msg)
     uint8_t *pMsg = (uint8_t *)(msg->pMsg);
     uint8_t u8_addr;
     uint16_t len, reg_addr;
-    uint16  i2c_timeout = I2C_TIMEOUT;
 
     len = msg->length;
     reg_addr = (uint16_t)msg->regAddr;
@@ -552,10 +524,8 @@ eTpRet I2CDrv_MasterWriteWith2ByteRegAddress(cI2CDrv * me, tI2CMsg * const msg)
         return TP_FAIL;
     }
 
-    i2c_timeout = I2C_TIMEOUT;
-
     //while(IICget_status(I2Cx, I2C_FLAG_BUSY));
-    while(IICget_status(I2Cx, I2C_FLAG_BUSY) && (i2c_timeout--))
+    while(IICget_status(I2Cx, I2C_FLAG_BUSY))
     {
       reinit_IIC(I2Cx);
     }
@@ -563,14 +533,12 @@ eTpRet I2CDrv_MasterWriteWith2ByteRegAddress(cI2CDrv * me, tI2CMsg * const msg)
     /* send a start condition to I2C bus */
     I2C_GenerateSTART(I2Cx, ENABLE);
     /* wait until SBSEND bit is set */
-    i2c_timeout = I2C_TIMEOUT;    
-    while(!IICget_status(I2Cx, 0x00000001) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000001));
     /* send slave address to I2C bus */
     I2C_Send7bitAddress(I2Cx, msg->devAddr, I2C_Direction_Transmitter); 
     
     /* wait until ADDSEND bit is set */
-    i2c_timeout = I2C_TIMEOUT;    
-    while(!IICget_status(I2Cx, 0x00000002) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000002));
     
     /* clear ADDSEND bit */
     if(I2Cx==I2C1){
@@ -583,32 +551,27 @@ eTpRet I2CDrv_MasterWriteWith2ByteRegAddress(cI2CDrv * me, tI2CMsg * const msg)
     }
     
     /* wait until the transmit data buffer is empty */
-    i2c_timeout = I2C_TIMEOUT;    
-    while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000080));
 
 
      //send reg adress
     I2C_SendData(I2Cx, msg->regAddr>>8);
-    i2c_timeout = I2C_TIMEOUT;    
-    while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000080));
 	
     //send reg adress
     I2C_SendData(I2Cx, msg->regAddr & 0x00ff);
-    i2c_timeout = I2C_TIMEOUT;   
-    while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000080));
     
     for(write_Num = 0; write_Num < msg->length; write_Num++){
         /* data transmission */
         I2C_SendData(I2Cx, pMsg[write_Num]);
         /* wait until the TBE bit is set */
-        i2c_timeout = I2C_TIMEOUT;    
-        while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+        while(!IICget_status(I2Cx, 0x00000080));
     }
     /* send a stop condition to I2C bus */
     I2C_GenerateSTOP(I2Cx, ENABLE);	
     
-    i2c_timeout = I2C_TIMEOUT;    
-    while((I2Cx->CR1)&0x0200 && (i2c_timeout--));
+    while((I2Cx->CR1)&0x0200);
     #if 0
     if (me->pConfig->channel == I2C_CHANNEL_ONE)
     {
@@ -714,8 +677,6 @@ eTpRet I2CDrv_MasterWriteWithRegAddress(cI2CDrv * me, tI2CMsg const * const  msg
 
     I2C_TypeDef*    I2Cx;
     uint8*          pMsg = msg->pMsg;
-    uint16 i2c_timeout = I2C_TIMEOUT;   
-
     if (me->pConfig->channel == I2C_CHANNEL_ONE)
     {
         I2Cx=I2C1;
@@ -731,9 +692,7 @@ eTpRet I2CDrv_MasterWriteWithRegAddress(cI2CDrv * me, tI2CMsg const * const  msg
     }
 
     //while(IICget_status(I2Cx, I2C_FLAG_BUSY));
-    
-    i2c_timeout = I2C_TIMEOUT;   
-    while(IICget_status(I2Cx, I2C_FLAG_BUSY) && (i2c_timeout--))
+    while(IICget_status(I2Cx, I2C_FLAG_BUSY))
     {
       reinit_IIC(I2Cx);
     }
@@ -741,14 +700,12 @@ eTpRet I2CDrv_MasterWriteWithRegAddress(cI2CDrv * me, tI2CMsg const * const  msg
     /* send a start condition to I2C bus */
     I2C_GenerateSTART(I2Cx, ENABLE);
     /* wait until SBSEND bit is set */
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000001) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000001));
     /* send slave address to I2C bus */
     I2C_Send7bitAddress(I2Cx, msg->devAddr, I2C_Direction_Transmitter); 
     
     /* wait until ADDSEND bit is set */
-    i2c_timeout = I2C_TIMEOUT;   
-    while(!IICget_status(I2Cx, 0x00000002) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000002));
     
     /* clear ADDSEND bit */
     if(I2Cx==I2C1){
@@ -761,26 +718,22 @@ eTpRet I2CDrv_MasterWriteWithRegAddress(cI2CDrv * me, tI2CMsg const * const  msg
     }
     
     /* wait until the transmit data buffer is empty */
-    i2c_timeout = I2C_TIMEOUT;   
-    while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000080));
 
     //send reg adress
     I2C_SendData(I2Cx, msg->regAddr);
-    i2c_timeout = I2C_TIMEOUT;   
-    while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000080));
     
     for(write_Num = 0; write_Num < msg->length; write_Num++){
         /* data transmission */
         I2C_SendData(I2Cx, pMsg[write_Num]);
         /* wait until the TBE bit is set */
-        i2c_timeout = I2C_TIMEOUT;   
-        while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+        while(!IICget_status(I2Cx, 0x00000080));
     }
     /* send a stop condition to I2C bus */
     I2C_GenerateSTOP(I2Cx, ENABLE);	
     
-    i2c_timeout = I2C_TIMEOUT;   
-    while((I2Cx->CR1)&0x0200 && (i2c_timeout--));
+    while((I2Cx->CR1)&0x0200);
               
     return (TP_SUCCESS);
 
@@ -797,8 +750,6 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
 {
     uint8*          pMsg = msg->pMsg;
     I2C_TypeDef* I2Cx;
-    uint16 i2c_timeout = I2C_TIMEOUT;   
-
     if (me->pConfig->channel == I2C_CHANNEL_ONE)
     {
         I2Cx=I2C1;
@@ -815,8 +766,7 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
     
     
     //while(IICget_status(I2Cx, I2C_FLAG_BUSY));
-    i2c_timeout = I2C_TIMEOUT;
-    while(IICget_status(I2Cx, I2C_FLAG_BUSY) && (i2c_timeout--))
+    while(IICget_status(I2Cx, I2C_FLAG_BUSY))
     {
       reinit_IIC(I2Cx);
     }
@@ -825,16 +775,12 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
     /* send a start condition to I2C bus */
     I2C_GenerateSTART(I2Cx, ENABLE);
     /* wait until SBSEND bit is set */
-
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000001) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000001));
     /* send slave address to I2C bus */
     I2C_Send7bitAddress(I2Cx, msg->devAddr, I2C_Direction_Transmitter); 
     
     /* wait until ADDSEND bit is set */
-
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000002) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000002));
     
     /* clear ADDSEND bit */
     if(I2Cx==I2C1){
@@ -855,20 +801,17 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
       case REG_LEN_8BITS:
                 I2C_SendData(I2Cx, (uint8_t)msg->regAddr);
                 /* wait until the TBE bit is set */
-                i2c_timeout = I2C_TIMEOUT;
-                while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+                while(!IICget_status(I2Cx, 0x00000080));
         break;        
         
       case REG_LEN_16BITS:
                  I2C_SendData(I2Cx, (uint8_t)((msg->regAddr&0xff00)>>8));
                 /* wait until the TBE bit is set */
-                i2c_timeout = I2C_TIMEOUT;
-                while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));
+                while(!IICget_status(I2Cx, 0x00000080));
                 
                  I2C_SendData(I2Cx, (uint8_t)(msg->regAddr&0x00ff));
                 /* wait until the TBE bit is set */
-                i2c_timeout = I2C_TIMEOUT;
-                while(!IICget_status(I2Cx, 0x00000080) && (i2c_timeout--));        
+                while(!IICget_status(I2Cx, 0x00000080));        
         break;
       case REG_LEN_24BITS:
         break;
@@ -880,12 +823,10 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
 //    while((I2Cx->CR1)&0x0200);
     
    I2C_GenerateSTART(I2Cx, ENABLE);
-   i2c_timeout = I2C_TIMEOUT;
-   while(!IICget_status(I2Cx, 0x00000001) && (i2c_timeout--));
+   while(!IICget_status(I2Cx, 0x00000001));
         
     I2C_Send7bitAddress(I2Cx, msg->devAddr,I2C_Direction_Receiver);//driver_Addr<<1
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000002) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000002));
 
  /*-------------------------------------------------------------*/  
   /* Read data from RXDR */
@@ -893,8 +834,7 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
     uint32_t DataNum = 0;
     while(DataNum != (msg->length-1))
     {   
-         i2c_timeout = I2C_TIMEOUT;
-         while(!IICget_status(I2Cx, 0x00000040) && (i2c_timeout--));
+         while(!IICget_status(I2Cx, 0x00000040));
        *(pMsg) = I2C_ReceiveData(I2Cx);
 	 /* Update number of received data */
         DataNum++;
@@ -905,13 +845,11 @@ eTpRet I2CDrv_MasterRead(cI2CDrv * const  me, tI2CMsg * msg)
     }
 
     I2C_AcknowledgeConfig(I2Cx, DISABLE);	
-    i2c_timeout = I2C_TIMEOUT;
-    while(!IICget_status(I2Cx, 0x00000040) && (i2c_timeout--));
+    while(!IICget_status(I2Cx, 0x00000040));
      *(pMsg) = I2C_ReceiveData(I2Cx);
        
     I2C_GenerateSTOP(I2Cx, ENABLE);
-    i2c_timeout = I2C_TIMEOUT;
-    while((I2Cx->CR1)&0x0200 && (i2c_timeout--));	
+    while((I2Cx->CR1)&0x0200);	
 	
     I2C_AcknowledgeConfig(I2Cx, ENABLE);
     /*!< Return Register value */

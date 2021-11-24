@@ -106,6 +106,8 @@ static uint8    batt_chgtimerenable;
 
 #endif /*end of HAS_BATTERY*/
 
+static uint8 is_mute = 1;
+
 /***********************************************
  * Array
  ***********************************************/
@@ -491,7 +493,7 @@ void PowerDrv_UpdateDCIn(cPowerDrv *me)
         {
             TYMQP_LOG(NULL,"dc=%d", dcInStatus_now);
 
-            dcInStatus = dcInStatus_now;
+            dcInStatus = dcInStatus_now;            
             Setting_Set(SETID_IS_DC_PLUG_IN, &dcInStatus); // DC Plug in
 
             batt_DCchanged = TRUE;
@@ -727,6 +729,13 @@ static void PowerDrv_PowerUpStage1(cPowerDrv *me)
     DSP_PWR_ENABLE(powerGpioDrv);
 
     AMP_ENABLE(powerGpioDrv);
+    
+    /*Avoid pop noise when starting up*/
+    if(is_mute)
+    {
+      AudioDrv_Mute( AUDIO_AMP_SOFT_MUTE, TRUE);
+      is_mute= 0;
+    }
 }
 
 /***************************** Power down process ***************************/

@@ -42,6 +42,13 @@ static cI2CDrv      ampTas5760I2cObj;
 static cAudioAmpDrv audioAmpTas5760Drv;
 #endif
 
+#ifdef HAS_RT9120S_AMP //Nick++
+#include "AmpDrvRT9120S.h"
+
+static cI2CDrv      ampRt9120SI2cObj;
+static cAudioAmpDrv audioAmpRt9120SDrv;
+#endif
+
 //#define     IS_AUX_IN_PLUGGED(x)     ((!(GpioDrv_ReadBit(&(x),GPIO_IN_AUDIO_JACK_DET1)))  // need to rework, Aux_IN detected by DSP
 
 /* the time (ms) per timeout signal */
@@ -103,15 +110,17 @@ void AudioDrv_CheckMusicStreamStatus(void)
 
     static uint32 audio_detection_timeout;
     uint8 status = 0;
-
+#ifdef HAS_ADAU1761_DSP
     bool isauxStreaming =  Adau1761Drv_CH1_MusicDetected();
     if(isauxStreaming)
         status |= (1<<AUXIN_JACK);
-
+#endif
 #ifdef DSP_BT_CHANNEL_DETECTION
+#ifdef HAS_ADAU1761_DSP
     bool isbtStreaming =  Adau1761Drv_CH2_MusicDetected();
     if(isbtStreaming)
         status |= (1<<BLUETOOTH_JACK);
+#endif
 #endif
     uint8 prev_status;
 #if 0//def JUST_FOR_DEBUG
@@ -227,6 +236,9 @@ void AudioDrv_Xtor(cAudioDrv *me)
 #ifdef HAS_TAS5760_AMP
     AudioAmpDrv_Xtor(&audioAmpTas5760Drv);
 #endif
+#ifdef HAS_RT9120S_AMP //Nick++
+    AudioAmpDrv_Xtor(&audioAmpRt9120SDrv);
+#endif
 
 #ifdef HAS_AUDIO_IO_EXPANDERx
     VIoExpanderGpioDrv_Xtor(&AudioIoeDrv);
@@ -242,7 +254,9 @@ BOOL AudioDrv_Init(cAudioDrv *me)
         {
             case AUDIO_DRV_INIT_DSP_CODE:
             {
+#ifdef HAS_ADAU1761_DSP
                 me->nextDelayTime = Adau1761Drv_Init();
+#endif
                 if(me->nextDelayTime == 0)
                 {
                     me->initState = AUDIO_DRV_INIT_TW_AMP;
@@ -251,6 +265,7 @@ BOOL AudioDrv_Init(cAudioDrv *me)
             }
             case AUDIO_DRV_INIT_TW_AMP:
             {
+#ifdef HAS_TAS5760_AMP
                 ampTas5760I2cObj.pConfig = (tI2CDevice*)getDevicebyIdAndType(AMP_DEV_ID, I2C_DEV_TYPE, NULL);
                 ASSERT(ampTas5760I2cObj.pConfig);
                 AudioAmpDrv_Ctor(&audioAmpTas5760Drv, &ampTas5760I2cObj);
@@ -258,6 +273,14 @@ BOOL AudioDrv_Init(cAudioDrv *me)
                 AudioAmpDrv_setPwmRate(&audioAmpTas5760Drv, ADC_PWM_RATE_16LRCK);
                 AudioAmpDrv_setAnalogGain(&audioAmpTas5760Drv, ANALOG_GAIN_22_6_DBV);
                 AudioDrv_Mute(AUDIO_AMP_SOFT_MUTE, FALSE);
+#endif
+              
+#ifdef HAS_RT9120S_AMP //Nick++
+                ampRt9120SI2cObj.pConfig = (tI2CDevice*)getDevicebyIdAndType(AMP_DEV_ID, I2C_DEV_TYPE, NULL);
+                ASSERT(ampRt9114BI2cObj.pConfig);
+                AudioAmpDrv_Ctor(&audioAmpRt9120SDrv, &ampRt9120SI2cObj);
+                AudioDrv_Mute(AUDIO_AMP_MUTE, FALSE);
+#endif
                 me->nextDelayTime = AUDIO_DRV_INIT_AMP_UNMUTE_DELAY;
                 me->initState = AUDIO_DRV_INIT_END;
                 break;
@@ -369,6 +392,9 @@ void AudioDrv_UpdateStatus(cAudioDrv *audioDrvObj)
 #ifdef HAS_TAS5760_AMP
             AudioAmpDrv_I2cEnable(&audioAmpTas5760Drv, enabled);
 #endif
+#ifdef HAS_RT9120S_AMP //Nick++
+            AudioAmpDrv_I2cEnable(&audioAmpRt9120SDrv, enabled);
+#endif
         }
 #endif
     }
@@ -432,7 +458,11 @@ void AudioDrv_Mute(eAudioMuteType muteType, bool muteEnable)
 #ifdef HAS_TAS5760_AMP
             AudioAmpDrv_setSoftMute(&audioAmpTas5760Drv, muteEnable);
 #endif
-#ifdef HAS_TPA3116_AMP
+#ifdef HAS_RT9120S_AMP //Nick++
+            AudioAmpDrv_setSoftMute(&audioAmpRt9120SDrv, muteEnable);
+#endif
+//#ifdef HAS_TPA3116_AMP //Nick--
+#if defined(HAS_TPA3116_AMP) || defined(HAS_AD52090_AMP) //Nick++
             if( muteEnable )
             {
                 PowerDrv_WFMute();
@@ -450,7 +480,11 @@ void AudioDrv_Mute(eAudioMuteType muteType, bool muteEnable)
 #ifdef HAS_TAS5760_AMP
                 PowerDrv_TWMute();
 #endif
-#ifdef HAS_TPA3116_AMP
+#ifdef HAS_RT9120S_AMP //Nick++
+                PowerDrv_TWMute();
+#endif
+//#ifdef HAS_TPA3116_AMP //Nick--
+#if defined(HAS_TPA3116_AMP) || defined(HAS_AD52090_AMP) //Nick++
                 PowerDrv_WFMute();
 #endif
             }
@@ -459,7 +493,11 @@ void AudioDrv_Mute(eAudioMuteType muteType, bool muteEnable)
 #ifdef HAS_TAS5760_AMP
                 PowerDrv_TWUnMute();
 #endif
-#ifdef HAS_TPA3116_AMP
+#ifdef HAS_RT9120S_AMP //Nick++
+                PowerDrv_TWUnMute();
+#endif
+//#ifdef HAS_TPA3116_AMP //Nick--
+#if defined(HAS_TPA3116_AMP) || defined(HAS_AD52090_AMP) //Nick++
                 PowerDrv_WFUnMute();
 #endif
 
@@ -470,45 +508,63 @@ void AudioDrv_Mute(eAudioMuteType muteType, bool muteEnable)
 #ifdef HAS_TAS5760_AMP
             AudioAmpDrv_setSoftMuteLeftChannel(&audioAmpTas5760Drv, muteEnable);
 #endif
+#ifdef HAS_RT9120S_AMP //Nick++
+            AudioAmpDrv_setSoftMuteLeftChannel(&audioAmpRt9120SDrv, muteEnable);
+#endif
             break;
         case AUDIO_AMP_SOFT_MUTE_TW2:
 #ifdef HAS_TAS5760_AMP
             AudioAmpDrv_setSoftMuteRightChannel(&audioAmpTas5760Drv, muteEnable);
 #endif
+#ifdef HAS_RT9120S_AMP //Nick++
+            AudioAmpDrv_setSoftMuteRightChannel(&audioAmpRt9120SDrv, muteEnable);
+#endif
             break;
         case AUDIO_AMP_SOFT_MUTE_WF:
             if(muteEnable)
             {
-#ifdef HAS_TPA3116_AMP
+//#ifdef HAS_TPA3116_AMP //Nick--
+#if defined(HAS_TPA3116_AMP) || defined(HAS_AD52090_AMP) //Nick++
                 PowerDrv_WFMute();
 #endif
             }
             else
             {
-#ifdef HAS_TPA3116_AMP
+//#ifdef HAS_TPA3116_AMP //Nick--
+#if defined(HAS_TPA3116_AMP) || defined(HAS_AD52090_AMP) //Nick++
                 PowerDrv_WFUnMute();
 #endif
             }
             break;
         case AUDIO_SOURCE_MUTE:
+#ifdef HAS_ADAU1761_DSP
             Adau1761Drv_MainMute(muteEnable);
+#endif
             break;
         case AUDIO_DSP_OUT_CH1_MUTE:
+#ifdef HAS_ADAU1761_DSP
             Adau1761Drv_CH_Mute(muteEnable,AUDIO_DSP_OUT_CH1_MUTE-AUDIO_DSP_OUT_CH_MIN);
 #ifdef HAS_TWO_CH_WF
             Adau1761Drv_CH_Mute(muteEnable,AUDIO_DSP_OUT_CH2_MUTE-AUDIO_DSP_OUT_CH_MIN);
 #endif
+#endif
             break;
         case AUDIO_DSP_OUT_CH2_MUTE:
+#ifdef HAS_ADAU1761_DSP
 #ifndef HAS_TWO_CH_WF
             Adau1761Drv_CH_Mute(muteEnable,AUDIO_DSP_OUT_CH2_MUTE-AUDIO_DSP_OUT_CH_MIN);
 #endif
+#endif
             break;
         case AUDIO_DSP_OUT_CH3_MUTE:
+#ifdef HAS_ADAU1761_DSP
             Adau1761Drv_CH_Mute(muteEnable,AUDIO_DSP_OUT_CH3_MUTE-AUDIO_DSP_OUT_CH_MIN);
+#endif
             break;
         case AUDIO_DSP_OUT_CH4_MUTE:
+#ifdef HAS_ADAU1761_DSP
             Adau1761Drv_CH_Mute(muteEnable,AUDIO_DSP_OUT_CH4_MUTE-AUDIO_DSP_OUT_CH_MIN);
+#endif
             break;
 
         default:

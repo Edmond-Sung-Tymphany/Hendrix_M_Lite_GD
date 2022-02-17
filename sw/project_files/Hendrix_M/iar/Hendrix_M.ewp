@@ -2210,7 +2210,7 @@
                 <name>$PROJ_DIR$\..\DSP\Adau1761_Drv.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\driver\audio_driver\tas5760\tas5760Drv.c</name>
+                <name>$PROJ_DIR$\..\..\..\driver\audio_driver\RT9120S\RT9120SDrv.c</name>
             </file>
         </group>
         <group>

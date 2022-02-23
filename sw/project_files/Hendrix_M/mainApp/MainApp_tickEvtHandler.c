@@ -102,10 +102,13 @@ static QState MainApp_BtBootingTimeoutHandler(cMainApp * const me, QEvt const * 
 {
 
     TP_PRINTF("Tick BTbooting timeout ! cnt:%d \r\n ",me->btReBootCnt);
-    if(me->btReBootCnt < MAX_BT_REBOOT_COUNT)
+    if((uint8)me->nextState > SYSTEM_STA_OFF_CHARGING) //Nick++ for not reboot if device going to powering down
     {
-        me->btReBootCnt++;
-        return Q_TRAN(MainApp_PoweringUp);
+      if(me->btReBootCnt < MAX_BT_REBOOT_COUNT)
+      {
+          me->btReBootCnt++;
+          return Q_TRAN(MainApp_PoweringUp);
+      }
     }
     me->btReBootCnt = 0;
 #ifdef IGNORE_BT_BOOTING_ERROR

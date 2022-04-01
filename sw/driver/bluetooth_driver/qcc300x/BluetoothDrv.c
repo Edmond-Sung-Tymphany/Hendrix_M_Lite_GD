@@ -80,14 +80,14 @@ const static uint16 bt_audio_cue_time[BT_CUE_MAX] =
 const static tSeqSection bt_startup_seq[] =
 {
     { &BtDrv_PwrOnStage1,    50 },
-    //{ &BtDrv_PwrOnStage2,    50 },   // power on process //Blocked by Nick
+    { &BtDrv_PwrOnStage2,    50 },   // power on process //Blocked by Nick
     { &BtDrv_PwrOnStage3,    BT_POWER_ON_PRESS_TIME_MS },   // power on process
     { &BtDrv_PwrOnStage4,    30 },   // power on process
 };
 
 const static tSeqSection bt_power_off_seq[] =
 {
-    //{ &BtDrv_PwrOffStage1,    30 }, //Blocked by Nick
+    { &BtDrv_PwrOffStage1,    30 }, //Blocked by Nick
     { &BtDrv_PwrOffStage2,    BT_POWER_OFF_PRESS_TIME_MS },   // power off process
     { &BtDrv_PwrOffStage3,    BT_POWER_OFF_WAITING_TIME_MS }, // wait for bt powering down
 };
@@ -265,7 +265,7 @@ void BluetoothDrv_PowerEnable(bool enable)
     }
 }
 
-#ifdef HAS_BT_RESET_PINx //Block by Nick
+#ifdef HAS_BT_RESET_PIN
 
 static void BluetoothDrv_ResetEnable(bool enable)
 {

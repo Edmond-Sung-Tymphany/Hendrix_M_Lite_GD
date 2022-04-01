@@ -731,11 +731,13 @@ static void PowerDrv_PowerUpStage1(cPowerDrv *me)
     AMP_ENABLE(powerGpioDrv);
     
     /*Avoid pop noise when starting up*/
+#ifdef HAS_TAS5760_AMP //Nick++ the define for old Amp
     if(is_mute)
     {
       AudioDrv_Mute( AUDIO_AMP_SOFT_MUTE, TRUE);
       is_mute= 0;
     }
+#endif
 }
 
 /***************************** Power down process ***************************/

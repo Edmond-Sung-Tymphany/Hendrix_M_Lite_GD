@@ -36,7 +36,7 @@
 
 /***********  Bit definition for Class D gain setting = 4.5 gain register  ****/
 #define RT9120S_CLASS_D_GAIN_SETTING_ADDR   0x07
-#define RT9120S_INIT_ANALOG_GAIN                   ((uint8)0x33) //13dB
+#define RT9120S_INIT_ANALOG_GAIN                   ((uint8)0x35) //15dB
 
 /***********  Bit definition for Amp turn on register  ****/
 #define RT9120S_AMP_TURN_ON_ADDR   0x05
@@ -115,7 +115,7 @@ static void AudioAmpDrv_Init(cAudioAmpDrv * me)
     BSP_BlockingDelayMs(10);//delay 10ms   
     
     //AudioAmpDrv_AmpInitSettings_0x63(me); //0x63, 0xDE
-    //AudioAmpDrv_setClassDgain(me, RT9120S_INIT_ANALOG_GAIN); //0x07, 0x33 (13dB)
+    AudioAmpDrv_setClassDgain(me, RT9120S_INIT_ANALOG_GAIN); //0x07, 0x35 (15dB)
     //AudioAmpDrv_AmpInitSettings_0x65(me); //0x65, 0x66
     
     //AudioAmpDrv_AmpInitSettings_0x01(me); //0x01, 0x50

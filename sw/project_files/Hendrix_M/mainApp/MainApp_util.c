@@ -77,6 +77,7 @@ void MainApp_InitStatusVariables(cMainApp * const me)
     uint8 initvalue = FALSE;
 
     Setting_Set(SETID_SW_VER, PRODUCT_VERSION_MCU);
+    Setting_Set(SETID_BT_VER, PRODUCT_VERSION_BT); //Nick++
     Setting_Reset(SETID_IS_OVER_TEMP);
     Setting_Reset(SETID_IS_AMP_FAULT);
 
@@ -207,7 +208,7 @@ void MainApp_ShowVersion(void)
 {
     char * version_mcu = ((char *)Setting_Get(SETID_SW_VER));
     char * version_hw = ((char *)Setting_Get(SETID_HW_VER));
-    char * version_bt = "null";// update when ready
+    char * version_bt = ((char *)Setting_Get(SETID_BT_VER)); //Nick++
     char * version_dsp =((char *)Setting_Get(SETID_DSP_VER));
     char msg[40];
     sprintf(msg,"HendrixM MCU:V%s,", version_mcu);

@@ -341,6 +341,11 @@ QState DebugSSrv_Ready(cDebugSSrv * const me, QEvt const * const e)
             memset((uint8*)&pResp->mcuVer[0], 0, VERSTR_SIZE);
             memcpy((uint8*)&pResp->mcuVer[0], (uint8*)mcuVersion, strlen(mcuVersion));
 #endif
+#ifdef PRODUCT_VERSION_BT //Nick++
+            char* btVersion = PRODUCT_VERSION_BT;
+            memset((uint8*)&pResp->btVer[0], 0, VERSTR_SIZE);
+            memcpy((uint8*)&pResp->btVer[0], (uint8*)mcuVersion, strlen(btVersion));
+#endif
 #ifdef PRODUCT_VERSION_DSP
             char* dspVersion = PRODUCT_VERSION_DSP;
             memset((uint8*)&pResp->dspVer[0], 0, VERSTR_SIZE);

@@ -174,6 +174,9 @@ RESP_EVT(SettingRespEvt)
 #ifdef PRODUCT_VERSION_MCU
     char            mcuVer[VERSTR_SIZE];
 #endif
+#ifdef PRODUCT_VERSION_BT //Nick++
+    char            btVer[VERSTR_SIZE];
+#endif
 #ifdef PRODUCT_VERSION_DSP
     char            dspVer[VERSTR_SIZE];
 #endif

@@ -682,14 +682,14 @@ static void BtDrv_PwrOnStage1(void* me)
     isBluetoothVersionGet = FALSE;
     BluetoothDrv_TurnOnBT(pBluetoothDrv);
 
-    //BluetoothDrv_ResetEnable(TRUE); //Blocked  by Nick
+    BluetoothDrv_ResetEnable(TRUE); //Blocked  by Nick
 
     BluetoothDrv_BT_PWR_PIO_OFF();
 }
 
 static void BtDrv_PwrOnStage2(void* me)
 {
-    //BluetoothDrv_ResetEnable(FALSE); //Blocked by Nick
+    BluetoothDrv_ResetEnable(FALSE); //Blocked by Nick
 }
 
 static void BtDrv_PwrOnStage3(void* me)

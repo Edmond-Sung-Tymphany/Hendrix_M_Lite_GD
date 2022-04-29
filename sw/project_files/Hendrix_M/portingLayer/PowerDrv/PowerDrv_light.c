@@ -97,6 +97,7 @@ static tBatteryFilter battFilter =
     .intBatt.isRemovable = FALSE,
 };
 static eChargerState battChargeState_bk = CHARGER_STA_MAX;
+static eChargerState battChargeState_db = CHARGER_STA_MAX; //Nick++ the if else for debounce to prevent prompting charging full cue when power core pluggeding but not fully charged
 
 static uint8    batt_CapacityResult = 255;
 
@@ -392,10 +393,17 @@ void PowerDrv_PwrSwitchUpdate(cPowerDrv *me)
 static void PowerDrv_UpdateChargerState(cPowerDrv *me)
 {
     uint8 chargerState = PowerDrv_GetChargerStatus();
-    if(battChargeState_bk != chargerState)
+    if(battChargeState_db != chargerState) /*Nick++ the if else for debounce to prevent prompting charging full cue when power core pluggeding but not fully charged*/
     {
-        battChargeState_bk = chargerState;
-        PowerDrv_ReportBatteryStateChange(me);
+        battChargeState_db = chargerState;
+    }
+    else
+    {
+      if(battChargeState_bk != chargerState)
+      {
+          battChargeState_bk = chargerState;
+          PowerDrv_ReportBatteryStateChange(me);
+      }
     }
 }
 

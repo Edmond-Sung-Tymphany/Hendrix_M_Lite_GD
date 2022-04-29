@@ -150,8 +150,7 @@ const static char *mainApp_debug = "[MainApp_Debug] ";
 #define TYMQP_DUMP_QUEUE_WITH_LOG(...)
 #endif
 
-//#define MAINAPP_BT_BOOTING_TIMEOUT_IN_MS         (10*1000)  /* Timeout for Bluetooth normal boot up: 2 min, normally need 53 sec to boot-up */
-#define MAINAPP_BT_BOOTING_TIMEOUT_IN_MS         (2*1000)  /* Nick: Modify to 2sec to speed up the detection BT not powering up */
+#define MAINAPP_BT_BOOTING_TIMEOUT_IN_MS         (10*1000)  /* Timeout for Bluetooth normal boot up: 2 min, normally need 53 sec to boot-up */
 
 #define MAINAPP_DELAYED_ERROR_REBOOT_TIMEOUT_IN_MS     (5*1000)  /* wait 5 second(for finished LED indication), then reboot system. */
 
@@ -162,8 +161,10 @@ const static char *mainApp_debug = "[MainApp_Debug] ";
 #define MAINAPP_BT_TO_ACTIVE_TIMEOUT_IN_MS       (700)
 #define MAINAPP_BT_BATT_NOTIFY_TIMEOUT_IN_MS     (7*1000)
 #define MAINAPP_FACTORY_POWER_DOWN_TIMEOUT_MS    (5*1000) /* Timeout for BT factory reset, normally need few sec */
-#define MAINAPP_BT_CUE_START_DELAY_TIMEOUT_IN_MS (600)
-#define MAINAPP_BTCUE_NOCONN_DELAY_TIMEOUT_IN_MS (200)
+//#define MAINAPP_BT_CUE_START_DELAY_TIMEOUT_IN_MS (600)
+#define MAINAPP_BT_CUE_START_DELAY_TIMEOUT_IN_MS (200) //Nick modify to resolve the cue corrupt issue for V3
+//#define MAINAPP_BTCUE_NOCONN_DELAY_TIMEOUT_IN_MS (200)
+#define MAINAPP_BTCUE_NOCONN_DELAY_TIMEOUT_IN_MS (100) //Nick modify to resolve the cue corrupt issue for V3
 #define MAINAPP_TIMEOUT_IN_MS                    (100)
 #define MAINAPP_TICK_IN_OFF_TIMEOUT_IN_MS        (200)
 #define MAINAPP_TICK_IN_OFF_CHG_TIMEOUT_IN_MS    (300)

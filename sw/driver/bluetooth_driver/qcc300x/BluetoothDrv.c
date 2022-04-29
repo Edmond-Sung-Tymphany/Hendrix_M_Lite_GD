@@ -79,8 +79,8 @@ const static uint16 bt_audio_cue_time[BT_CUE_MAX] =
 #ifdef HAS_BT_SEQ_CONTROL
 const static tSeqSection bt_startup_seq[] =
 {
-    { &BtDrv_PwrOnStage1,    50 },
-    { &BtDrv_PwrOnStage2,    50 },   // power on process //Blocked by Nick
+    { &BtDrv_PwrOnStage1,    100 },    //Nick++ the timimg to 100ms. Original is 50ms. To resolve the reconnection pulse missing when powering on.
+    { &BtDrv_PwrOnStage2,    100 },   // power on process //Nick++ the timimg to 100ms. Original is 50ms. To resolve the reconnection pulse missing when powering on.
     { &BtDrv_PwrOnStage3,    BT_POWER_ON_PRESS_TIME_MS },   // power on process
     { &BtDrv_PwrOnStage4,    30 },   // power on process
 };
@@ -682,14 +682,14 @@ static void BtDrv_PwrOnStage1(void* me)
     isBluetoothVersionGet = FALSE;
     BluetoothDrv_TurnOnBT(pBluetoothDrv);
 
-    BluetoothDrv_ResetEnable(TRUE); //Blocked  by Nick
+    BluetoothDrv_ResetEnable(TRUE);
 
     BluetoothDrv_BT_PWR_PIO_OFF();
 }
 
 static void BtDrv_PwrOnStage2(void* me)
 {
-    BluetoothDrv_ResetEnable(FALSE); //Blocked by Nick
+    BluetoothDrv_ResetEnable(FALSE);
 }
 
 static void BtDrv_PwrOnStage3(void* me)

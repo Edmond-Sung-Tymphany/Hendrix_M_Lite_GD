@@ -345,6 +345,13 @@ QState MainApp_PoweringUp(cMainApp * const me, QEvt const * const e)
             TYMQP_DUMP_QUEUE_WITH_LOG(me, "(%d)TIMER_FEED_WD_SIG", e->sig);
             //printf("(%d)MainApp_PoweringUp - FEED\r\n", e->sig);
             IWDG_ReloadCounter();
+#if 0//def MAINAPP_POWER_UP_TIMEOUT_RESET
+            power_up_timeout--;
+            if (power_up_timeout<=0)
+            {
+                BSP_SoftReboot();
+            }
+#endif
             return Q_HANDLED();
         }
 #endif

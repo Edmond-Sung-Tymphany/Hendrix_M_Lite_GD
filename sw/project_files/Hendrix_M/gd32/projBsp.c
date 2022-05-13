@@ -145,10 +145,9 @@ GPIO_InitTypeDef GPIO_InitStructure;
 
 void SetGpioStateForSleep()
 {
-    //ADC_Cmd(ADC1,DISABLE);
-    //I2C_Cmd(I2C1, DISABLE);
-    //I2C_Cmd(I2C2, DISABLE);
-
+    ADC_Cmd(ADC1,DISABLE);
+    I2C_Cmd(I2C1, DISABLE);
+    I2C_Cmd(I2C2, DISABLE);
     // CHG_STAT1 CHG_STAT2
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
@@ -187,6 +186,11 @@ void SetGpioStateForSleep()
 
     GPIO_ResetBits(GPIOA, GPIO_Pin_8);
     GPIO_ResetBits(GPIOA, GPIO_Pin_14);
+
+
+
+
+
 }
 
 void SetGpioStateForWakeup()
@@ -212,6 +216,7 @@ void SetGpioStateForWakeup()
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -228,9 +233,10 @@ void SetGpioStateForWakeup()
 #endif
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    //I2C_Cmd(I2C1, ENABLE);
-    //I2C_Cmd(I2C2, ENABLE);
-    //ADC_Cmd(ADC1, ENABLE);
+    I2C_Cmd(I2C1, ENABLE);
+    I2C_Cmd(I2C2, ENABLE);
+    ADC_Cmd(ADC1, ENABLE);
+
 }
 #ifdef HAS_IWDG
 

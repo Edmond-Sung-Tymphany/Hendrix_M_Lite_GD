@@ -87,7 +87,7 @@ const static tSeqSection bt_startup_seq[] =
 
 const static tSeqSection bt_power_off_seq[] =
 {
-    { &BtDrv_PwrOffStage1,    30 }, //Blocked by Nick
+    { &BtDrv_PwrOffStage1,    30 },
     { &BtDrv_PwrOffStage2,    BT_POWER_OFF_PRESS_TIME_MS },   // power off process
     { &BtDrv_PwrOffStage3,    BT_POWER_OFF_WAITING_TIME_MS }, // wait for bt powering down
 };
@@ -523,12 +523,17 @@ static uint8 BluetoothDrv_GetBTModuleStatus(uint32 pulseTime, eGPIOId ledId)
 	//GD MCU has different timing
      uint8 i;
 	const static uint16_t BT_status_timing[]=
-	{
+	{/*
 		(150),	//80	//DISCOVERABLE	//60					pairing tone
 		(250),	//130	//CONNECTABLE(DISCONNECTED) //230		disconnect tone
 		(500),	//180	//CONNECTED 	//375	//STOP A2DP		connected tone
 		(680),	//230	//STREAMING 	//550	//START A2DP	no tone
-
+         */
+                /* Nick: V3 uses this. The BT module FW sends following pulses as below*/
+                (50),	//50	//DISCOVERABLE	//pairing tone
+		(200),	//250	//CONNECTABLE(DISCONNECTED) //disconnect tone
+		(500),	//500	//CONNECTED (STOP A2DP)	//connected tone
+		(1000),	//750	//STREAMING (START A2DP) //no tone
 	};
 	const static uint16_t BT_status_timing_size = (sizeof(BT_status_timing)/sizeof(BT_status_timing[0]));
 

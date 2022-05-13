@@ -150,6 +150,7 @@ static QState MainApp_BatteryCommonEvtHandle(cMainApp * const me, PowerSrvInfoEv
             //Hot restart shall not trigger charing cue again.
             if((!me->isChgEnable)&&(me->isChargeStopByNTC == FALSE))
             {
+                AudioSrv_SetVolume(DEFAULT_AUDIO_CUE_VOLUME); //Nick++ to prevent audio cue volume not set
                 MainApp_SendBTCueCmd(me, BT_CHARGING_CUE_CMD);
             }
             MainApp_ChargingEnable(me);

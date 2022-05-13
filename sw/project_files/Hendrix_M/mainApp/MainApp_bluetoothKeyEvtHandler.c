@@ -66,7 +66,7 @@ static QState MainApp_BtDiscoverableEvtAction(cMainApp * const me, BtStatusEvt c
 #endif
 
     /* paring start */
-    AudioSrv_SetVolume(DEFAULT_AUDIO_CUE_VOLUME); //Nick++ to prevent audio cue volume not set
+    //AudioSrv_SetVolume(DEFAULT_AUDIO_CUE_VOLUME); //Nick++ to prevent audio cue volume not set
     MainApp_SendBTCueCmd(me, BT_PAIRING_START_CUE_CMD);
     // cue is gonna playing, change this for source stay in BT when cue stop.
     me->audioSource = AUDIO_SOURCE_BT;
@@ -150,7 +150,9 @@ static QState MainApp_BtLinklostOffEvtAction(cMainApp * const me, BtStatusEvt co
 
     QState ret = Q_UNHANDLED();
     
-    AudioSrv_SetVolume(DEFAULT_AUDIO_CUE_VOLUME);//Nick++ to prevent audio cue volume not set        
+    if(me->CurrBTStatus != BT_STREAMING_A2DP_STA)
+      AudioSrv_SetVolume(DEFAULT_AUDIO_CUE_VOLUME);//Nick++ to prevent audio cue volume not set        
+    
     MainApp_SendBTCueCmd(me, BT_PAIRING_SUCCESS_CUE_CMD);
     me->tickHandlers[TIMER_ID_BT_BATT_NOTIFY_TIMEOUT].timer = MAINAPP_BT_BATT_NOTIFY_TIMEOUT_IN_MS;
 

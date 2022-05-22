@@ -287,18 +287,28 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
     PowerDrv_DisableSystemTimerInt();
     SetEnableWakeupSources();
     PowerDrv_InitVariablesBeforeSleep(me);
+    
+    //Nick++ disable the ADC before sleep
+    ADCDrv_Xtor(&adcDrv);
+    
     SetGpioStateForSleep();
 }
 
 static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 {
-#ifdef SOFT_REBOOT_WHEN_WAKE_UP_FROM_STANDBY
-	//when wake up from standby just reset it
-    BSP_SoftReboot();		//edmond_20210715
-#else
-	//after wakeup
+    //Nick++ Wake up and enable the ADC
+    uint16 attached_device_index = 0;
+    tDevice *pPowerDev = NULL;
+    pPowerDev = (tDevice*)getDevicebyId(POWER_DEV_ID,&attached_device_index);
+    pPowerDev->deviceType = ADC_DEV_TYPE;
+    tADCDevice *pPowerAdcConf = (tADCDevice*)pPowerDev;
+    ADCDrv_Ctor(&adcDrv, pPowerAdcConf);
+    ADCDrv_StartScanning(&adcDrv);
+    
+    //after wakeup
     SetDisableWakeupSources();
     SetGpioStateForWakeup();
+    
     PowerDrv_EnableSystemTimerInt();
     // re-detect pwrSwStatus
     pwrSwStatus = PWR_SW_MAX;
@@ -310,9 +320,6 @@ static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 #ifdef HAS_PWR_IO_EXPANDER
     PowerDrv_SetIoExpanderForWakeup();
 #endif
-#endif
-
-
 
 }
 
@@ -336,12 +343,6 @@ void PowerDrv_EnterSleepMode(cPowerDrv *me)
     if(TRUE == IsEXTIWakeUp())
 #endif
     {
-#ifdef SOFT_REBOOT_WHEN_WAKE_UP_FROM_STANDBY
-        BSP_init_clock();
-    	printf("IsEXTIWakeUp(0x%x)\r\n", IsEXTIWakeUp());
-        printf("PowerDrv_OperationForWakeUp\r\n");
-#endif    
-
         PowerDrv_OperationForWakeUp(me);
     }
 }
@@ -622,17 +623,7 @@ void PowerDrv_Set(cPowerDrv *me, ePowerSetId setId, bool enable)
             TYMQP_LOG(NULL,"Set POWEREN %s", (enable?"OFF":"ON"));
             if(enable == TRUE)
             {
-#ifdef SOFT_REBOOT_AFTER_CUT_OFF_POWER
-                //printf("Cut power\n");
                 SYS_PWR_DISABLE(powerGpioDrv);
-                //while(1);
-                //BSP_SoftReboot();		//edmond_20210715
-#else
-                
-                SYS_PWR_DISABLE(powerGpioDrv);
-                //BSP_BlockingDelayMs(1000);
-                BSP_SoftReboot();		//edmond_20210715
-#endif
             }
             else
             {

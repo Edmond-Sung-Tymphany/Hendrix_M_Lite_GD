@@ -1,2 +1,0 @@
-d016ac355ef395bedfcf9826b0cd7203 *../Hendrix_LiteV3_hwPMP_swv7.0.7_20220518.zip
-70c7459051143ea203d2c03cf55342c9 *../Hendrix_LiteV3_hwPMP_swv7.0.7_20220518.zip

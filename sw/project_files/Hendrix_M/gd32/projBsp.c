@@ -148,10 +148,9 @@ void SetGpioStateForSleep()
     //ADC_Cmd(ADC1,DISABLE);
     //I2C_Cmd(I2C1, DISABLE);
     //I2C_Cmd(I2C2, DISABLE);
-
-    GPIO_InitTypeDef GPIO_InitStructure;
-/*
+    
     // CHG_STAT1 CHG_STAT2
+    GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -159,11 +158,10 @@ void SetGpioStateForSleep()
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     GPIO_SetBits(GPIOC, GPIO_Pin_14);
     GPIO_SetBits(GPIOC, GPIO_Pin_15);
-*/
-    //I2C pins
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
@@ -182,27 +180,26 @@ void SetGpioStateForSleep()
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 #ifdef HAS_MCO
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_14;
-    GPIO_ResetBits(GPIOA, GPIO_Pin_8);
-    GPIO_ResetBits(GPIOA, GPIO_Pin_14);
 #else
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;
-    GPIO_ResetBits(GPIOA, GPIO_Pin_14);
 #endif
     GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    GPIO_ResetBits(GPIOA, GPIO_Pin_8);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_14);
 */
 }
 
 void SetGpioStateForWakeup()
 {
-    GPIO_InitTypeDef GPIO_InitStructure;  
-/*
     //HOST_INTN CHG_STAT1 CHG_STAT2
+    GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
-*/
+
     // WF_MUTE
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

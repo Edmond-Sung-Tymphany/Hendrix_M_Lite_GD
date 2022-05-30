@@ -289,7 +289,7 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
     PowerDrv_InitVariablesBeforeSleep(me);
     
     //Nick++ disable the ADC before sleep
-    ADCDrv_Xtor(&adcDrv);
+    /*ADCDrv_Xtor(&adcDrv);*/
     
     SetGpioStateForSleep();
 }
@@ -297,13 +297,13 @@ static void PowerDrv_OperationForSleep(cPowerDrv *me)
 static void PowerDrv_OperationForWakeUp(cPowerDrv *me)
 {
     //Nick++ Wake up and enable the ADC
-    uint16 attached_device_index = 0;
+    /*uint16 attached_device_index = 0;
     tDevice *pPowerDev = NULL;
     pPowerDev = (tDevice*)getDevicebyId(POWER_DEV_ID,&attached_device_index);
     pPowerDev->deviceType = ADC_DEV_TYPE;
     tADCDevice *pPowerAdcConf = (tADCDevice*)pPowerDev;
     ADCDrv_Ctor(&adcDrv, pPowerAdcConf);
-    ADCDrv_StartScanning(&adcDrv);
+    ADCDrv_StartScanning(&adcDrv);*/
     
     //after wakeup
     SetDisableWakeupSources();

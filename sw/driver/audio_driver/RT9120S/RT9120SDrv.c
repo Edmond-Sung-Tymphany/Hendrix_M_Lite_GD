@@ -40,7 +40,9 @@
 
 /***********  Bit definition for Amp turn on register  ****/
 #define RT9120S_AMP_TURN_ON_ADDR   0x05
-#define RT9120S_AMP_TURN_ON        ((uint8)0x80)
+//#define RT9120S_AMP_TURN_ON        ((uint8)0x80) //Output PWM 385K
+#define RT9120S_AMP_TURN_ON        ((uint8)0x88) //Output PWM 768K
+//#define RT9120S_AMP_TURN_ON        ((uint8)0x8C) //Output PWM 1536K
 
 /***********  Bit definition for Amp mute register  ****/
 #define RT9120S_AMP_MUTE_ADDR   0x0A

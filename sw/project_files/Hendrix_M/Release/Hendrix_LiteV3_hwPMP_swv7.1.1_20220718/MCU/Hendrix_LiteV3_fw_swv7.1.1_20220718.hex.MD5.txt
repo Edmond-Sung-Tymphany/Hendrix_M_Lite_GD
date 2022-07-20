@@ -1,0 +1,1 @@
+d3c47f4cb32e9b548ee4fe02b21314d0 *Release/Hendrix_LiteV3_hwPMP_swv7.1.1_20220718/MCU/Hendrix_LiteV3_fw_swv7.1.1_20220718.hex
